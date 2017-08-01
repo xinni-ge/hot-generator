@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <title>Network | Saving and loading networks</title>
+
+        <script src="js/angular/angular.js"></script>
+        <script src="js/angular/angular-animate.js"></script>
+        <script src="js/angular/angular-notify.js"></script>
+        <script src="js/angular/vis.js"></script>
+        <script src="js/angular/angular-vis.js"></script>
+        <script src="js/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
+
+        <link href="css/angular-notify.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/vis.css" rel="stylesheet">
+
+        <!--<link href="css/ecl.css" rel="stylesheet">-->
+        <style type="text/css">
+
+        </style>
+    </head>
+
+    <body ng-app="hotgen">
+        <div class="page-header">
+            <h1>{% trans "Generate Template" %}</h1>
+            <p>{% trans "Please drag and drop resource icons into center canvas to define resource for template." %}</p>
+        </div>
+
+        <div ng-controller="VisCtrl" class='vis-network'></div>
+
+        <div ng-controller="ModalDemoCtrl as $ctrl" class='modal-template'>
+            <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Open me!</button>
+            <script type="text/ng-template" id="myModalContent.html">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">Template</h3>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <b>{{ $ctrl.template }}</b>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                </div>
+            </script>
+        </div>
+
+        <script>
+            angular_module = angular.module('hotgen', ['hotgen-notify', 'ui.bootstrap', 'ngVis']);
+        </script>
+
+        <script src="js/hotgen/hotgen-notify.js"></script>
+
+        <script src="js/hotgen/hotgen-vis-network.js"></script>
+        <script src="js/hotgen/hotgen-modals.js"></script>
+    </body>
+</html>

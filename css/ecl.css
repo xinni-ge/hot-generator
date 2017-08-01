@@ -1,0 +1,88 @@
+
+#hot_container {
+    /* background-image: url("../img/canvasbg.jpg"); */
+    border: 1px solid #cccccc;
+    height: 700px;
+    width: 100%;
+    -moz-border-radius: 0.5em;
+    border-radius: 0.5em;
+}
+
+/*
+.ecl_resource {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    cursor: move;
+}
+*/
+
+/*
+.ecl_resource:hover {
+    opacity:0.6;
+}
+*/
+
+.resource_wrapper {
+    padding: 10px;
+}
+
+.message-wrapper {
+    height: 80px;
+}
+
+.table_action {
+    padding: 10px;
+    width: 100%;
+    text-align: right;
+}
+
+.fa-required{
+    font-size: 50%;
+    vertical-align: top;
+    color: #3980c3;
+}
+.themable-checkbox input[type=checkbox] + label>span{
+    padding-left: 5px;
+    vertical-align: middle;
+}
+
+div.vis-button.vis-back,
+div.vis-button.vis-connect,
+div.vis-button.vis-delete,
+div.vis-button.vis-edit {
+    border: medium none!important;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4)!important;
+    text-transform: uppercase!important;
+    transition: all 0.4s ease 0s!important;
+    border-color: transparent!important;
+    color: #444!important;
+    -moz-user-select: none!important;
+    border-radius: 4px!important;
+    cursor: pointer!important;
+    display: inline-block!important;
+    font-size: 14px!important;
+    font-weight: 400!important;
+    line-height: 1.42857!important;
+    margin-bottom: 25px!important;
+    padding: 6px 12px!important;
+    text-align: center!important;
+    touch-action: manipulation!important;
+    vertical-align: middle!important;
+    white-space: nowrap!important;
+}
+div.vis-button.vis-back div.vis-label,
+div.vis-button.vis-connect div.vis-label,
+div.vis-button.vis-delete div.vis-label,
+div.vis-button.vis-edit div.vis-label {
+    margin-top: -7px!important;
+}
+div#resource_parameter_setter h2 {
+  font-size: 30px!important;
+}
+div.modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+}
+div.modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.18);
+}
