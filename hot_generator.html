@@ -15,6 +15,7 @@
         <link href="css/angular-notify.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/vis.css" rel="stylesheet">
+        <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
         <link href="css/ecl.css" rel="stylesheet">
         <style type="text/css">
@@ -27,6 +28,50 @@
             <h1>{% trans "Generate Template" %}</h1>
             <p>{% trans "Please drag and drop resource icons into center canvas to define resource for template." %}</p>
         </div>
+
+        <div class="row table_action">
+            <div class="col-sm-2"></div>
+
+            <div class="col-sm-7">
+                <!--<a class="btn btn-default btn-launch" id="export_hot_template"><i class="fa fa-fw fa-file-text-o"></i>{% trans "Create Template" %}</a>-->
+                <div ng-controller="ModalDemoCtrl as $ctrl" class='modal-template' style="display:inline-block">
+                    <a type="button" class="btn btn-primary" ng-click="$ctrl.open()"><i class="fa fa-fw fa-file-text-o"></i>Create Template</a>
+                    <script type="text/ng-template" id="myModalContent.html">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="modal-title">Template</h3>
+                        </div>
+                        <div class="modal-body" id="modal-body">
+                            <b>{{ $ctrl.template }}</b>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                        </div>
+                    </script>
+                </div>
+
+                <div ng-controller="DropdownCtrl" class="btn-group" uib-dropdown>
+                    <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                      <i class="fa fa-fw fa-floppy-o"></i>
+                      {% trans "Manage Draft" %}<span class="fa fa-caret-down"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                      <li><a id="save-draft" href="javascript:void(0);">{% trans "Save Draft" %}</a></li>
+                      <li><a id="load-draft" href="javascript:void(0)">{% trans "Load Draft" %}</a></li>
+                      <li><a id="export-draft" href="javascript:void(0);">{% trans "Export Draft" %}</a></li>
+                      <li><a id="import-draft" href="javascript:void(0);">{% trans "Import Draft" %}</a></li>
+                      <li><a id="import-template" href="javascript:void(0);">{% trans "Import Template" %}</a></li>
+                    </ul>
+                </div>
+
+                <a class="btn btn-default" id="clear_network"><i class="fa fa-fw fa-trash"></i>{% trans "Clear All" %}</a>
+                <!--<a class="btn btn-default" id="set_option_info"><i class="fa fa-fw fa-refresh"></i>{% trans "Renew choices information" %}</a>-->
+                <input id="draft-file" type="file" style="visibility:hidden" />
+                <input id="template-file" type="file" style="visibility:hidden" />
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+
         <div class="col-sm-3">
         </div>
 
@@ -41,25 +86,13 @@
         </div>
 
 
-        <div ng-controller="ModalDemoCtrl as $ctrl" class='modal-template'>
-            <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Open me!</button>
-            <script type="text/ng-template" id="myModalContent.html">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="modal-title">Template</h3>
-                </div>
-                <div class="modal-body" id="modal-body">
-                    <b>{{ $ctrl.template }}</b>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-                    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
-                </div>
-            </script>
-        </div>
+
 
         <script>
             angular_module = angular.module('hotgen', ['hotgen-notify', 'ui.bootstrap', 'ngVis']);
-
+            angular_module.controller('DropdownCtrl', function($scope){
+                ;
+            });
         </script>
 
         <script src="js/hotgen/hotgen-notify.js"></script>
