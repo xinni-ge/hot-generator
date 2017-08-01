@@ -19,7 +19,6 @@
                 });
             };
         });
-//    var hotgenapp = angular.module('hotgen');
     angular_module.controller('ModalInstanceCtrl', function ($uibModalInstance) {
         var $ctrl = this;
         $ctrl.template = 'heat orchestration template string';

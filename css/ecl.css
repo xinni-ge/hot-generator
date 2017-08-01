@@ -1,5 +1,5 @@
 
-#hot_container {
+#canvas_area {
     /* background-image: url("../img/canvasbg.jpg"); */
     border: 1px solid #cccccc;
     height: 700px;
@@ -64,6 +64,7 @@ div.vis-button.vis-edit {
     font-size: 14px!important;
     font-weight: 400!important;
     line-height: 1.42857!important;
+    margin-top: 10px!important;
     margin-bottom: 25px!important;
     padding: 6px 12px!important;
     text-align: center!important;
