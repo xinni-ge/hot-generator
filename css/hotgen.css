@@ -96,3 +96,16 @@ div.modal-header {
 div.modal-footer {
     border-top: 1px solid rgba(0, 0, 0, 0.18);
 }
+.fa-required{
+    font-size: 50%;
+    vertical-align: top;
+    color: #3980c3;
+}
+.themable-checkbox input[type=checkbox] + label>span{
+    padding-left: 5px;
+    vertical-align: middle;
+}
+
+div#resource_parameter_setter h2 {
+  font-size: 30px!important;
+}

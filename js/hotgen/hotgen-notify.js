@@ -6,7 +6,7 @@
                 position: 'right',
                 duration: 0,
             });
-                      var show_success = function(message) {
+            var show_success = function(message) {
                 notify({
                         message: message,
                         classes: ['alert-success',],

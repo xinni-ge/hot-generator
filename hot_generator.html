@@ -17,7 +17,7 @@
         <link href="css/vis.css" rel="stylesheet">
         <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
-        <link href="css/ecl.css" rel="stylesheet">
+        <link href="css/hotgen.css" rel="stylesheet">
         <style type="text/css">
 
         </style>
@@ -25,8 +25,8 @@
 
     <body ng-app="hotgen">
         <div class="page-header">
-            <h1>{% trans "Generate Template" %}</h1>
-            <p>{% trans "Please drag and drop resource icons into center canvas to define resource for template." %}</p>
+            <h1>"Generate Template"</h1>
+            <p>"Please drag and drop resource icons into center canvas to define resource for template."</p>
         </div>
 
         <div class="row table_action">
@@ -72,31 +72,55 @@
             <div class="col-sm-3"></div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-3" ng-controller="IconCtrl">
+            <div>
+               <div draggable ng-repeat="(reskey, resobj) in resource_types" class="os_resource" draggable="true" id="{{reskey}}">
+                    <span class="fa-stack fa-lg" style="color: {{resobj.color}}">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa {{ resobj.class }} fa-stack-1x "></i>
+                    </span>
+                    {{resobj.name}}
+               </div>
+            </div>
         </div>
 
         <div class="col-sm-6">
-            <div ng-controller="VisCtrl" id="canvas_area">
+            <div ng-controller="VisCtrl" id="canvas_area" droppable>
                 <vis-network data="data" options="options" on-select="onNodeSelect">
                 </vis-network>
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div id="resource_parameter_setter" class="col-sm-3">
         </div>
 
 
-
-
         <script>
-            angular_module = angular.module('hotgen', ['hotgen-notify', 'ui.bootstrap', 'ngVis']);
-            angular_module.controller('DropdownCtrl', function($scope){
-                ;
+            angular_module = angular.module('hotgen', ['hotgen-uuid','hotgen-notify', 'ui.bootstrap', 'ngVis']);
+            angular_module.run(function ($rootScope, VisDataSet) {
+                $rootScope.nodes = new VisDataSet();
+                $rootScope.edges = new VisDataSet();
+                $rootScope.resource_types = {
+                    OS__Compute__Server: {
+                        class: 'fa-desktop ',
+                        name: 'OS__Compute__Server',
+                        code: '\uf108',
+                        color: '#483dff'
+                    },
+                    OS__Compute__Volume: {
+                        class: 'fa-cube ',
+                        name: 'OS__Compute__Volume',
+                        code: '\uf1b2',
+                        color: '#483dff'
+                    }
+                };
             });
         </script>
 
         <script src="js/hotgen/hotgen-notify.js"></script>
-
+        <script src="js/hotgen/hotgen-utils.js"></script>
+        <script src="js/hotgen/hotgen.js"></script>
+        <script src="js/hotgen/hotgen-canvas.js"></script>
         <script src="js/hotgen/hotgen-vis-network.js"></script>
         <script src="js/hotgen/hotgen-modals.js"></script>
     </body>
