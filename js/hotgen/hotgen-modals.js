@@ -29,8 +29,8 @@
             };
         }]);
 
-    angular_module.controller('FormModalCtrl', ['$scope','$uibModal', 'hotgenNotify',
-        function($scope, $uibModal, hotgenNotify){
+    angular_module.controller('FormModalCtrl', ['$scope','$uibModal', 'hotgenNotify', 'canvasStatus',
+        function($scope, $uibModal, hotgenNotify, canvasStatus){
             $scope.open = function(){
                 var modalInstance = $uibModal.open({
                     ariaLabelledBy: 'modal-title',
@@ -44,13 +44,20 @@
                 }, function(){
                     hotgenNotify.show_error('close without saving');
                 });
-            }
+            };
+
+            $scope.$on('handle_edit_resource', function(){
+                $scope.open();
+            });
+
         }]);
 
-    angular_module.controller('FormModalInstanceCtrl', [ '$scope','$uibModalInstance',
-        function($scope, $uibModalInstance){
-            $scope.resource = "Resource";
-            $scope.fields = "fields.";
+    angular_module.controller('FormModalInstanceCtrl', [ '$scope','$uibModalInstance', 'canvasStatus', 'resource_fields',
+        function($scope, $uibModalInstance, canvasStatus, resource_fields){
+            $scope.resource = "OS__Nova__Server";
+            $scope.title = resource_fields[$scope.resource].title;
+            $scope.tabs = resource_fields[$scope.resource].tabs;
+
             $scope.ok = function () {
                 $uibModalInstance.close('ok');
             };

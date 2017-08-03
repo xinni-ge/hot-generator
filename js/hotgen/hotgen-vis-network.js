@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('VisCtrl', ['$scope', '$rootScope', 'hotgenNotify',
-        function($scope, $rootScope, hotgenNotify) {
+    angular_module.controller('VisCtrl', ['$scope', '$rootScope', 'hotgenNotify', 'canvasStatus',
+        function($scope, $rootScope, hotgenNotify, canvasStatus) {
 
             $scope.options = {
                 autoResize: true,
@@ -77,10 +77,12 @@
                 edges: $rootScope.edges
             };
             $scope.selectNode = function(param){
+                canvasStatus.call_edit_resource();
                 hotgenNotify.show_success(param);
             }
 
             $scope.selectEdge = function(param){
+                canvasStatus.call_edit_resource();
                 hotgenNotify.show_success(param);
             }
             $scope.events = {

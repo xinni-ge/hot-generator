@@ -41,9 +41,19 @@
             };
 
             return {
-              show_success: show_success,
-              show_error: show_error
+                show_success: show_success,
+                show_error: show_error
             };
          });
+
+    angular.module('hotgen-canvas', [])
+        .factory('canvasStatus', function($rootScope){
+            var call_edit_resource = function(){
+                $rootScope.$broadcast('handle_edit_resource');
+            }
+            return {
+                call_edit_resource: call_edit_resource,
+            }
+        });
 
 })(window.angular);
