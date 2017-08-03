@@ -1,7 +1,8 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('VisCtrl', ['$scope', '$rootScope',
-        function($scope, $rootScope, ) {
+    angular_module.controller('VisCtrl', ['$scope', '$rootScope', 'hotgenNotify',
+        function($scope, $rootScope, hotgenNotify) {
+
             $scope.options = {
                 autoResize: true,
                 edges: {
@@ -60,7 +61,7 @@
                         addNode: 'Add Node', // hided
                         addEdge: 'リソースを接続',
                         editNode: 'Edit Node', // hided
-                        editEdge: '接続を編集', // hided
+                        editEdge: '接电脑端続を編集', // hided
                         // All of following is not used.
                         addDescription: 'Click in an empty space to place a new node.',
                         edgeDescription: 'Click on a node and drag the edge to another node to connect them.',
@@ -75,6 +76,18 @@
                 nodes: $rootScope.nodes,
                 edges: $rootScope.edges
             };
+            $scope.selectNode = function(param){
+                hotgenNotify.show_success(param);
+            }
+
+            $scope.selectEdge = function(param){
+                hotgenNotify.show_success(param);
+            }
+            $scope.events = {
+                selectNode: $scope.selectNode,
+                selectEdge: $scope.selectEdge,
+            };
+
         }
     ]);
 })(window.angular);

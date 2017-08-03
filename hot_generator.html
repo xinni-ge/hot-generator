@@ -34,20 +34,8 @@
             <div class="col-sm-2"></div>
 
             <div class="col-sm-7">
-                <div ng-controller="ModalDemoCtrl as $ctrl" class='modal-template' style="display:inline-block">
-                    <a type="button" class="btn btn-primary" ng-click="$ctrl.open()"><i class="fa fa-fw fa-file-text-o"></i>{{ 'CREATE_TEMPLATE' | translate }}</a>
-                    <script type="text/ng-template" id="myModalContent.html">
-                        <div class="modal-header">
-                            <h3 class="modal-title" id="modal-title">{{ 'CREATE_TEMPLATE' | translate }}</h3>
-                        </div>
-                        <div class="modal-body" id="modal-body">
-                            <b>{{ $ctrl.template }}</b>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">{{ 'OK' | translate }}</button>
-                            <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">{{ 'Cancel' | translate }}</button>
-                        </div>
-                    </script>
+                <div ng-controller="TempModalCtrl" style="display:inline-block">
+                    <a type="button" class="btn btn-primary" ng-click="open()"><i class="fa fa-fw fa-file-text-o"></i>{{ 'CREATE_TEMPLATE' | translate }}</a>
                 </div>
 
                 <div ng-controller="DropdownCtrl" class="btn-group" uib-dropdown>
@@ -86,12 +74,14 @@
 
         <div class="col-sm-6">
             <div ng-controller="VisCtrl" id="canvas_area" droppable>
-                <vis-network data="data" options="options" on-select="onNodeSelect">
+                <vis-network data="data" options="options" events="events">
                 </vis-network>
             </div>
         </div>
 
-        <div id="resource_parameter_setter" class="col-sm-3">
+
+        <div ng-controller="FormModalCtrl"  style="display:inline-block">
+            <a type="button" class="btn btn-primary" ng-click="open()">Open Form</a>
         </div>
 
 
