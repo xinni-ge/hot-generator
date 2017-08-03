@@ -1,7 +1,8 @@
 (function(angular) {
     'use strict';
 //    angular.module('hotgen', ['hotgen-notify', 'ui.bootstrap'])
-    angular_module.controller('ModalDemoCtrl',function($uibModal, hotgenNotify){
+    angular_module.controller('ModalDemoCtrl',
+        function($uibModal, hotgenNotify){
             var $ctrl = this;
             $ctrl.open = function(size, parentSelector){
                 var modalInstance = $uibModal.open({
@@ -19,6 +20,7 @@
                 });
             };
         });
+
     angular_module.controller('ModalInstanceCtrl', function ($uibModalInstance) {
         var $ctrl = this;
         $ctrl.template = 'heat orchestration template string';

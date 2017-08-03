@@ -7,6 +7,7 @@
 
         <script src="js/angular/angular.js"></script>
         <script src="js/angular/angular-animate.js"></script>
+        <script src="js/angular/angular-translate.min.js"></script>
         <script src="js/angular/angular-notify.js"></script>
         <script src="js/angular/vis.js"></script>
         <script src="js/angular/angular-vis.js"></script>
@@ -25,27 +26,26 @@
 
     <body ng-app="hotgen">
         <div class="page-header">
-            <h1>"Generate Template"</h1>
-            <p>"Please drag and drop resource icons into center canvas to define resource for template."</p>
+            <h1>{{ 'TITLE' | translate }}</h1>
+            <p>{{ 'SUBTITLE' | translate }}</p>
         </div>
 
         <div class="row table_action">
             <div class="col-sm-2"></div>
 
             <div class="col-sm-7">
-                <!--<a class="btn btn-default btn-launch" id="export_hot_template"><i class="fa fa-fw fa-file-text-o"></i>{% trans "Create Template" %}</a>-->
                 <div ng-controller="ModalDemoCtrl as $ctrl" class='modal-template' style="display:inline-block">
-                    <a type="button" class="btn btn-primary" ng-click="$ctrl.open()"><i class="fa fa-fw fa-file-text-o"></i>Create Template</a>
+                    <a type="button" class="btn btn-primary" ng-click="$ctrl.open()"><i class="fa fa-fw fa-file-text-o"></i>{{ 'CREATE_TEMPLATE' | translate }}</a>
                     <script type="text/ng-template" id="myModalContent.html">
                         <div class="modal-header">
-                            <h3 class="modal-title" id="modal-title">Template</h3>
+                            <h3 class="modal-title" id="modal-title">{{ 'CREATE_TEMPLATE' | translate }}</h3>
                         </div>
                         <div class="modal-body" id="modal-body">
                             <b>{{ $ctrl.template }}</b>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-                            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">{{ 'OK' | translate }}</button>
+                            <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">{{ 'Cancel' | translate }}</button>
                         </div>
                     </script>
                 </div>
@@ -53,18 +53,18 @@
                 <div ng-controller="DropdownCtrl" class="btn-group" uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
                       <i class="fa fa-fw fa-floppy-o"></i>
-                      {% trans "Manage Draft" %}<span class="fa fa-caret-down"></span>
+                      {{  'MANAGE_DRAFT' | translate }}<span class="fa fa-caret-down"></span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                      <li><a id="save-draft" href="javascript:void(0);">{% trans "Save Draft" %}</a></li>
-                      <li><a id="load-draft" href="javascript:void(0)">{% trans "Load Draft" %}</a></li>
-                      <li><a id="export-draft" href="javascript:void(0);">{% trans "Export Draft" %}</a></li>
-                      <li><a id="import-draft" href="javascript:void(0);">{% trans "Import Draft" %}</a></li>
-                      <li><a id="import-template" href="javascript:void(0);">{% trans "Import Template" %}</a></li>
+                      <li><a id="save-draft" href="javascript:void(0);">{{ "Save Draft" | translate }}</a></li>
+                      <li><a id="load-draft" href="javascript:void(0)">{{ "Load Draft" | translate }}</a></li>
+                      <li><a id="export-draft" href="javascript:void(0);">{{ "Export Draft" | translate }}</a></li>
+                      <li><a id="import-draft" href="javascript:void(0);">{{ "Import Draft" | translate }}</a></li>
+                      <li><a id="import-template" href="javascript:void(0);">{{ "Import Template" | translate }}</a></li>
                     </ul>
                 </div>
-
-                <a class="btn btn-default" id="clear_network"><i class="fa fa-fw fa-trash"></i>{% trans "Clear All" %}</a>
+                <a class="btn btn-default" id="clear_network"><i class="fa fa-fw fa-trash"></i>{{ 'CLEAR_ALL' | translate }}
+                </a>
                 <!--<a class="btn btn-default" id="set_option_info"><i class="fa fa-fw fa-refresh"></i>{% trans "Renew choices information" %}</a>-->
                 <input id="draft-file" type="file" style="visibility:hidden" />
                 <input id="template-file" type="file" style="visibility:hidden" />
@@ -96,25 +96,9 @@
 
 
         <script>
-            angular_module = angular.module('hotgen', ['hotgen-uuid','hotgen-notify', 'ui.bootstrap', 'ngVis']);
-            angular_module.run(function ($rootScope, VisDataSet) {
-                $rootScope.nodes = new VisDataSet();
-                $rootScope.edges = new VisDataSet();
-                $rootScope.resource_types = {
-                    OS__Compute__Server: {
-                        class: 'fa-desktop ',
-                        name: 'OS__Compute__Server',
-                        code: '\uf108',
-                        color: '#483dff'
-                    },
-                    OS__Compute__Volume: {
-                        class: 'fa-cube ',
-                        name: 'OS__Compute__Volume',
-                        code: '\uf1b2',
-                        color: '#483dff'
-                    }
-                };
-            });
+            angular_module = angular.module('hotgen', ['hotgen-uuid',
+                    'hotgen-notify', 'ui.bootstrap', 'ngVis',
+                    'pascalprecht.translate']);
         </script>
 
         <script src="js/hotgen/hotgen-notify.js"></script>

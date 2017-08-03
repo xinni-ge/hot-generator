@@ -1,8 +1,63 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('DropdownCtrl', function($scope){
-            ;
+    angular_module.config(function ($translateProvider) {
+        $translateProvider.translations('en', {
+            TITLE: 'Generate Template',
+            SUBTITLE: 'Please drag and drop resource icons into center canvas to define resource for template.',
+            CREATE_TEMPLATE: 'Create Template',
+            MANAGE_DRAFT: 'Manage Draft', // hided
+            CLEAR_ALL: 'Clear All',
+            OK: 'OK',
+            CANCEL: 'Cancel',
+        });
+        $translateProvider.translations('ja', {
+            TITLE: 'テンプレートの作成',
+            SUBTITLE: 'リソース毎のアイコンを中央のキャンバスにドラッグ・ドロップすることで、テンプレートに追加するリソースを定義してください。',
+            CREATE_TEMPLATE: 'テンプレートの作成',
+            MANAGE_DRAFT: '下書きの管理', // hided
+            CLEAR_ALL: 'キャンバスを初期化',
+            OK: '作成',
+            CANCEL: 'キャンセル',
+        });
+        $translateProvider.preferredLanguage('en');
+        $translateProvider.useSanitizeValueStrategy('escape');
     });
+
+    angular_module.run(function ($rootScope, $translate, VisDataSet) {
+        $translate.use('en');
+        $rootScope.nodes = new VisDataSet();
+        $rootScope.edges = new VisDataSet();
+        $rootScope.resource_types = {
+            'OS__Nova__Server': {
+                class: 'fa-desktop ',
+                name: 'OS::Nova::Server',
+                code: '\uf108',
+                color: '#483dff'
+            },
+            'OS__Cinder__Volume': {
+                class: 'fa-cube ',
+                name: 'OS::Cinder::Volume',
+                code: '\uf1b2',
+                color: '#483dff'
+            },
+            'OS__Neutron__Net': {
+                class: 'fa-cloud',
+                name: 'OS::Neutron::Net',
+                code: '\uf0c2',
+                color: '#add8e6'
+            },
+            'OS__Neutron__Subnet': {
+                class: 'fa-cloud ',
+                name: 'OS::Cinder::Volume',
+                code: '\uf0c2',
+                color: '#add8e6'
+            }
+        };
+    });
+    angular_module.controller('DropdownCtrl', ['$scope',
+        function($scope,){
+           ;
+    }]);
 
     angular_module.directive('draggable', function(){
         return function (scope, element){
@@ -50,4 +105,5 @@
             }
         }
     });
+
 })(window.angular);

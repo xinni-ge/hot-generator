@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
     angular_module.controller('VisCtrl', ['$scope', '$rootScope',
-        function($scope, $rootScope,) {
+        function($scope, $rootScope, ) {
             $scope.options = {
                 autoResize: true,
                 edges: {
@@ -29,11 +29,13 @@
                 },
                 manipulation: {
                     enabled: true,
-//                    addEdge: eclAddEdge,
+                    addEdge: function(data, callback){
+
+                        callback(data);
+                    },
                     addNode: false,
                     editEdge: false
                 },
-                // locale: 'en', /* default */
                 locales: {
                     en: {
                         edit: 'Edit',
