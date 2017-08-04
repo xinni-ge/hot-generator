@@ -1,6 +1,6 @@
 (function(angular) {
     'use strict';
-    angular.module('hotgen-uuid', [])
+    angular.module('hotgen-utils', ['cgNotify'])
          .factory('hotgenUUID', function() {
             var uuid = function(){
                 var d = new Date().getTime();
@@ -18,9 +18,7 @@
             return {
               uuid: uuid,
             };
-         });
-
-    angular.module('hotgen-notify', ['cgNotify'])
+         })
          .factory('hotgenNotify', function(notify) {
             notify.config({
                 position: 'right',
@@ -44,10 +42,8 @@
                 show_success: show_success,
                 show_error: show_error
             };
-         });
-
-    angular.module('hotgen-message', [])
-        .factory('hotgenMessage', function($rootScope){
+         })
+         .factory('hotgenMessage', function($rootScope){
             var broadcast_edit_node = function(){
                 $rootScope.$broadcast('handle_edit_node');
             }
