@@ -46,13 +46,17 @@
             };
          });
 
-    angular.module('hotgen-canvas', [])
-        .factory('canvasStatus', function($rootScope){
-            var call_edit_resource = function(){
-                $rootScope.$broadcast('handle_edit_resource');
+    angular.module('hotgen-message', [])
+        .factory('hotgenMessage', function($rootScope){
+            var broadcast_edit_node = function(){
+                $rootScope.$broadcast('handle_edit_node');
+            }
+            var broadcast_edit_edge = function(){
+                $rootScope.$broadcast('handle_edit_edge');
             }
             return {
-                call_edit_resource: call_edit_resource,
+                broadcast_edit_node: broadcast_edit_node,
+                broadcast_edit_edge: broadcast_edit_edge,
             }
         });
 
