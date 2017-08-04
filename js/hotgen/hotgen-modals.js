@@ -55,7 +55,6 @@
         '$rootScope', 'hotgenMessage', 'resource_fields',
         function($scope, $uibModalInstance, $rootScope, hotgenMessage, resource_fields){
             $scope.resource_type = $rootScope.selected.resource_type;
-            resource_fields[$scope.resource_type]
             $scope.title = resource_fields[$scope.resource_type].title;
             $scope.tabs = resource_fields[$scope.resource_type].tabs;
 

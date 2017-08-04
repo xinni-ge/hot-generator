@@ -93,8 +93,6 @@
                 } else {
                     ;
                 }
-
-                hotgenNotify.show_success(params);
             }
 
             $scope.events = {

@@ -4,11 +4,22 @@
 </div>
 <div class="modal-body" id="modal-body">
     <uib-tabset active="active">
-        <uib-tab index="$index + 1" ng-repeat="tab in tabs" heading="{{tab.title|translate}}">
+        <uib-tab index="$index + 1" ng-repeat="tab in tabs">
+              <uib-tab-heading>
+                 {{tab.title|translate}}
+                 <span class="fa-required fa fa-asterisk" ng-if="tab.required"></span>
+              </uib-tab-heading>
             <div class="form-group" ng-repeat="field in tab.fields">
-                <label class="control-label" for="{{field.id}}">{{ field.title | translate }}</label>
-                <span class="fa-required fa fa-asterisk"></span>
-                <input type="{{field.type}}" class="form-control" id="{{field.id}}">
+                <label class="control-label" for="{{resource_type}}_{{field.id}}">{{ field.title | translate }}</label>
+                <span class="fa-required fa fa-asterisk" ng-if="field.required"></span>
+                <input ng-if="field.type=='text'||field.type=='number'" type="{{field.type}}" class="form-control"
+                       name="{{resource_type}}_{{field.id}}" id="{{resource_type}}_{{field.id}}"
+                       value="{{field.initial}}">
+                <select ng-if="field.type=='select'" class="form-control"
+                       name="{{resource_type}}_{{field.id}}" id="{{resource_type}}_{{field.id}}">
+                    <option ng-repeat="option in field.options">{{option}}</option>
+                </select>
+
                 <div class="help-error"></div>
             </div>
         </uib-tab>

@@ -32,33 +32,90 @@
             tabs: [
                 {
                     title: 'DETAILS',
-                    content: 'here fields.',
                     required: true,
-                    fields:[
-                        {
-                            id: '_name',
+                    fields:[{
+                            id: 'name',
                             title: 'NAME',
                             type: 'text',
-                        },
-                        {
-                            id: '_availability_zone',
+                            required: true,
+                        }, {
+                            id: 'availability_zone',
                             title: 'AZ',
                             type: 'select',
-                        },
-                        {
-                            id : '_count',
+                            options: ['groupa', 'groupb'],
+                            required: false,
+                        }, {
+                            id : 'count',
                             title: 'COUNT',
-                            type: 'int',
-                        }
+                            type: 'number',
+                            initial: '1',
+                            required: true,
+                        },
                     ]
                 },
                 {
-                    title: 'Additional',
-                    content: 'here fields.',
+                    title: 'SOURCES',
                     required: true,
-                },
+                    fields: [{
+                            id: 'boot_source',
+                            title: 'BOOT_SOURCE',
+                            type: 'select',
+                            options: [{'image': 'image'},
+                                {'image_snapshot': 'image snapshot'},
+                                {'volume': 'volume'},
+                                {'volume_snapshot': 'volume snapshot'}],
+                            required: true,
+                        }, {
+                            id: 'image_id',
+                            title: 'IMAGE',
+                            type: 'select',
+                            options:[
+                            ]
+                        },{
+                            id: 'image_snapshot_id',
+                            title: 'IMAGE_SNAPSHOT_ID',
+                            type: 'select',
+                            options:[
+                            ]
+                        },{
+                            id: 'volume_id',
+                            title: 'VOLUME_ID',
+                            type: 'select',
+                            options:[
+                            ]
+                        },{
+                            id: 'volume_snapshot_id',
+                            title: 'VOLUME_SNAPSHOT_ID',
+                            type: 'select',
+                            options:[
+                            ]
+                        },
+                    ]
+                },{
+                    title: 'FLAVOR',
+                    required: true,
+                    fields: [{
+                            id: 'flavor_id',
+                            title: 'FLAVOR_ID',
+                            type: 'select',
+                            options:[ 'm1.tiny', 'm1.small'
+                            ]
+                        }
+                    ]
+                }
             ],
-
+        },
+        'OS__Cinder__Volume': {
+            title: 'CREATE_CINDER_VOLUME',
+            tabs: [],
+        },
+        'OS__Neutron__Net': {
+            title: 'CREATE_NEUTRON_NET',
+            tabs: [],
+        },
+        'OS__Neutron__Subnet': {
+            title: 'CREATE_NEUTRON_SUBNET',
+            tabs: [],
         },
     })
 })(window.angular);
