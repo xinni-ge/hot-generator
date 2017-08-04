@@ -1,22 +1,9 @@
 (function(angular) {
     'use strict';
-    angular.module('hotgen-utils', ['cgNotify'])
-         .factory('hotgenUUID', function() {
-            var uuid = function(){
-                var d = new Date().getTime();
-                if(window.performance && typeof window.performance.now === "function"){
-                    d += performance.now(); //use high-precision timer if available
-                }
-                var new_uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                    var r = (d + Math.random()*16)%16 | 0;
-                    d = Math.floor(d/16);
-                    return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-                });
-                return new_uuid;
-            }
-
+    angular.module('hotgen-utils', ['cgNotify', 'angular-uuid'])
+         .factory('hotgenUUID', function(uuid) {
             return {
-              uuid: uuid,
+              uuid: uuid.v4,
             };
          })
          .factory('hotgenNotify', function(notify) {
@@ -29,14 +16,25 @@
                         message: message,
                         classes: ['alert-success',],
                         duration: 5000,
-                });             };
+                }); };
 
             var show_error = function(message) {
                 notify({
                         message: message,
                         classes: ['alert-danger',],
-                });
-            };
+                });};
+            var show_info = function(message) {
+                notify({
+                        message: message,
+                        classes: ['alert-info',],
+                        duration: 5000,
+                });};
+
+            var show_warning = function(message) {
+                notify({
+                        message: message,
+                        classes: ['alert-warning',],
+                });};
 
             return {
                 show_success: show_success,

@@ -78,9 +78,18 @@
             };
             $scope.click = function(params){
                 if (params.nodes.length > 0){
+                    var selected_id = params.nodes[0];
+                    var selected_node = $rootScope.nodes._data[selected_id];
+                    var selected_type = selected_node.title
+                    $rootScope.selected = {
+                        element: 'node',
+                        resource_type: selected_type,
+                        id: selected_id,
+                    }
+
                     hotgenMessage.broadcast_edit_node();
                 } else if (params.edges.length > 0){
-                    hotgenMessage.broadcast_edit_node();
+                    hotgenMessage.broadcast_edit_edge();
                 } else {
                     ;
                 }

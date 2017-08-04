@@ -18,13 +18,13 @@
         }]);
 
     angular_module.controller('TempModalInstanceCtrl', ['$scope', '$uibModalInstance',
-        function ($scope, $uibModalInstance) {
+        function ($scope, $uibModalInstance){
             $scope.template = 'heat orchestration template string';
-            $scope.ok = function () {
+            $scope.ok = function (){
                 $uibModalInstance.close('ok');
             };
 
-            $scope.cancel = function () {
+            $scope.cancel = function (){
                 $uibModalInstance.dismiss('cancel');
             };
         }]);
@@ -35,9 +35,8 @@
                 var modalInstance = $uibModal.open({
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
-                    templateUrl: 'templates/server_modal.html',
+                    templateUrl: 'templates/resource_modal.html',
                     controller: 'FormModalInstanceCtrl',
-                    controllerAs: '$formctrl',
                 });
                 modalInstance.result.then(function(){
                     hotgenNotify.show_success('save a form');
@@ -52,11 +51,13 @@
 
         }]);
 
-    angular_module.controller('FormModalInstanceCtrl', [ '$scope','$uibModalInstance', 'hotgenMessage', 'resource_fields',
-        function($scope, $uibModalInstance, hotgenMessage, resource_fields){
-            $scope.resource = "OS__Nova__Server";
-            $scope.title = resource_fields[$scope.resource].title;
-            $scope.tabs = resource_fields[$scope.resource].tabs;
+    angular_module.controller('FormModalInstanceCtrl', [ '$scope','$uibModalInstance',
+        '$rootScope', 'hotgenMessage', 'resource_fields',
+        function($scope, $uibModalInstance, $rootScope, hotgenMessage, resource_fields){
+            $scope.resource_type = $rootScope.selected.resource_type;
+            resource_fields[$scope.resource_type]
+            $scope.title = resource_fields[$scope.resource_type].title;
+            $scope.tabs = resource_fields[$scope.resource_type].tabs;
 
             $scope.ok = function () {
                 $uibModalInstance.close('ok');
