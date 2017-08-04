@@ -50,13 +50,7 @@
                             type: 'number',
                             initial: '1',
                             required: true,
-                        },
-                    ]
-                },
-                {
-                    title: 'SOURCES',
-                    required: true,
-                    fields: [{
+                        },{
                             id: 'boot_source',
                             title: 'BOOT_SOURCE',
                             type: 'select',
@@ -89,20 +83,33 @@
                             type: 'select',
                             options:[
                             ]
-                        },
-                    ]
-                },{
-                    title: 'FLAVOR',
-                    required: true,
-                    fields: [{
+                        },{
                             id: 'flavor_id',
                             title: 'FLAVOR_ID',
                             type: 'select',
-                            options:[ 'm1.tiny', 'm1.small'
+                            options:[ 'm1.tiny', 'm1.small',
                             ]
                         }
                     ]
-                }
+                },
+                {
+                    title: 'ADDITIONAL',
+                    required: false,
+                    fields: [{
+                        id: 'security_group_id',
+                        title: 'SECURITY_GROUP',
+                        type: 'select',
+                        options:[],
+                    }, {
+                        id: 'customization_script',
+                        title: 'SECURITY_GROUP',
+                        type: 'textarea',
+                    }, {
+                        id: 'metadata',
+                        title: 'METADATA',
+                        type: 'textarea',
+                    }]
+                },
             ],
         },
         'OS__Cinder__Volume': {
