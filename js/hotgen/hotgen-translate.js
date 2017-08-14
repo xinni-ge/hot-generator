@@ -14,6 +14,7 @@
             COUNT: 'Count',
             CREATE_INSTANCE: 'Create Instance',
             DETAILS: 'Details',
+            BOOT_SOURCE: 'Boot from source',
 
         });
         $translateProvider.translations('ja', {
@@ -29,6 +30,7 @@
             COUNT: '数',
             CREATE_INSTANCE: 'インスタンスの作成',
             DETAILS: '詳細',
+            BOOT_SOURCE: 'Boot from source',
 
         });
         $translateProvider.preferredLanguage('en');
