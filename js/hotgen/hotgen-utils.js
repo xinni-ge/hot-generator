@@ -42,11 +42,11 @@
             };
          })
          .factory('hotgenMessage', function($rootScope){
-            var broadcast_edit_node = function(){
-                $rootScope.$broadcast('handle_edit_node');
+            var broadcast_edit_node = function(node_type){
+                $rootScope.$broadcast('handle_edit_node', node_type);
             }
-            var broadcast_edit_edge = function(){
-                $rootScope.$broadcast('handle_edit_edge');
+            var broadcast_edit_edge = function(edge_type){
+                $rootScope.$broadcast('handle_edit_edge', edge_type);
             }
             return {
                 broadcast_edit_node: broadcast_edit_node,

@@ -12,15 +12,21 @@
             <div class="form-group" ng-repeat="field in tab.fields">
                 <label class="control-label" for="{{resource_type}}_{{field.id}}">{{ field.title | translate }}</label>
                 <span class="fa-required fa fa-asterisk" ng-if="field.required"></span>
-                <input ng-if="field.type=='text'||field.type=='number'" type="{{field.type}}" class="form-control"
-                       name="{{resource_type}}_{{field.id}}" id ="{{resource_type}}_{{field.id}}"
-                       value="{{field.initial}}">
-                <select ng-if="field.type=='select' " class="form-control"
-                       name="{{resource_type}}_{{field.id}}" id="{{resource_type}}_{{field.id}}">
-                    <option ng-repeat="option in field.options">{{option}}</option>
-                </select>
-                <textarea ng-if="field.type=='textarea'" cols="40" rows="10" class="form-control"
-                       name="{{resource_type}}_{{field.id}}" id ="{{resource_type}}_{{field.id}}"></textarea>
+                <div ng-if="field.type=='text'||field.type=='number'">
+                    <input type="{{field.type}}" class="form-control"
+                           name="{{resource_type}}_{{field.id}}" id ="{{resource_type}}_{{field.id}}"
+                           value="{{field.initial}}">
+                </div>
+                <div ng-if="field.type=='select'">
+                    <select class="form-control"
+                           name="{{resource_type}}_{{field.id}}" id="{{resource_type}}_{{field.id}}">
+                        <option ng-repeat="option in field.options" value="{{option}}">{{option}}</option>
+                    </select>
+                </div>
+                <div ng-if="field.type=='textarea'">
+                    <textarea cols="40" rows="10" class="form-control"
+                           name="{{resource_type}}_{{field.id}}" id ="{{resource_type}}_{{field.id}}"></textarea>
+                </div>
                 <div class="help-error"></div>
             </div>
         </uib-tab>

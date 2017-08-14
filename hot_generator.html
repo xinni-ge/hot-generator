@@ -7,6 +7,9 @@
 
         <script src="js/angular/angular.js"></script>
         <script src="js/angular/angular-animate.js"></script>
+        <script src="js/angular/angular-aria.min.js"></script>
+        <script src="js/angular/angular-messages.min.js"></script>
+        <script src="js/angular/angular-material.min.js"></script>
         <script src="js/angular/angular-translate.min.js"></script>
         <script src="js/angular/angular-notify.js"></script>
         <script src="js/angular/angular-uuid.js"></script>
@@ -17,6 +20,8 @@
         <link href="css/angular-notify.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/vis.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
+
         <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
         <link href="css/hotgen.css" rel="stylesheet">
@@ -80,13 +85,14 @@
             </div>
         </div>
 
-        <div ng-controller="FormModalCtrl"  style="display:inline-block">
+        <div ng-controller="FormModalCtrl"  class="md-padding" id="popupContainer" ng-cloak>
         </div>
 
 
         <script>
-            angular_module = angular.module('hotgen', ['hotgen-utils',
-                    'ui.bootstrap', 'ngVis',
+            angular_module = angular.module('hotgen', ['hotgen-utils', 'ngMaterial',
+                    'ui.bootstrap',
+                    'ngVis',
                     'pascalprecht.translate']);
         </script>
 

@@ -1,69 +1,67 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('TempModalCtrl', ['$scope', '$uibModal', 'hotgenNotify',
-        function($scope, $uibModal, hotgenNotify){
+    angular_module.controller('TempModalCtrl', ['$scope', '$mdDialog', 'hotgenNotify',
+        function($scope, $mdDialog, hotgenNotify){
+
             $scope.open = function(){
-                var modalInstance = $uibModal.open({
-                    ariaLabelledBy: 'modal-title',
-                    ariaDescribedBy: 'modal-body',
+                $mdDialog.show({
+                    parent: angular.element(document.body),
+                    clickOutsideToClose:true,
                     templateUrl: 'templates/template_modal.html',
-                    controller: 'TempModalInstanceCtrl',
-                });
-                modalInstance.result.then(function(){
+                    controller: DialogController,
+                }).then(function(){
                     hotgenNotify.show_success('close a modal');
                 }, function(){
                     hotgenNotify.show_error('dismiss a modal');
                 });
             };
+            function DialogController($scope, $mdDialog) {
+                    $scope.template = {
+                        title: "Template",
+                        content: "An example template string."
+                    };
+                    $scope.cancel = function() {
+                      $mdDialog.cancel();
+                    };
+
+                    $scope.save = function(msg) {
+                      $mdDialog.hide(msg);
+                    };
+                }
         }]);
 
-    angular_module.controller('TempModalInstanceCtrl', ['$scope', '$uibModalInstance',
-        function ($scope, $uibModalInstance){
-            $scope.template = 'heat orchestration template string';
-            $scope.ok = function (){
-                $uibModalInstance.close('ok');
-            };
-
-            $scope.cancel = function (){
-                $uibModalInstance.dismiss('cancel');
-            };
-        }]);
-
-    angular_module.controller('FormModalCtrl', ['$scope','$uibModal', 'hotgenNotify', 'hotgenMessage',
-        function($scope, $uibModal, hotgenNotify, hotgenMessage){
-            $scope.open = function(){
-                var modalInstance = $uibModal.open({
-                    ariaLabelledBy: 'modal-title',
-                    ariaDescribedBy: 'modal-body',
-                    templateUrl: 'templates/resource_modal.html',
-                    controller: 'FormModalInstanceCtrl',
-                });
-                modalInstance.result.then(function(){
-                    hotgenNotify.show_success('save a form');
+    angular_module.controller('FormModalCtrl', ['$scope', '$mdDialog', 'hotgenNotify', 'hotgenMessage',
+        function($scope, $mdDialog, hotgenNotify, hotgenMessage){
+            $scope.showTabDialog = function(args){
+                var template_url = "templates/resource_modal.html";
+                if (args === "OS__Nova__Server"){
+                    template_url = "templates/"+args.toLowerCase()+"_modal.html";
+                }
+                $mdDialog.show({
+                  controller: DialogController,
+                  templateUrl: template_url,
+                  parent: angular.element(document.body),
+                  clickOutsideToClose:true
+                }).then(function(){
+                    hotgenNotify.show_success('close a modal');
                 }, function(){
-                    hotgenNotify.show_error('close without saving');
+                    hotgenNotify.show_error('dismiss a modal');
                 });
+
+                function DialogController($scope, $mdDialog) {
+                    $scope.cancel = function() {
+                      $mdDialog.cancel();
+                    };
+
+                    $scope.save = function(msg) {
+                      $mdDialog.hide(msg);
+                    };
+                }
             };
 
-            $scope.$on('handle_edit_node', function(){
-                $scope.open();
+            $scope.$on('handle_edit_node', function(event, args){
+                $scope.showTabDialog(args);
             });
 
-        }]);
-
-    angular_module.controller('FormModalInstanceCtrl', [ '$scope','$uibModalInstance',
-        '$rootScope', 'hotgenMessage', 'resource_fields',
-        function($scope, $uibModalInstance, $rootScope, hotgenMessage, resource_fields){
-            $scope.resource_type = $rootScope.selected.resource_type;
-            $scope.title = resource_fields[$scope.resource_type].title;
-            $scope.tabs = resource_fields[$scope.resource_type].tabs;
-
-            $scope.ok = function () {
-                $uibModalInstance.close('ok');
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
         }]);
 })(window.angular);

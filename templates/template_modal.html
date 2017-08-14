@@ -1,11 +1,33 @@
+<md-dialog aria-label="Template">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+            <h2>{{ 'CREATE_TEMPLATE' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+              <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+                <div>
+                  <md-input-container class="md-block">
+                    <label>{{template.title}}</label>
+                      <textarea ng-model="template.content" md-maxlength="65530" rows="35" cols="150" md-select-on-focus></textarea>
+                  </md-input-container>
+                </div>
+              </md-content>
+        </md-dialog-content>
 
-<div class="modal-header">
-    <h3 class="modal-title" id="modal-title">{{ 'CREATE_TEMPLATE' | translate }}</h3>
-</div>
-<div class="modal-body" id="modal-body">
-    <b>{{ template }}</b>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">{{ 'OK' | translate }}</button>
-    <button class="btn btn-default" type="button" ng-click="cancel()">{{ 'Cancel' | translate }}</button>
-</div>
+        <md-dialog-actions layout="row">
+          <span flex></span>
+          <md-button ng-click="cancel()" >
+            {{ 'Cancel' | translate }}
+          </md-button>
+          <md-button ng-click="save()" style="margin-right:20px;" >
+            {{ 'OK' | translate }}
+          </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
