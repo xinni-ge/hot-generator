@@ -36,7 +36,7 @@
                     var id = hotgenUUID.uuid(resource_type);
                     $rootScope.nodes.add({
                         id: id,
-                        label: id,
+                        label: resource_type+'('+id.slice(0, 6)+'...)',
                         shape: 'icon',
                         title: resource_type,
                         icon: {

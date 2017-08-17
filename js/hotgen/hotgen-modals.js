@@ -54,14 +54,14 @@
                       $mdDialog.hide();
                       $rootScope.saved_resources[$rootScope.selected.id] = {
                           type: $rootScope.selected.resource_type,
-                          data: angular.copy($scope.instance)
+                          data: angular.copy($scope.resource)
                       }
                     };
                     $scope.resource_type = $rootScope.selected.resource_type.replace(/_/g, ':');
                     if ($rootScope.selected.id in $rootScope.saved_resources){
-                        $scope.instance = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
+                        $scope.resource = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
                     } else{
-                        $scope.instance = {count:1}
+                        $scope.resource = {count:1}
                     }
                 }
             };

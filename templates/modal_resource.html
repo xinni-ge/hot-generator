@@ -10,7 +10,10 @@
       </div>
     </md-toolbar>
     <md-dialog-content>
-        <os-nova-server instance="instance" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::Server'"></os-nova-server>
+        <os-nova-server instance="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::Server'"></os-nova-server>
+    </md-dialog-content>
+    <md-dialog-content>
+        <os-nova-keypair keypair="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::KeyPair'"></os-nova-keypair>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">

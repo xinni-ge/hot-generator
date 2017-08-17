@@ -66,3 +66,6 @@ md-input-container{
 .fa-lg {
     font-size: 2.0em
 }
+md-pagination-wrapper{
+    width:100%;
+}

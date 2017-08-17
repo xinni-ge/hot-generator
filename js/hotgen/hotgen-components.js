@@ -1,7 +1,6 @@
 (function(angular) {
   'use strict';
     function osNovaServerController($scope, $rootScope) {
-        var s_key = $rootScope.selected.id+"_save";
         $scope.boot_sources = [
             {'id': 'image', 'name': 'image'},
             {'id': 'image_snapshot', 'name': 'image snapshot'},
@@ -25,4 +24,18 @@
         "formReference": "<",
       }
     });
+
+    function osNovaKeypairController($scope, $rootScope){
+    ;
+    }
+
+    angular_module.component('osNovaKeypair', {
+      templateUrl: 'templates/os__nova__keypair.html',
+      controller: osNovaKeypairController,
+      bindings:{
+        "keypair": "=",
+        "formReference": "<",
+      }
+    });
+
 })(window.angular);

@@ -8,7 +8,7 @@
                 edges: {
                     smooth: false,
                     dashes: true,
-                    length: 300,
+//                    length: 300,
                     color: {
                         color: '#848484',
                         highlight: '#848484',
@@ -109,7 +109,7 @@
 
             $scope.validate_edge = function(data){
                 if (data.from == data.to ){
-                    hotgenNotify.show_error("The resources are already be connected.");
+                    hotgenNotify.show_error(to_node.label+" has already been connected with "+from_node.label+".");
                     return false;
                 }
                 var from_node = $scope.data.nodes.get(data.from);
@@ -117,11 +117,12 @@
                 var from_node_type = from_node.title;
                 var to_node_type = to_node.title;
                 if ((! edge_directions[from_node_type]) || !(edge_directions[from_node_type][to_node_type])){
-                    hotgenNotify.show_error("The resources cannot be connected.");
+                    hotgenNotify.show_error(to_node.label+" cannot be connected with "+from_node.label+".");
                     return false;
                 } else{
                     var limit = edge_directions[from_node_type][to_node_type].limit;
                     var occupied = edge_directions[from_node_type][to_node_type].occupied;
+                    var lonely = edge_directions[from_node_type][to_node_type].lonely;
                     var from_connected = $scope.network.getConnectedNodes(data.from);
                     var count = 0;
                     for(var idx in from_connected){
@@ -134,8 +135,12 @@
                         hotgenNotify.show_error("The number of connections between the resources is out of limit.");
                         return false;
                     }
+                    var to_connected = $scope.network.getConnectedNodes(data.to);
+                    if (lonely === true && to_connected.length > 0) {
+                        hotgenNotify.show_error(to_node.label+" cannot be connected with "+from_node.label+".");
+                        return false;
+                    }
                     if (occupied === true){
-                        var to_connected = $scope.network.getConnectedNodes(data.to);
                         for (var idx in to_connected){
                             var item_title = $scope.data.nodes.get(to_connected[idx]).title;
                             if (from_node_type == item_title){

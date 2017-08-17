@@ -61,9 +61,9 @@
             code: '\uf185',
             color: '#40a5f2'
         },
-        'OS__Neutron__SecuriteGroup': {
+        'OS__Neutron__SecurityGroup': {
             class: 'fa-shield ',
-            name: 'OS::Neutron::SecuriteGroup',
+            name: 'OS::Neutron::SecurityGroup',
             code: '\uf132',
             color: '#40a5f2'
         },
@@ -81,6 +81,7 @@
                 'property': 'volume_id',
                 'limit': 1,
                 'occupied': true,
+                'lonely': true,
             },
             'OS__Nova__Server': {
                 'type': 'property',
@@ -93,7 +94,9 @@
             'OS__Cinder__Volume': {
                 'type': 'mapping',
                 'mapping': 'block_device_mapping_v2',
-                'limit': null,
+                'limit': 99,
+                'occupied': true,
+                'lonely': true,
             },
             'OS__Nova__KeyPair': {
                 'type': 'property',
@@ -103,27 +106,27 @@
             'OS__Neutron__Net': {
                 'type': 'mapping',
                 'mapping': 'networks',
-                'limit': null,
+                'limit': 99,
             },
             'OS__Neutron__FloatingIP': {
                 'type': 'mapping',
                 'mapping': 'networks',
-                'limit': null,
+                'limit': 99,
             },
             'OS__Neutron__Subnet': {
                 'type': 'mapping',
                 'mapping': 'networks',
-                'limit': null,
+                'limit': 99,
             },
             'OS__Neutron__Port': {
                 'type': 'mapping',
                 'mapping': 'networks',
-                'limit': null,
+                'limit': 99,
             },
             'OS__Neutron__SecurityGroup': {
                 'type': 'list',
                 'list': 'security_groups',
-                'limit': null,
+                'limit': 99,
             },
         },
         'OS__Neutron__FloatingIP': {
@@ -159,19 +162,19 @@
             'OS__Neutron__SecurityGroup': {
                 'type': 'list',
                 'list': 'security_groups',
-                'limit': null,
+                'limit': 99,
             },
         },
         'OS__Neutron__Router': {
             'OS__Neutron__Net': {
                 'type': 'mapping',
                 'property': 'external_gateway_info',
-                'limit': null,
+                'limit': 99,
             },
             'OS__Neutron__Subnet': {
                 'type': 'mapping',
                 'mapping': 'external_gateway_info',
-                'limit': null,
+                'limit': 99,
             },
         },
         'OS__Neutron__RouterInterface': {

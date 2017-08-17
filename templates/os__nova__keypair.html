@@ -1,0 +1,28 @@
+<md-tabs md-dynamic-height md-stretch-tabs md-border-bottom>
+    <md-tab label="Details" >
+      <md-content layout-padding>
+        <md-input-container class="md-block">
+            <label>Name</label>
+            <input ng-model="$ctrl.keypair.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="10">
+            <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
+              <div ng-message="required" class="my-message">You must supply a name.</div>
+              <div ng-message="pattern" class="my-message">That doesn't look like a valid name.
+              </div>
+              <div ng-message="md-maxlength" class="my-message">
+                Too long name.
+              </div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Public Key</label>
+            <textarea ng-model="$ctrl.keypair.public_key" rows="10" cols="150"></textarea>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <md-checkbox ng-model="$ctrl.keypair.save_private_key" aria-label="save private key">
+            save private key
+          </md-checkbox>
+        </md-input-container>
+      </md-content>
+    </md-tab>
+</md-tabs>

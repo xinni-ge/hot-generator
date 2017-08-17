@@ -11,7 +11,8 @@
     <md-dialog-content>
           <md-content layout-gt-sm="row" layout-padding>
             <div>
-                <md-subheader class="md-no-sticky">Last saved draft is {{latest_draft.time}}.</md-subheader>
+                <md-subheader class="md-no-sticky" ng-if="latest_draft">Last saved draft is {{latest_draft.time}}.</md-subheader>
+                <md-subheader class="md-no-sticky" ng-if="!latest_draft">You haven't saved any draft yet!</md-subheader>
                 <md-list>
                     <md-list-item ng-repeat="draft in draft_list" ng-click="load(draft)">{{draft.time}}</md-list-item>
                 </md-list>
