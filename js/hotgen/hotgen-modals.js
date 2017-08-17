@@ -37,6 +37,7 @@
                 var template_url = "templates/resource_modal.html";
                 $mdDialog.show({
                   controller: DialogController,
+                  controllerAs: "ctrl",
                   templateUrl: template_url,
                   parent: angular.element(document.body),
                   clickOutsideToClose:true
@@ -50,7 +51,6 @@
                     $scope.cancel = function() {
                       $mdDialog.cancel();
                     };
-
                     $scope.save = function() {
                       $mdDialog.hide();
                       $rootScope.saved_resources[$rootScope.selected.id] = {

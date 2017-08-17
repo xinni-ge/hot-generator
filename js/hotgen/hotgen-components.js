@@ -22,6 +22,7 @@
       controller: osNovaServerController,
       bindings:{
         "instance": "=",
+        "formReference": "<",
       }
     });
 })(window.angular);
