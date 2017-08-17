@@ -109,3 +109,13 @@ div.modal-footer {
 div#resource_parameter_setter h2 {
   font-size: 30px!important;
 }
+
+
+md-input-container{
+    margin: 25px 0;
+}
+
+.os_resource{
+    auto:overflow;
+    max-height:500px;
+}

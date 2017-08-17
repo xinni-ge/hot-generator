@@ -38,7 +38,9 @@
 
             return {
                 show_success: show_success,
-                show_error: show_error
+                show_error: show_error,
+                show_info: show_info,
+                show_warning: show_warning
             };
          })
          .factory('hotgenMessage', function($rootScope){
