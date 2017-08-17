@@ -9,11 +9,11 @@
         </md-button>
       </div>
     </md-toolbar>
+
     <md-dialog-content style="width:700px; min-width:600px">
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Details">
           <md-content layout-padding>
-
             <md-input-container class="md-block">
               <label>Count</label>
               <input ng-model="instance.count" type="number" step="1" required min="1">
@@ -50,7 +50,7 @@
             </md-input-container>
 
 
-            <md-input-container class="md-block" >
+            <md-input-container class="md-block">
                 <label>Boot from source</label>
                 <md-select ng-model="instance.boot_source" required>
                     <md-option ng-repeat="source in boot_sources" ng-value="source.id">

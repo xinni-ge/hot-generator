@@ -6,6 +6,7 @@
             .accentPalette('blue')
             .warnPalette('red');
         });
+
     angular_module.run(function ($rootScope, $translate, VisDataSet, $timeout) {
         $translate.use('en');
         $rootScope.nodes = new VisDataSet();
@@ -75,3 +76,4 @@
     }]);
 
 })(window.angular);
+
