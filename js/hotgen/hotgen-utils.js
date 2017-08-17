@@ -54,6 +54,7 @@
                 broadcast_edit_node: broadcast_edit_node,
                 broadcast_edit_edge: broadcast_edit_edge,
             }
-        });
+        })
+        ;
 
 })(window.angular);

@@ -119,3 +119,7 @@ md-input-container{
     auto:overflow;
     max-height:500px;
 }
+
+.fa-lg {
+    font-size: 2.0em
+}

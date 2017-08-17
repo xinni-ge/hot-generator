@@ -79,100 +79,123 @@
             'OS__Cinder__Volume': {
                 'type': 'property',
                 'property': 'volume_id',
+                'limit': 1,
+                'occupied': true,
             },
             'OS__Nova__Server': {
                 'type': 'property',
                 'property': 'instance_uuid',
+                'limit': 1,
+                'occupied': false,
             },
         },
         'OS__Nova__Server': {
             'OS__Cinder__Volume': {
                 'type': 'mapping',
                 'mapping': 'block_device_mapping_v2',
+                'limit': null,
             },
             'OS__Nova__KeyPair': {
                 'type': 'property',
                 'property': 'key_name',
+                'limit': 1,
             },
             'OS__Neutron__Net': {
                 'type': 'mapping',
                 'mapping': 'networks',
+                'limit': null,
             },
             'OS__Neutron__FloatingIP': {
                 'type': 'mapping',
                 'mapping': 'networks',
+                'limit': null,
             },
             'OS__Neutron__Subnet': {
                 'type': 'mapping',
                 'mapping': 'networks',
+                'limit': null,
             },
             'OS__Neutron__Port': {
                 'type': 'mapping',
                 'mapping': 'networks',
+                'limit': null,
             },
             'OS__Neutron__SecurityGroup': {
-                'type': 'property',
-                'property': 'security_groups',
+                'type': 'list',
+                'list': 'security_groups',
+                'limit': null,
             },
         },
         'OS__Neutron__FloatingIP': {
             'OS__Neutron__Net': {
                 'type': 'property',
                 'property': 'floating_network',
+                'limit': 1,
             },
             'OS__Neutron__Port': {
                 'type': 'property',
                 'property': 'port_id',
+                'limit': 1,
             },
         },
         'OS__Neutron__FloatingIPAssociation': {
             'OS__Neutron__FloatingIP': {
                 'type': 'property',
                 'property': 'floatingip_id',
+                'limit': 1,
             },
             'OS__Neutron__Port': {
                 'type': 'property',
                 'property': 'port_id',
+                'limit': 1,
             },
         },
         'OS__Neutron__Port': {
             'OS__Neutron__Net': {
                 'type': 'property',
                 'property': 'network',
+                'limit': 1,
             },
             'OS__Neutron__SecurityGroup': {
-                'type': 'property',
-                'property': 'security_groups',
+                'type': 'list',
+                'list': 'security_groups',
+                'limit': null,
             },
         },
         'OS__Neutron__Router': {
             'OS__Neutron__Net': {
                 'type': 'mapping',
                 'property': 'external_gateway_info',
+                'limit': null,
             },
             'OS__Neutron__Subnet': {
                 'type': 'mapping',
                 'mapping': 'external_gateway_info',
+                'limit': null,
             },
         },
         'OS__Neutron__RouterInterface': {
             'OS__Neutron__Port': {
                 'type': 'property',
                 'property': 'port',
+                'limit': 1,
             },
             'OS__Neutron__Router': {
                 'type': 'property',
                 'property': 'router',
+                'limit': 1,
             },
             'OS__Neutron__Subnet': {
                 'type': 'property',
                 'property': 'subnet',
+                'limit': 1,
             },
         },
         'OS__Neutron__Subnet': {
             'OS__Neutron__Net': {
                 'type': 'property',
                 'property': 'network',
+                'limit': 1,
             },
         },
     });
