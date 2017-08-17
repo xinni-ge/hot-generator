@@ -44,16 +44,37 @@
         ];
 
     });
-    angular_module.controller('DraftMenuCtrl', ["$scope", "$mdDialog", "hotgenNotify" ,
-        function($scope, $mdDialog, hotgenNotify){
+    angular_module.controller('DraftMenuCtrl', ["$scope","$rootScope",
+        "$mdDialog", "hotgenNotify", "hotgenMessage",
+        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage){
             $scope.openMenu = function($mdOpenMenu, ev){
                 $mdOpenMenu(ev);
             };
             $scope.save_draft = function(){
-                hotgenNotify.show_warning('Not Implemented.');
+                if ($rootScope.nodes.length == 0 && $rootScope.edges.length == 0){
+                    hotgenNotify.show_warning('No resource to save.');
+                    return;
+                }
+                if (localStorage.saved_counter) {
+                    localStorage.saved_counter = (Number(localStorage.saved_counter) + 1)%10;
+                } else {
+                    localStorage.saved_counter = 0;
+                }
+                var data = {
+                    nodes: $rootScope.nodes._data,
+                    edges: $rootScope.edges._data,
+                    saved_resources: $rootScope.saved_resources,
+                }
+
+                var today = new Date();
+                data['time'] = today.toUTCString();
+                var drafts_serial = JSON.stringify(data);
+                localStorage.setItem("draft_"+localStorage.saved_counter, drafts_serial);
+
+                hotgenNotify.show_success('Draft is saved successfully at '+today.toUTCString()+'.');
             }
             $scope.load_draft = function(){
-                hotgenNotify.show_warning('Not Implemented.');
+                hotgenMessage.broadcast_load_draft();
             }
             $scope.import_draft = function(){
                 hotgenNotify.show_warning('Not Implemented.');

@@ -94,7 +94,7 @@
 
                     hotgenMessage.broadcast_edit_node(selected_type);
                 } else if (params.edges.length > 0){
-                    hotgenMessage.broadcast_edit_edge(null);
+                    ;
                 } else {
                     ;
                 }

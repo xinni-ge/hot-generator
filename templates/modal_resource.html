@@ -2,7 +2,7 @@
 <form name="resourceForm">
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Edit Resource {{resource_type | uppercase}}</h2>
+        <h2><b>Resource {{resource_type}}</b></h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
           <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -10,7 +10,7 @@
       </div>
     </md-toolbar>
     <md-dialog-content>
-        <os-nova-server instance="instance" form-reference="resourceForm" ng-if="resource_type=='OS__Nova__Server'"></os-nova-server>
+        <os-nova-server instance="instance" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::Server'"></os-nova-server>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">

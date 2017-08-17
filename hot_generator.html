@@ -43,7 +43,7 @@
                 <div ng-controller="TempModalCtrl" style="display:inline-block">
                     <md-button class="md-fab md-primary" ng-click="open()" aria-label="Create Template"><i class="fa fa-lg fa-file-text-o"></i></md-button>
                 </div>
-                <div class="md-menu"  ng-controller="DraftMenuCtrl" style="display:inline-block"  ng-cloak>
+                <div class="md-menu" ng-controller="DraftMenuCtrl" style="display:inline-block"  ng-cloak>
                     <md-menu>
                         <md-button class="md-fab" ng-click="openMenu($mdOpenMenu, $event)" aria-label="Manage Drafts">
                             <i class="fa fa-lg fa-floppy-o"></i>
@@ -104,6 +104,8 @@
         <div ng-controller="FormModalCtrl"  class="md-padding" id="popupContainer" ng-cloak>
         </div>
 
+        <div ng-controller="DraftModalCtrl"  class="md-padding" ng-cloak>
+        </div>
 
         <script>
             angular_module = angular.module('hotgen', ['hotgen-utils', 'ngMaterial', 'ngMessages',

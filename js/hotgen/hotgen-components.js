@@ -18,7 +18,7 @@
     }
 
     angular_module.component('osNovaServer', {
-      templateUrl: 'templates/os__nova__server_modal.html',
+      templateUrl: 'templates/os__nova__server.html',
       controller: osNovaServerController,
       bindings:{
         "instance": "=",
