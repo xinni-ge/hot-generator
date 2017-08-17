@@ -1,136 +1,112 @@
-<md-dialog aria-label="Launch Instances">
- <form name="instanceForm">
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>Launch Instances</h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="cancel()">
-          <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
 
-    <md-dialog-content style="width:700px; min-width:600px">
-      <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="Details">
-          <md-content layout-padding>
-            <md-input-container class="md-block">
-              <label>Count</label>
-              <input ng-model="instance.count" type="number" step="1" required min="1">
-            </md-input-container>
-            <md-input-container class="md-block">
-                <label>Name</label>
-                <input ng-model="instance.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="20">
-                <div ng-messages="instanceForm.name.$error" role="alert" multiple>
-                  <div ng-message="required" class="my-message">You must supply an instance name.</div>
-                  <div ng-message="pattern" class="my-message">That doesn't look like a valid instance name.
-                  </div>
-                  <div ng-message="md-maxlength" class="my-message">
-                    Too long instance name.
-                  </div>
-                </div>
-            </md-input-container>
+  <md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="Details">
+      <md-content layout-padding>
 
-            <md-input-container class="md-block">
-                <label>Availability Zone</label>
-                <md-select ng-model="instance.availability_zone">
-                    <md-option ng-repeat="az in availability_zones" ng-value="az.id">
-                      {{az.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-input-container class="md-block">
+          <label>Count</label>
+          <input ng-model="$ctrl.instance.count" type="number" step="1" required min="1"/>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Name</label>
+            <input ng-model="$ctrl.instance.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="20">
+            <div ng-messages="resourceForm.name.$error" role="alert" multiple>
+              <div ng-message="required" class="my-message">You must supply an instance name.</div>
+              <div ng-message="pattern" class="my-message">That doesn't look like a valid instance name.
+              </div>
+              <div ng-message="md-maxlength" class="my-message">
+                Too long instance name.
+              </div>
+            </div>
+        </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Flavor</label>
-                <md-select ng-model="instance.flavor" required>
-                    <md-option ng-repeat="flavor in flavors" ng-value="flavor.id">
-                      {{flavor.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-input-container class="md-block">
+            <label>Availability Zone</label>
+            <md-select ng-model="$ctrl.instance.availability_zone">
+                <md-option ng-repeat="az in availability_zones" ng-value="az.id">
+                  {{az.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Flavor</label>
+            <md-select ng-model="$ctrl.instance.flavor" required>
+                <md-option ng-repeat="flavor in flavors" ng-value="flavor.id">
+                  {{flavor.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
 
-            <md-input-container class="md-block">
-                <label>Boot from source</label>
-                <md-select ng-model="instance.boot_source" required>
-                    <md-option ng-repeat="source in boot_sources" ng-value="source.id">
-                        {{source.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-input-container class="md-block" >
+            <label>Boot from source</label>
+            <md-select ng-model="$ctrl.instance.boot_source" required>
+                <md-option ng-repeat="source in boot_sources" ng-value="source.id">
+                    {{source.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-            <md-input-container class="md-block" ng-if="instance.boot_source=='image'">
-                <label>Image</label>
-                <md-select ng-model="instance.image" >
-                    <md-option ng-repeat="image in images" ng-value="image.id">
-                        {{image.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-input-container class="md-block" ng-if="$ctrl.instance.boot_source=='image'">
+            <label>Image</label>
+            <md-select ng-model="$ctrl.instance.image" >
+                <md-option ng-repeat="image in images" ng-value="image.id">
+                    {{image.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-            <md-input-container class="md-block" ng-if="instance.boot_source=='image_snapshot'">
-                <label>Image Snapshot</label>
-                <md-select ng-model="instance.image_snapshot" >
-                    <md-option ng-repeat="iss in image_snapshots" ng-value="iss.id">
-                        {{iss.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-input-container class="md-block" ng-if="$ctrl.instance.boot_source=='image_snapshot'">
+            <label>Image Snapshot</label>
+            <md-select ng-model="$ctrl.instance.image_snapshot" >
+                <md-option ng-repeat="iss in image_snapshots" ng-value="iss.id">
+                    {{iss.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-            <md-input-container class="md-block" ng-if="instance.boot_source=='volume'">
-                <label>Volume</label>
-                <md-select ng-model="instance.volume">
-                    <md-option ng-repeat="vol in volumes" ng-value="vol.id">
-                        {{vol.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-input-container class="md-block" ng-if="$ctrl.instance.boot_source=='volume'">
+            <label>Volume</label>
+            <md-select ng-model="$ctrl.instance.volume">
+                <md-option ng-repeat="vol in volumes" ng-value="vol.id">
+                    {{vol.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-            <md-input-container class="md-block" ng-if="instance.boot_source=='volume_snapshot'">
-                <label>Volume Snapshot</label>
-                <md-select ng-model="instance.volume_snapshot">
-                    <md-option ng-repeat="volss in volume_snapshots" ng-value="volss.id">
-                        {{volss.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-input-container class="md-block" ng-if="$ctrl.instance.boot_source=='volume_snapshot'">
+            <label>Volume Snapshot</label>
+            <md-select ng-model="$ctrl.instance.volume_snapshot">
+                <md-option ng-repeat="volss in volume_snapshots" ng-value="volss.id">
+                    {{volss.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-          </md-content>
-        </md-tab>
-        <md-tab label="Additionals">
-          <md-content class="md-padding">
-            <md-input-container class="md-block">
-                <label>Security Groups</label>
-                <md-select ng-model="instance.security_group"  multiple>
-                    <md-option ng-repeat="sg in security_groups" ng-value="sg.id">
-                        {{sg.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+      </md-content>
+    </md-tab>
+    <md-tab label="Additionals">
+      <md-content class="md-padding">
+        <md-input-container class="md-block">
+            <label>Security Groups</label>
+            <md-select ng-model="$ctrl.instance.security_group"  multiple>
+                <md-option ng-repeat="sg in security_groups" ng-value="sg.id">
+                    {{sg.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Customization Script</label>
-                <textarea ng-model="instance.user_data" md-maxlength="1000" rows="10" cols="150"></textarea>
-            </md-input-container>
+        <md-input-container class="md-block">
+            <label>Customization Script</label>
+            <textarea ng-model="$ctrl.instance.user_data" md-maxlength="1000" rows="10" cols="150"></textarea>
+        </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Metadata</label>
-                <textarea ng-model="instance.meta_data" md-maxlength="1000" rows="10" cols="150"></textarea>
-            </md-input-container>
+        <md-input-container class="md-block">
+            <label>Metadata</label>
+            <textarea ng-model="$ctrl.instance.meta_data" md-maxlength="1000" rows="10" cols="150"></textarea>
+        </md-input-container>
 
-          </md-content>
-        </md-tab>
-      </md-tabs>
-    </md-dialog-content>
-
-    <md-dialog-actions layout="row">
-      <span flex></span>
-      <md-button ng-click="cancel()" >
-        {{ 'Cancel' | translate }}
-      </md-button>
-      <md-button ng-disabled="instanceForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
-        {{ 'OK' | translate }}
-      </md-button>
-    </md-dialog-actions>
-  </form>
-</md-dialog>
+      </md-content>
+    </md-tab>
+  </md-tabs>

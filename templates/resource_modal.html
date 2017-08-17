@@ -1,0 +1,26 @@
+<md-dialog aria-label="ResourceDialog" style="width:700px; min-width:600px">
+<form name="resourceForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Edit Resource {{resource_type | uppercase}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <os-nova-server instance="instance" ng-if="resource_type=='OS__Nova__Server'"></os-nova-server>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="cancel()" >
+        {{ 'Cancel' | translate }}
+      </md-button>
+      <md-button ng-disabled="resourceForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
+        {{ 'OK' | translate }}
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

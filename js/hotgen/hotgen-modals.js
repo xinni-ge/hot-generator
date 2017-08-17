@@ -30,10 +30,11 @@
                 }
         }]);
 
-    angular_module.controller('FormModalCtrl', ['$scope', '$mdDialog', 'hotgenNotify', 'hotgenMessage',
-        function($scope, $mdDialog, hotgenNotify, hotgenMessage,){
-            $scope.showTabDialog = function(args){
-                var template_url = "templates/"+args.toLowerCase()+"_modal.html";
+    angular_module.controller('FormModalCtrl', ['$scope', '$rootScope',
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage',
+        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage,){
+            $scope.showTabDialog = function(){
+                var template_url = "templates/resource_modal.html";
                 $mdDialog.show({
                   controller: DialogController,
                   templateUrl: template_url,
@@ -46,16 +47,6 @@
                 });
 
                 function DialogController($scope, $rootScope, $mdDialog,) {
-                    var s_key = $rootScope.selected.id+"_save";
-                    if ($rootScope.selected.id in $rootScope.saved_resources){
-                        $scope.instance = $rootScope.saved_resources[$rootScope.selected.id].data;
-                    }
-                    $scope.boot_sources = [
-                        {'id': 'image', 'name': 'image'},
-                        {'id': 'image_snapshot', 'name': 'image snapshot'},
-                        {'id': 'volume', 'name': 'volume'},
-                        {'id': 'volume_snapshot', 'name': 'volume snapshot'}
-                    ];
                     $scope.cancel = function() {
                       $mdDialog.cancel();
                     };
@@ -64,21 +55,21 @@
                       $mdDialog.hide();
                       $rootScope.saved_resources[$rootScope.selected.id] = {
                           type: $rootScope.selected.resource_type,
-                          data: $scope.instance
+                          data: angular.copy($scope.instance)
                       }
                     };
-                    $scope.availability_zones = $rootScope.availability_zones;
-                    $scope.flavors = $rootScope.flavors;
-                    $scope.security_groups = $rootScope.security_groups;
-                    $scope.images = $rootScope.images;
-                    $scope.image_snapshots = $rootScope.image_snapshots;
-                    $scope.volumes = $rootScope.volumes;
-                    $scope.volume_snapshots = $rootScope.volume_snapshots;
+                    $scope.resource_type = $rootScope.selected.resource_type;
+                    if ($rootScope.selected.id in $rootScope.saved_resources){
+                        $scope.instance = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
+                    } else{
+                        $scope.instance = {count:1}
+                    }
+
                 }
             };
 
             $scope.$on('handle_edit_node', function(event, args){
-                $scope.showTabDialog(args);
+                $scope.showTabDialog();
             });
 
         }]);
