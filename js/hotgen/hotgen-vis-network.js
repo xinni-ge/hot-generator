@@ -90,6 +90,7 @@
                         element: 'node',
                         resource_type: selected_type,
                         id: selected_id,
+                        node: selected_node,
                     }
 
                     hotgenMessage.broadcast_edit_node(selected_type);

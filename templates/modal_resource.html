@@ -2,7 +2,7 @@
 <form name="resourceForm">
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2><b>Resource {{resource_type}}</b></h2>
+        <h2 class="md-title"><b>Resource {{resource_type}}</b></h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
           <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -11,17 +11,20 @@
     </md-toolbar>
     <md-dialog-content>
         <os-nova-server instance="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::Server'"></os-nova-server>
-    </md-dialog-content>
-    <md-dialog-content>
         <os-nova-keypair keypair="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::KeyPair'"></os-nova-keypair>
+        <os-cinder-volume volume="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Cinder::Volume'"></os-cinder-volume>
+        <os-cinder-volume-attachment volumeattachment="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Cinder::VolumeAttachment'"></os-cinder-volume-attachment>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button ng-click="cancel()" >
+      <md-button class="md-raised md-warn" ng-click="delete_resource()" >
+        {{ 'Delete Resource' | translate }}
+      </md-button>
+      <md-button class="md-raised" ng-click="cancel()" >
         {{ 'Cancel' | translate }}
       </md-button>
-      <md-button ng-disabled="resourceForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
+      <md-button class="md-raised  md-primary" ng-disabled="resourceForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
         {{ 'OK' | translate }}
       </md-button>
     </md-dialog-actions>

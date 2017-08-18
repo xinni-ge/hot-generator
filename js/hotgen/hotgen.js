@@ -42,6 +42,9 @@
             { "id": "zone_groupa", "name": "Zone1/Group A"},
             { "id": "zone_groupb", "name": "Zone1/Group B"}
         ];
+        $rootScope.volume_types = [
+             {'id': 'virtio', 'name': 'virtio'},
+            ];
 
     });
     angular_module.controller('DraftMenuCtrl', ["$scope","$rootScope",

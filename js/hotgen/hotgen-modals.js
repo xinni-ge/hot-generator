@@ -47,6 +47,12 @@
                 });
 
                 function DialogController($scope, $rootScope, $mdDialog,) {
+                    $scope.delete_resource = function() {
+                      var label = $rootScope.selected.node.label;
+                      $rootScope.nodes.remove($rootScope.selected.id);
+                      hotgenNotify.show_success(label + " has been delete successfully.")
+                      $mdDialog.cancel();
+                    };
                     $scope.cancel = function() {
                       $mdDialog.cancel();
                     };

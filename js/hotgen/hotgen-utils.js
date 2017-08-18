@@ -61,6 +61,16 @@
                 broadcast_load_draft: broadcast_load_draft,
             }
         })
+        .factory('hotgenValidate', function(){
+
+            var validate_keypair = function(input_string){
+                var re=/^([0-9a-zA-Z_.-]{1,255})=([0-9a-zA-Z_.-]{1,255})$/
+                return re.exec(input_string);
+            };
+            return {
+                validate_keypair: validate_keypair,
+            }
+        })
         ;
 
 })(window.angular);

@@ -1,12 +1,12 @@
 
-  <md-tabs md-dynamic-height md-stretch-tabs md-border-bottom>
+  <md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
     <md-tab label="Details">
       <md-content layout-padding>
-
         <md-input-container class="md-block">
           <label>Count</label>
           <input ng-model="$ctrl.instance.count" type="number" step="1" required min="1"/>
         </md-input-container>
+
         <md-input-container class="md-block">
             <label>Name</label>
             <input ng-model="$ctrl.instance.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="10">
@@ -104,7 +104,14 @@
 
         <md-input-container class="md-block">
             <label>Metadata</label>
-            <textarea ng-model="$ctrl.instance.meta_data" md-maxlength="1000" rows="10" cols="150"></textarea>
+            <md-chips ng-model="$ctrl.instance.metadata"
+                      placeholder="+ key=value"
+                      readonly="false"
+                      md-removeable="true"
+                      md-max-chips="255"
+                      md-transform-chip="validateMetadata($chip)">
+            </md-chips>
+            <p ng-show="$ctrl.instance.metadata.length >= 255" color="red"> Maximum 255 key/value pairs can be added. </p>
         </md-input-container>
 
       </md-content>
