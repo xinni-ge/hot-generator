@@ -1,8 +1,10 @@
 (function(angular) {
-  'use strict';
+    'use strict';
+
+    // OS::Nova::Server
     function osNovaServerController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
-            if (! this.instance.metadata){
+            if (typeof this.instance.metadata === "undefined"){
                 this.instance.metadata = [];
             }
         }
@@ -39,6 +41,7 @@
       }
     });
 
+    // OS::Nova::KeyPair
     function osNovaKeypairController($scope, $rootScope){
         ;
     }
@@ -52,12 +55,13 @@
       }
     });
 
+    // OS::Cinder::Volume
     function osCinderVolumeController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
-            if (! this.volume.metadata){
+            if (typeof this.volume.metadata === "undefined"){
                 this.volume.metadata = [];
             }
-            if (! this.volume.scheduler_hints){
+            if (typeof this.scheduler_hints.metadata === "undefined"){
                 this.volume.scheduler_hints = [];
             }
         }
@@ -102,13 +106,62 @@
         "formReference": "<",
       }
     });
-    function osCinderVolumeAttachmentController($scope, $rootScope){
+
+    // OS::Cinder::VolumeAttachment
+    function osCinderVolumeAttachmentController($scope, $rootScope, ){
+        ;
     }
     angular_module.component('osCinderVolumeAttachment', {
       templateUrl: 'templates/os__cinder__volumeattachment.html',
       controller: osCinderVolumeAttachmentController,
       bindings:{
         "volumeattachment": "=",
+        "formReference": "<",
+      }
+    });
+
+    // OS::Neutron::FloatingIP
+    function osNeutronFloatingipController($scope, $rootScope){
+        ;
+    }
+    angular_module.component('osNeutronFloatingip', {
+      templateUrl: 'templates/os__neutron__floatingip.html',
+      controller: osNeutronFloatingipController,
+      bindings:{
+        "floatingip": "=",
+        "formReference": "<",
+      }
+    });
+
+    // OS::Neutron::FloatingIPAssociation
+    function osNeutronFloatingipAssocationController($scope, $rootScope){
+        ;
+    }
+    angular_module.component('osNeutronFloatingipAssociation', {
+      templateUrl: 'templates/os__neutron__floatingipassociation.html',
+      controller: osNeutronFloatingipAssocationController,
+      bindings:{
+        "floatingipassociation": "=",
+        "formReference": "<",
+      }
+    });
+
+    // OS::Neutron::Net
+    function osNeutronNet($scope, $rootScope){
+        this.$onInit = function(){
+            if (typeof this.network.dhcp_agent_ids === "undefined"){
+                this.network.dhcp_agent_ids = [];
+            }
+            if (typeof this.network.admin_state_up === "undefined"){
+                this.network.admin_state_up = true;
+            }
+        }
+    }
+    angular_module.component('osNeutronNet', {
+      templateUrl: 'templates/os__neutron__net.html',
+      controller: osNeutronNet,
+      bindings:{
+        "network": "=",
         "formReference": "<",
       }
     });

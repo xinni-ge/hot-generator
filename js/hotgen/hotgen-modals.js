@@ -17,8 +17,8 @@
             };
             function DialogController($scope, $mdDialog) {
                     $scope.template = {
-                        title: "Template",
-                        content: "An example template string."
+                        title: 'Template',
+                        content: 'An example template string.'
                     };
                     $scope.cancel = function() {
                       $mdDialog.cancel();
@@ -36,8 +36,8 @@
             $scope.showTabDialog = function(){
                 $mdDialog.show({
                   controller: DialogController,
-                  controllerAs: "ctrl",
-                  templateUrl: "templates/modal_resource.html",
+                  controllerAs: 'ctrl',
+                  templateUrl: 'templates/modal_resource.html',
                   parent: angular.element(document.body),
                   clickOutsideToClose:true
                 }).then(function(){
@@ -50,7 +50,7 @@
                     $scope.delete_resource = function() {
                       var label = $rootScope.selected.node.label;
                       $rootScope.nodes.remove($rootScope.selected.id);
-                      hotgenNotify.show_success(label + " has been delete successfully.")
+                      hotgenNotify.show_success(label + ' has been delete successfully.')
                       $mdDialog.cancel();
                     };
                     $scope.cancel = function() {
@@ -61,7 +61,24 @@
                       $rootScope.saved_resources[$rootScope.selected.id] = {
                           type: $rootScope.selected.resource_type,
                           data: angular.copy($scope.resource)
+                      };
+                      var label = $rootScope.selected.node.label;
+                      if ($scope.resource.name){
+                        label = $scope.resource.name;
+                      } else if ($scope.resource.ip_address){
+                        label = $scope.resource.ip_address
+                      } else if ($scope.resource.floating_ip_address){
+                        label = $scope.resource.floating_ip_address
+                      } else if ($scope.resource.fixed_ip_address){
+                        label = $scope.resource.fixed_ip_address
+                      } else if ($scope.resource.mountpoint){
+                        label = $scope.resource.mountpoint
                       }
+                      $rootScope.nodes.update({
+                            id: $rootScope.selected.id,
+                            label: label,
+                            font: { color: $rootScope.selected.node.icon.color},
+                          })
                     };
                     $scope.resource_type = $rootScope.selected.resource_type.replace(/_/g, ':');
                     if ($rootScope.selected.id in $rootScope.saved_resources){
@@ -83,7 +100,7 @@
             $scope.showDialog = function(){
                 $mdDialog.show({
                   controller: DraftDialogController,
-                  templateUrl: "templates/modal_draft.html",
+                  templateUrl: 'templates/modal_draft.html',
                   parent: angular.element(document.body),
                   clickOutsideToClose:true
                 }).then(function(){
@@ -93,10 +110,10 @@
                 });
                 function DraftDialogController($scope, $rootScope, $mdDialog,) {
                     $scope.draft_list = [];
-                    $scope.latest_draft = JSON.parse(localStorage.getItem("draft_"+localStorage.saved_counter));
+                    $scope.latest_draft = JSON.parse(localStorage.getItem('draft_'+localStorage.saved_counter));
                     for (var i = 0 ; i < 10; i++){
                         if (localStorage.getItem('draft_'+i)){
-                            var saved_drafts = JSON.parse(localStorage.getItem("draft_"+i));
+                            var saved_drafts = JSON.parse(localStorage.getItem('draft_'+i));
                             $scope.draft_list.push(saved_drafts);
                         }
                     }

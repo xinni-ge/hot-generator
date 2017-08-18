@@ -4,7 +4,7 @@
 
         <md-input-container class="md-block">
             <label>mountpoint</label>
-            <input ng-model="$ctrl.volumeattachment.mountpoint" name="mountpoint" rows="3" cols="150" ng-pattern="/^/[0-9a-z/-]+$/" />
+            <input ng-model="$ctrl.volumeattachment.mountpoint" name="mountpoint" ng-pattern="/^/[0-9a-z/-]+$/" />
             <div ng-messages="$ctrl.formReference.mountpoint.$error" role="alert" multiple>
               <div ng-message="pattern" class="my-message">Please input a valid device path.</div>
             </div>

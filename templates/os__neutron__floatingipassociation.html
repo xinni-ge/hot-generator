@@ -1,0 +1,15 @@
+<md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
+    <md-tab label="Details" >
+      <md-content layout-padding>
+        <md-input-container class="md-block">
+            <label>Fixed IP Address</label>
+            <input ng-model="$ctrl.floatingipassociation.fixed_ip_address" name="fixed_ip_address" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+            <div ng-messages="$ctrl.formReference.fixed_ip_address.$error" role="alert" multiple>
+              <div ng-message="pattern" class="my-message">Please input a valid IP address.</div>
+            </div>
+        </md-input-container>
+
+      </md-content>
+    </md-tab>
+
+</md-tabs>
