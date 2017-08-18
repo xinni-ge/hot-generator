@@ -4,7 +4,7 @@
     // OS::Nova::Server
     function osNovaServerController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
-            if (typeof this.instance.metadata === "undefined"){
+            if (typeof this.instance.metadata === 'undefined'){
                 this.instance.metadata = [];
             }
         }
@@ -26,7 +26,7 @@
             if (match){
                 return undefined;
             } else{
-                hotgenNotify.show_error("Invalid characters are used in metadata.");
+                hotgenNotify.show_error('Invalid characters are used in metadata.');
                 return null;
             }
         }
@@ -36,8 +36,8 @@
       templateUrl: 'templates/os__nova__server.html',
       controller: osNovaServerController,
       bindings:{
-        "instance": "=",
-        "formReference": "<",
+        'instance': '=',
+        'formReference': '<',
       }
     });
 
@@ -50,18 +50,18 @@
       templateUrl: 'templates/os__nova__keypair.html',
       controller: osNovaKeypairController,
       bindings:{
-        "keypair": "=",
-        "formReference": "<",
+        'keypair': '=',
+        'formReference': '<',
       }
     });
 
     // OS::Cinder::Volume
     function osCinderVolumeController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
-            if (typeof this.volume.metadata === "undefined"){
+            if (typeof this.volume.metadata === 'undefined'){
                 this.volume.metadata = [];
             }
-            if (typeof this.scheduler_hints.metadata === "undefined"){
+            if (typeof this.scheduler_hints.metadata === 'undefined'){
                 this.volume.scheduler_hints = [];
             }
         }
@@ -83,7 +83,7 @@
             if (match){
                 return undefined;
             } else{
-                hotgenNotify.show_error("Invalid characters are used in metadata.");
+                hotgenNotify.show_error('Invalid characters are used in metadata.');
                 return null;
             }
         }
@@ -92,7 +92,7 @@
             if (match){
                 return undefined;
             } else{
-                hotgenNotify.show_error("Invalid characters are used in scheduler_hints.");
+                hotgenNotify.show_error('Invalid characters are used in scheduler_hints.');
                 return null;
             }
         }
@@ -102,8 +102,8 @@
       templateUrl: 'templates/os__cinder__volume.html',
       controller: osCinderVolumeController,
       bindings:{
-        "volume": "=",
-        "formReference": "<",
+        'volume': '=',
+        'formReference': '<',
       }
     });
 
@@ -115,8 +115,8 @@
       templateUrl: 'templates/os__cinder__volumeattachment.html',
       controller: osCinderVolumeAttachmentController,
       bindings:{
-        "volumeattachment": "=",
-        "formReference": "<",
+        'volumeattachment': '=',
+        'formReference': '<',
       }
     });
 
@@ -128,8 +128,8 @@
       templateUrl: 'templates/os__neutron__floatingip.html',
       controller: osNeutronFloatingipController,
       bindings:{
-        "floatingip": "=",
-        "formReference": "<",
+        'floatingip': '=',
+        'formReference': '<',
       }
     });
 
@@ -141,18 +141,18 @@
       templateUrl: 'templates/os__neutron__floatingipassociation.html',
       controller: osNeutronFloatingipAssocationController,
       bindings:{
-        "floatingipassociation": "=",
-        "formReference": "<",
+        'floatingipassociation': '=',
+        'formReference': '<',
       }
     });
 
     // OS::Neutron::Net
     function osNeutronNet($scope, $rootScope){
         this.$onInit = function(){
-            if (typeof this.network.dhcp_agent_ids === "undefined"){
+            if (typeof this.network.dhcp_agent_ids === 'undefined'){
                 this.network.dhcp_agent_ids = [];
             }
-            if (typeof this.network.admin_state_up === "undefined"){
+            if (typeof this.network.admin_state_up === 'undefined'){
                 this.network.admin_state_up = true;
             }
         }
@@ -161,8 +161,75 @@
       templateUrl: 'templates/os__neutron__net.html',
       controller: osNeutronNet,
       bindings:{
-        "network": "=",
-        "formReference": "<",
+        'network': '=',
+        'formReference': '<',
+      }
+    });
+
+    // OS::Neutron::Port
+    function osNeutronPort($scope, $rootScope){
+        this.additional = true;
+        this.$onInit = function(){
+            if (typeof this.port.admin_state_up === 'undefined'){
+                this.port.admin_state_up = true;
+            }
+            if (typeof this.port.binding === 'undefined'){
+                this.port.binding = {'vnic_type': ''};
+            }
+            if (this.additional === true && typeof this.port.fixed_ips === 'undefined'){
+                this.port.fixed_ips = [];
+            }
+            if (this.additional === true && typeof this.port.security_groups === 'undefined'){
+                this.port.security_groups = [];
+            }
+            if (this.port.device_owner){
+                this.searchText = this.port.device_owner;
+            }
+        };
+        this.device_owners = load_device_owners();
+        this.querySearch = querySearch;
+        this.show_not_found = true;
+        this.selectedItemChange = selectedItemChange;
+        this.searchTextChange   = searchTextChange;
+
+        function searchTextChange(text) {
+           this.port.device_owner = text;
+        }
+
+        function selectedItemChange(item) {
+           this.port.device_owner = item.display;
+        }
+
+        function load_device_owners(){
+            var all_device_owners = 'network:floatingip, network:router_interface, network:dhcp';
+            return all_device_owners.split(/, +/g).map(function(dev_owner){
+                return {
+                    value: dev_owner.replace(/:/g, '_'),
+                    display: dev_owner
+                }
+            });
+        };
+
+        function querySearch (query) {
+            return query ? this.device_owners.filter( createFilterFor(query) ) : this.device_owners;
+        }
+        /**
+         * Create filter function for a query string
+         */
+        function createFilterFor(query) {
+          var lowercaseQuery = angular.lowercase(query).replace(/:/g, '_');
+
+          return function filterFn(dev_owner) {
+            return (dev_owner.value.indexOf(lowercaseQuery) === 0);
+          };
+        }
+    }
+    angular_module.component('osNeutronPort', {
+      templateUrl: 'templates/os__neutron__port.html',
+      controller: osNeutronPort,
+      bindings:{
+        'port': '=',
+        'formReference': '<',
       }
     });
 
