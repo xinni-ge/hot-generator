@@ -58,7 +58,7 @@ md-input-container{
     margin: 25px 0;
 }
 
-.os_resource{
+.os-resource{
     auto:overflow;
     max-height:500px;
 }
@@ -68,4 +68,13 @@ md-input-container{
 }
 md-pagination-wrapper{
     width:100%;
+}
+
+.odd {
+    background-color:#fff;
+    margin: 10px 0px;
+}
+.even {
+    background-color:#fff;
+    margin: 10px 0px;
 }

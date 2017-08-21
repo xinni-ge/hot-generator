@@ -58,10 +58,11 @@
     // OS::Cinder::Volume
     function osCinderVolumeController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
+            debugger;
             if (typeof this.volume.metadata === 'undefined'){
                 this.volume.metadata = [];
             }
-            if (typeof this.scheduler_hints.metadata === 'undefined'){
+            if (typeof this.volume.scheduler_hints === 'undefined'){
                 this.volume.scheduler_hints = [];
             }
         }
@@ -168,7 +169,7 @@
 
     // OS::Neutron::Port
     function osNeutronPort($scope, $rootScope){
-        this.additional = true;
+        this.additional = false;
         this.$onInit = function(){
             if (typeof this.port.admin_state_up === 'undefined'){
                 this.port.admin_state_up = true;
@@ -176,11 +177,14 @@
             if (typeof this.port.binding === 'undefined'){
                 this.port.binding = {'vnic_type': ''};
             }
+            if (typeof this.port.allowed_address_pairs === 'undefined'){
+                this.port.allowed_address_pairs = [{}];
+            }
             if (this.additional === true && typeof this.port.fixed_ips === 'undefined'){
                 this.port.fixed_ips = [];
             }
             if (this.additional === true && typeof this.port.security_groups === 'undefined'){
-                this.port.security_groups = [];
+                this.port.security_groups = [{}];
             }
             if (this.port.device_owner){
                 this.searchText = this.port.device_owner;
@@ -192,6 +196,18 @@
         this.selectedItemChange = selectedItemChange;
         this.searchTextChange   = searchTextChange;
 
+        this.add_allowed_address_pair = function(){
+            this.port.allowed_address_pairs.push({})
+        }
+        this.add_fixed_ip = function(){
+            this.port.fixed_ips.push({})
+        }
+        this.delete_allowed_address_pair = function(index){
+            this.port.allowed_address_pairs.splice(index, 1)
+        }
+        this.delete_fixed_ip = function(index){
+            this.port.fixed_ips.splice(index, 1)
+        }
         function searchTextChange(text) {
            this.port.device_owner = text;
         }
@@ -224,6 +240,7 @@
           };
         }
     }
+
     angular_module.component('osNeutronPort', {
       templateUrl: 'templates/os__neutron__port.html',
       controller: osNeutronPort,
@@ -233,5 +250,28 @@
       }
     });
 
+    function osNeutronSecurityGroupController($scope, $rootScope) {
+        this.$onInit = function(){
+            if (typeof this.securitygroup.rules === 'undefined'){
+                this.securitygroup.rules = [{}];
+            }
+
+        }
+        this.add_rule = function(){
+            this.securitygroup.rules.push({})
+        }
+        this.delete_rule = function(index){
+            this.securitygroup.rules.splice(index, 1)
+        }
+    }
+
+    angular_module.component('osNeutronSecurityGroup', {
+      templateUrl: 'templates/os__neutron__securitygroup.html',
+      controller: osNeutronSecurityGroupController,
+      bindings:{
+        'securitygroup': '=',
+        'formReference': '<',
+      }
+    });
 
 })(window.angular);

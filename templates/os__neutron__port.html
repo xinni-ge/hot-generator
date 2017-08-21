@@ -1,88 +1,115 @@
 <md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
     <md-tab label="Details" >
-      <md-content layout-padding>
+        <md-content layout-padding>
 
-         <md-input-container class="md-block">
-            <label>Name</label>
-            <input ng-model="$ctrl.port.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
-            <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid port name.</div>
-              <div ng-message="md-maxlength" class="my-message">Too long port name.</div>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Name</label>
+                <input ng-model="$ctrl.port.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
+                <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
+                    <div ng-message="pattern" class="my-message">That doesn't look like a valid port name.</div>
+                    <div ng-message="md-maxlength" class="my-message">Too long port name.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>bind:vnic_type</label>
+                <input ng-model="$ctrl.port.binding.vnic_type" name="vnic_type" type="text">
+            </md-input-container>
+
+            <div layout-gt-xs="row" style="padding:0">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Device ID</label>
+                    <input ng-model="$ctrl.port.device_id" name="device_id" type="text">
+                </md-input-container>
+
+                <md-autocomplete
+                      md-search-text="$ctrl.searchText"
+                      md-items="item in $ctrl.querySearch($ctrl.searchText)"
+                      md-item-text="item.display"
+                      md-selected-item="$ctrl.selectedItem"
+                      md-selected-item-change="$ctrl.selectedItemChange(item)"
+                      md-search-text-change="$ctrl.searchTextChange($ctrl.searchText)"
+                      md-min-length="0"
+                    md-floating-label="Device Owner" style="padding:0" flex-gt-xs>
+                  <md-item-template>
+                    <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+                  </md-item-template>
+                  <md-not-found ng-if="$ctrl.show_not_found">
+                    <span style="color:orangered">Warning: "{{$ctrl.searchText}}" saved with no pre-defined device owner found.</span>
+                  </md-not-found>
+
+                </md-autocomplete>
             </div>
-        </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>bind:vnic_type</label>
-            <input ng-model="$ctrl.port.binding.vnic_type" name="vnic_type" type="text">
-        </md-input-container>
-        <md-input-container class="md-block">
-            <label>Device ID</label>
-            <input ng-model="$ctrl.port.device_id" name="device_id" type="text">
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>QoS Policy</label>
+                <input ng-model="$ctrl.port.qos_policy" name="qos_policy" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
+                <div ng-messages="$ctrl.formReference.qos_policy.$error" role="alert" multiple>
+                    <div ng-message="pattern" class="my-message">That doesn't look like a valid uuid.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>MAC Address</label>
+                <input ng-model="$ctrl.port.mac_address" name="mac_address" type="text" ng-pattern="/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/">
+                <div ng-messages="$ctrl.formReference.mac_address.$error" role="alert" multiple>
+                    <div ng-message="pattern" class="my-message">That doesn't look like a valid mac address.</div>
+                </div>
+            </md-input-container>
 
-        <!--<md-input-container class="md-block" >-->
-        <md-autocomplete
-              md-search-text="$ctrl.searchText"
-              md-items="item in $ctrl.querySearch($ctrl.searchText)"
-              md-item-text="item.display"
-              md-selected-item="$ctrl.selectedItem"
-              md-selected-item-change="$ctrl.selectedItemChange(item)"
-              md-search-text-change="$ctrl.searchTextChange($ctrl.searchText)"
-              md-min-length="0"
-              md-floating-label="Device Owner" style="padding:0">
-            <md-item-template>
-              <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
-            </md-item-template>
-            <md-not-found ng-if="$ctrl.show_not_found">
-              <span style="color:orangered">Warning: "{{$ctrl.searchText}}" saved with no pre-defined device owner found.</span>
-            </md-not-found>
+            <div layout-gt-xs="row" style="padding:0">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.port.admin_state_up" aria-label="admin_state_up">
+                      Admin State UP
+                    </md-checkbox>
+                </md-input-container>
 
-        </md-autocomplete>
-        <!--</md-input-container>-->
-
-        <md-input-container class="md-block">
-          <md-checkbox ng-model="$ctrl.port.admin_state_up" aria-label="admin_state_up">
-            Admin State UP
-          </md-checkbox>
-
-          <md-checkbox ng-model="$ctrl.port.port_security_enabled" aria-label="port_security_enabled">
-            Port Security Enabled
-          </md-checkbox>
-
-        </md-input-container>
-
-        <md-input-container class="md-block">
-            <label>QoS Policy</label>
-            <input ng-model="$ctrl.network.qos_policy" name="qos_policy" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
-            <div ng-messages="$ctrl.formReference.qos_policy.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid uuid.</div>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.port.port_security_enabled" aria-label="port_security_enabled">
+                      Port Security Enabled
+                    </md-checkbox>
+                </md-input-container>
             </div>
-        </md-input-container>
+        </md-content>
+    </md-tab>
+
+    <md-tab label="Allowed Address Pairs" >
+        <md-content layout-padding>
+            <label>Allowed Address Pairs</label>
+            <md-button ng-click="$ctrl.add_allowed_address_pair()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+
+            <div ng-repeat="pair in $ctrl.port.allowed_address_pairs" ng-class-odd="'odd'" ng-class-even="'even'">
+                <div layout-gt-xs="row" >
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>MAC Address</label>
+                        <input ng-model="pair.mac_address" type="text" ng-pattern="/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>IP Address</label>
+                        <input ng-model="pair.ip_address" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[012]|[12]?[0-9]))$/" />
+                    </md-input-container>
+                    <md-button ng-click="$ctrl.delete_allowed_address_pair($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+                </div>
+            </div>
 
       </md-content>
     </md-tab>
-
     <md-tab label="Additional" ng-if="$ctrl.additional">
-      <md-content layout-padding>
-
-        <md-input-container class="md-block" >
-            <label>DHCP Agents</label>
-            <md-chips ng-model="$ctrl.network.dhcp_agent_list"
-                      placeholder="+ dhcp agent id"
-                      readonly="false"
-                      md-removeable="true"
-                      md-max-chips="255">
-            </md-chips>
-        </md-input-container>
-
-        <md-input-container class="md-block">
-            <label>Tenant ID</label>
-            <input ng-model="$ctrl.network.tenant_id" name="tenant_id" type="text" ng-pattern="/^[0-9a-f]{32}$/">
-            <div ng-messages="$ctrl.formReference.tenant_id.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid tenant id.</div>
+        <md-content layout-padding>
+            <label>Fixed IPs</label>
+            <md-button ng-click="$ctrl.add_fixed_ip()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+            <div ng-repeat="fixed_ip in $ctrl.port.fixed_ips" ng-class-odd="'odd'" ng-class-even="'even'">
+                <div layout-gt-xs="row" >
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>IP Address</label>
+                        <input ng-model="fixed_ip.ip_address" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Subnet</label>
+                        <input ng-model="fixed_ip.subnet" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
+                    </md-input-container>
+                    <md-button ng-click="$ctrl.delete_fixed_ip($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+                </div>
             </div>
-        </md-input-container>
-
       </md-content>
     </md-tab>
 
