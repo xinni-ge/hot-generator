@@ -1,16 +1,130 @@
+<md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
+    <md-tab label="Details" >
+        <md-content layout-padding>
 
-        <md-input-container class="md-block">
-            <label>Fixed IP Address</label>
-            <input ng-model="$ctrl.network.fixed_ip_address" name="fixed_ip_address" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
-            <div ng-messages="$ctrl.formReference.fixed_ip_address.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">Please input a valid IP address.</div>
-            </div>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Name</label>
+                <input ng-model="$ctrl.subnet.name" name="name" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255" />
+                <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
+                    <div ng-message="pattern" class="my-message">That doesn't look like a valid network name.</div>
+                    <div ng-message="md-maxlength" class="my-message">Too long network name.</div>
+                </div>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Floating IP Address</label>
-            <input ng-model="$ctrl.network.floating_ip_address" name="floating_ip_address" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
-            <div ng-messages="$ctrl.formReference.floating_ip_address.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">Please input a valid IP address.</div>
+            <div layout-gt-xs="row" style="padding:0">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.subnet.enable_dhcp" aria-label="enable_dhcp">
+                      Enable DHCP
+                    </md-checkbox>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>IP Version</label>
+                    <md-select ng-model="$ctrl.subnet.ip_version">
+                        <md-option ng-value="4">4</md-option>
+                        <md-option ng-value="6">6</md-option>
+                    </md-select>
+                </md-input-container>
             </div>
-        </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>CIDR</label>
+                <input ng-model="$ctrl.subnet.cidr" name="gateway_ip" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[012]|[12]?[0-9]))$/" />
+                <div ng-messages="$ctrl.formReference.cidr.$error" role="alert" multiple>
+                  <div ng-message="pattern" class="my-message">Please input a valid cidr range.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Gateway</label>
+                <input ng-model="$ctrl.subnet.gateway_ip" name="gateway_ip" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+                <div ng-messages="$ctrl.formReference.gateway_ip.$error" role="alert" multiple>
+                  <div ng-message="pattern" class="my-message">Please input a valid IPv4 address.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" ng-if="$ctrl.subnet.ip_version=='6'" flex-gt-xs>
+                <label>IPv6 Address Mode</label>
+                <input ng-model="$ctrl.subnet.ipv6_address_mode" name="ipv6_address_mode"  md-maxlength="255" />
+            </md-input-container>
+            <md-input-container class="md-block" ng-if="$ctrl.subnet.ip_version=='6'" flex-gt-xs>
+                <label>IPv6 RA Mode</label>
+                <input ng-model="$ctrl.subnet.ipv6_ra_mode" name="ipv6_ra_mode"  md-maxlength="255" />
+            </md-input-container>
+
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Subnet Pool</label>
+                <input ng-model="$ctrl.subnet.subnetpool" name="subnetpool" type="text" ng-pattern="/^[0-9a-f]{32}$/">
+                <div ng-messages="$ctrl.formReference.subnetpool.$error" role="alert" multiple>
+                  <div ng-message="pattern" class="my-message">That doesn't look like a valid subnet pool id.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-xs>
+              <label>Prefix length</label>
+              <input ng-model="$ctrl.subnet.prefixlen" type="number" step="1" min="0"/>
+            </md-input-container>
+        </md-content>
+    </md-tab>
+    <md-tab label="Additional" >
+        <md-content layout-padding>
+            <label>Allocation Pools</label>
+            <md-button ng-click="$ctrl.add_allocation_pool()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+            <div ng-repeat="allocation_pool in $ctrl.subnet.allocation_pools" ng-class-odd="'odd'" ng-class-even="'even'">
+                <div layout-gt-xs="row" >
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Start</label>
+                        <input ng-model="allocation_pool.start" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>End</label>
+                        <input ng-model="allocation_pool.end" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/">
+                    </md-input-container>
+                    <md-button ng-click="$ctrl.delete_allocation_pool($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+                </div>
+            </div>
+
+            <label>Host Routes</label>
+            <md-button ng-click="$ctrl.add_hostroute()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+            <div ng-repeat="hostroute in $ctrl.subnet.host_routes" ng-class-odd="'odd'" ng-class-even="'even'">
+                <div layout-gt-xs="row" >
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Destination</label>
+                        <input ng-model="hostroute.destination" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[012]|[12]?[0-9]))$/" />
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Nexthop</label>
+                        <input ng-model="hostroute.nexthop" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/">
+                    </md-input-container>
+                    <md-button ng-click="$ctrl.delete_hostroute($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+                </div>
+            </div>
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>DNS Nameservers</label>
+                <md-chips ng-model="$ctrl.subnet.dns_nameservers"
+                          placeholder="+ nameserver address"
+                          readonly="false"
+                          md-removeable="true"
+                          md-max-chips="5"
+                          md-transform-chip="validate_dns($chip)">
+                </md-chips>
+                <p ng-show="$ctrl.subnet.dns_nameservers.length >= 5" color="red">Too many nameservers are specified.</p>
+            </md-input-container>
+        </md-content>
+    </md-tab>
+
+    <md-tab label="Administration" ng-if="$ctrl.admin">
+        <md-content layout-padding>
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Tenant ID</label>
+                <input ng-model="$ctrl.subnet.tenant_id" name="tenant_id" type="text" ng-pattern="/^[0-9a-f]{32}$/">
+                <div ng-messages="$ctrl.formReference.tenant_id.$error" role="alert" multiple>
+                  <div ng-message="pattern" class="my-message">That doesn't look like a valid tenant id.</div>
+                </div>
+            </md-input-container>
+        </md-content>
+    </md-tab>
+
+</md-tabs>

@@ -5,7 +5,7 @@
     function osNovaServerController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
             if (typeof this.instance.metadata === 'undefined'){
-                this.instance.metadata = [];
+                this.instance.metadata = [{}];
             }
         }
         $scope.boot_sources = [
@@ -21,15 +21,15 @@
         $scope.image_snapshots = $rootScope.image_snapshots;
         $scope.volumes = $rootScope.volumes;
         $scope.volume_snapshots = $rootScope.volume_snapshots;
-        $scope.validateMetadata = function(input_string){
-            var match = hotgenValidate.validate_keypair(input_string);
-            if (match){
-                return undefined;
-            } else{
-                hotgenNotify.show_error('Invalid characters are used in metadata.');
-                return null;
-            }
+
+        this.delete_metadata = function(index){
+            this.instance.metadata.splice(index, 1)
+
         }
+        this.add_metadata = function(){
+            this.instance.metadata.push({})
+        }
+
     }
 
     angular_module.component('osNovaServer', {
@@ -59,7 +59,7 @@
     function osCinderVolumeController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
             if (typeof this.volume.metadata === 'undefined'){
-                this.volume.metadata = [];
+                this.volume.metadata = [{}];
             }
             if (typeof this.volume.scheduler_hints === 'undefined'){
                 this.volume.scheduler_hints = [];
@@ -78,15 +78,7 @@
         $scope.volumes = $rootScope.volumes;
         $scope.volume_snapshots = $rootScope.volume_snapshots;
         $scope.vtypes = $rootScope.volume_types;
-        $scope.validateMetadata = function(input_string){
-            var match = hotgenValidate.validate_keypair(input_string);
-            if (match){
-                return undefined;
-            } else{
-                hotgenNotify.show_error('Invalid characters are used in metadata.');
-                return null;
-            }
-        }
+
         $scope.validateSchedulerHints = function(input_string){
             var match = hotgenValidate.validate_keypair(input_string);
             if (match){
@@ -95,6 +87,13 @@
                 hotgenNotify.show_error('Invalid characters are used in scheduler_hints.');
                 return null;
             }
+        }
+        this.delete_metadata = function(index){
+            this.volume.metadata.splice(index, 1)
+
+        }
+        this.add_metadata = function(){
+            this.volume.metadata.push({})
         }
     }
 
@@ -138,12 +137,12 @@
         ;
     }
     angular_module.component('osNeutronFloatingipAssociation', {
-      templateUrl: 'templates/os__neutron__floatingipassociation.html',
-      controller: osNeutronFloatingipAssocationController,
-      bindings:{
-        'floatingipassociation': '=',
-        'formReference': '<',
-      }
+        templateUrl: 'templates/os__neutron__floatingipassociation.html',
+        controller: osNeutronFloatingipAssocationController,
+        bindings:{
+          'floatingipassociation': '=',
+          'formReference': '<',
+        }
     });
 
     // OS::Neutron::Net
@@ -282,6 +281,24 @@
     });
 
 
+    // OS::Neutron::RouterInterface
+    function osNeutronRouterInterfaceController($scope, $rootScope) {
+        if (typeof this.routerinterface === 'undefined'){
+            this.message = 'Connect router interface icon to router and port/subnet in the canvas.';
+        } else{
+            this.message = null;
+        }
+    };
+    angular_module.component('osNeutronRouterInterface', {
+      templateUrl: 'templates/os__neutron__routerinterface.html',
+      controller: osNeutronRouterInterfaceController,
+      bindings:{
+        'routerinterface': '=',
+        'formReference': '<',
+      }
+    });
+
+
     // OS::Neutron::SecurityGroup
     function osNeutronSecurityGroupController($scope, $rootScope) {
         this.$onInit = function(){
@@ -303,6 +320,55 @@
       controller: osNeutronSecurityGroupController,
       bindings:{
         'securitygroup': '=',
+        'formReference': '<',
+      }
+    });
+
+    // OS::Neutron::Subnet
+    function osNeutronSubnetController($scope, $rootScope, hotgenNotify) {
+        this.admin=true
+        this.$onInit = function(){
+            if (typeof this.subnet.allocation_pools === 'undefined'){
+                this.subnet.allocation_pools = [{}];
+            }
+            if (typeof this.subnet.host_routes === 'undefined'){
+                this.subnet.host_routes = [{}];
+            }
+            if (typeof this.subnet.dns_nameservers === 'undefined'){
+                this.subnet.dns_nameservers = [];
+            }
+
+        }
+        this.add_allocation_pool = function(){
+            this.subnet.allocation_pools.push({})
+        }
+        this.delete_allocation_pool = function(index){
+            this.subnet.allocation_pools.splice(index, 1)
+        }
+        this.add_hostroute = function(){
+            this.subnet.host_routes.push({})
+        }
+        this.delete_hostroute = function(index){
+            this.subnet.host_routes.splice(index, 1)
+        }
+        $scope.validate_dns = function (input_string){
+            var re =  /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            var match = re.exec(input_string);
+            if (match){
+                return undefined;
+            } else{
+                hotgenNotify.show_error('Invalid nameserver address.');
+                return null;
+            }
+
+        }
+    }
+
+    angular_module.component('osNeutronSubnet', {
+      templateUrl: 'templates/os__neutron__subnet.html',
+      controller: osNeutronSubnetController,
+      bindings:{
+        'subnet': '=',
         'formReference': '<',
       }
     });

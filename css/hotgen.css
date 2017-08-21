@@ -53,9 +53,11 @@ div.vis-network div.vis-manipulation div.vis-separator-line {
     height:80%;
     margin: 0px 1px 5px 15px;
 }
-
+md-content  {
+    min-height: 400px
+}
 md-input-container{
-    margin: 25px 0;
+    margin: 25px 0 0 0;
 }
 
 .os-resource{
@@ -78,3 +80,10 @@ md-pagination-wrapper{
     background-color:#fff;
     margin: 10px 0px;
 }
+
+.md-chips md-chip{
+    border-radius:3px;
+    background-color:white;
+    border:  1px solid rgb(63,81,181)
+}
+
