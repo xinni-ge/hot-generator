@@ -1,143 +1,143 @@
 <md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
     <md-tab label="Details" >
-      <md-content layout-padding>
+        <md-content layout-padding>
 
-         <md-input-container class="md-block">
-            <label>Name</label>
-            <input ng-model="$ctrl.volume.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
-            <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
-              <div ng-message="required" class="my-message">You must supply an volume name.</div>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid volume name.</div>
-              <div ng-message="md-maxlength" class="my-message">Too long volume name.</div>
-            </div>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Name</label>
+                <input ng-model="$ctrl.volume.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
+                <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
+                    <div ng-message="required" class="my-message">You must supply an volume name.</div>
+                    <div ng-message="pattern" class="my-message">That doesn't look like a valid volume name.</div>
+                    <div ng-message="md-maxlength" class="my-message">Too long volume name.</div>
+                </div>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-          <label>Size (GB)</label>
-          <input ng-model="$ctrl.volume.size" type="number" step="1" required min="1"/>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Size (GB)</label>
+                <input ng-model="$ctrl.volume.size" type="number" step="1" required min="1"/>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Description</label>
-            <textarea ng-model="$ctrl.volume.description" rows="3" cols="150" md-maxlength="255"></textarea>
-            <div ng-messages="$ctrl.formReference.description.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">Please do not input invalid characters!</div>
-              <div ng-message="md-maxlength" class="my-message">Please input the description less than 255 characters.</div>
-              </div>
-            </div>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Description</label>
+                <textarea ng-model="$ctrl.volume.description" rows="3" cols="150" md-maxlength="255"></textarea>
+                <div ng-messages="$ctrl.formReference.description.$error" role="alert" multiple>
+                    <div ng-message="pattern" class="my-message">Please do not input invalid characters!</div>
+                    <div ng-message="md-maxlength" class="my-message">Please input the description less than 255 characters.</div>
+                    </div>
+               </div>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Volume Type</label>
-            <md-select ng-model="$ctrl.volume.volume_type" >
-                <md-option ng-repeat="vtype in vtypes" ng-value="vtype.id">
-                    {{vtype.name}}
-                </md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Volume Type</label>
+                <md-select ng-model="$ctrl.volume.volume_type" >
+                    <md-option ng-repeat="vtype in vtypes" ng-value="vtype.id">
+                        {{vtype.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Availability Zone</label>
-            <md-select ng-model="$ctrl.volume.availability_zone">
-                <md-option ng-repeat="az in availability_zones" ng-value="az.id">
-                  {{az.name}}
-                </md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Availability Zone</label>
+                <md-select ng-model="$ctrl.volume.availability_zone">
+                    <md-option ng-repeat="az in availability_zones" ng-value="az.id">
+                      {{az.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-          <md-checkbox ng-model="$ctrl.volume.multiattach" aria-label="multiattach" disabled>
-            multiattach
-          </md-checkbox>
+            <md-input-container class="md-block" flex-gt-xs>
+                <md-checkbox ng-model="$ctrl.volume.multiattach" aria-label="multiattach" disabled>
+                  multiattach
+                </md-checkbox>
 
-          <md-checkbox ng-model="$ctrl.volume.readonly" aria-label="readonly">
-            readonly
-          </md-checkbox>
-        </md-input-container>
-      </md-content>
+                <md-checkbox ng-model="$ctrl.volume.readonly" aria-label="readonly">
+                  readonly
+                </md-checkbox>
+            </md-input-container>
+        </md-content>
     </md-tab>
 
     <md-tab label="Additional">
-      <md-content layout-padding>
+        <md-content layout-padding>
 
-        <md-input-container class="md-block" >
-            <label>Create from source</label>
-            <md-select ng-model="$ctrl.volume.boot_source" required>
-                <md-option ng-repeat="source in boot_sources" ng-value="source.id">
-                    {{source.name}}
-                </md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Create from source</label>
+                <md-select ng-model="$ctrl.volume.boot_source" required>
+                    <md-option ng-repeat="source in boot_sources" ng-value="source.id">
+                        {{source.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='backup'">
-            <label>Backup ID</label>
-            <input ng-model="$ctrl.volume.backup_id" name="backup_id" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
-            <div ng-messages="$ctrl.formReference.backup_id.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid uuid.</div>
-            </div>
-        </md-input-container>
+            <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='backup'" flex-gt-xs>
+                <label>Backup ID</label>
+                <input ng-model="$ctrl.volume.backup_id" name="backup_id" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
+                <div ng-messages="$ctrl.formReference.backup_id.$error" role="alert" multiple>
+                  <div ng-message="pattern" class="my-message">That doesn't look like a valid uuid.</div>
+                </div>
+            </md-input-container>
 
-        <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='image'">
-            <label>Image</label>
-            <md-select ng-model="$ctrl.volume.image" >
-                <md-option ng-repeat="image in images" ng-value="image.id">
-                    {{image.name}}
-                </md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='image'" flex-gt-xs>
+                <label>Image</label>
+                <md-select ng-model="$ctrl.volume.image" >
+                    <md-option ng-repeat="image in images" ng-value="image.id">
+                        {{image.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='image_snapshot'">
-            <label>Image Snapshot</label>
-            <md-select ng-model="$ctrl.volume.snapshot_id" >
-                <md-option ng-repeat="snapshot in image_snapshots" ng-value="snapshot.id">
-                    {{snapshot.name}}
-                </md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='image_snapshot'" flex-gt-xs>
+                <label>Image Snapshot</label>
+                <md-select ng-model="$ctrl.volume.snapshot_id" >
+                    <md-option ng-repeat="snapshot in image_snapshots" ng-value="snapshot.id">
+                        {{snapshot.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='volume_snapshot'">
-            <label>Volume Snapshot</label>
-            <md-select ng-model="$ctrl.volume.snapshot_id" >
-                <md-option ng-repeat="snapshot in volume_snapshots" ng-value="snapshot.id">
-                    {{snapshot.name}}
-                </md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='volume_snapshot'" flex-gt-xs>
+                <label>Volume Snapshot</label>
+                <md-select ng-model="$ctrl.volume.snapshot_id" >
+                    <md-option ng-repeat="snapshot in volume_snapshots" ng-value="snapshot.id">
+                        {{snapshot.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='volume'">
-            <label>Source Volume</label>
-            <md-select ng-model="$ctrl.volume.source_volid" >
-                <md-option ng-repeat="volume in volumes" ng-value="volume.id">
-                    {{volume.name}}
-                </md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='volume'" flex-gt-xs>
+                <label>Source Volume</label>
+                <md-select ng-model="$ctrl.volume.source_volid" >
+                    <md-option ng-repeat="volume in volumes" ng-value="volume.id">
+                        {{volume.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Metadata</label>
-            <md-chips ng-model="$ctrl.volume.metadata"
-                      placeholder="+ key=value"
-                      readonly="false"
-                      md-removeable="true"
-                      md-max-chips="255"
-                      md-transform-chip="validateMetadata($chip)">
-            </md-chips>
-            <p ng-show="$ctrl.volume.metadata.length >= 255" color="red"> Maximum 255 key/value pairs can be added. </p>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Metadata</label>
+                <md-chips ng-model="$ctrl.volume.metadata"
+                          placeholder="+ key=value"
+                          readonly="false"
+                          md-removeable="true"
+                          md-max-chips="255"
+                          md-transform-chip="validateMetadata($chip)">
+                </md-chips>
+                <p ng-show="$ctrl.volume.metadata.length >= 255" color="red"> Maximum 255 key/value pairs can be added. </p>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Scheduler Hints</label>
-            <md-chips ng-model="$ctrl.volume.scheduler_hints"
-                      placeholder="+ condition=option"
-                      readonly="false"
-                      md-removeable="true"
-                      md-max-chips="5"
-                      md-transform-chip="validateSchedulerHints($chip)">
-            </md-chips>
-            <p ng-show="$ctrl.volume.scheduler_hints.length >= 5" color="red">Too many scheduler hints are specified.</p>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Scheduler Hints</label>
+                <md-chips ng-model="$ctrl.volume.scheduler_hints"
+                          placeholder="+ condition=option"
+                          readonly="false"
+                          md-removeable="true"
+                          md-max-chips="5"
+                          md-transform-chip="validateSchedulerHints($chip)">
+                </md-chips>
+                <p ng-show="$ctrl.volume.scheduler_hints.length >= 5" color="red">Too many scheduler hints are specified.</p>
+            </md-input-container>
 
-      </md-content>
+        </md-content>
     </md-tab>
 
 </md-tabs>

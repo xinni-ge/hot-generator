@@ -1,0 +1,73 @@
+<md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
+    <md-tab label="Details" >
+        <md-content layout-padding>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Name</label>
+                <input ng-model="$ctrl.router.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
+                <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
+                    <div ng-message="pattern" class="my-message">That doesn't look like a valid network name.</div>
+                    <div ng-message="md-maxlength" class="my-message">Too long network name.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>L3 Agents</label>
+                <md-chips ng-model="$ctrl.router.l3_agent_ids"
+                          placeholder="+ l3 agent id"
+                          readonly="false"
+                          md-removeable="true"
+                          md-max-chips="255">
+                </md-chips>
+            </md-input-container>
+            <div layout-gt-xs="row" >
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.router.admin_state_up" aria-label="admin_state_up">
+                      Admin State UP
+                    </md-checkbox>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.router.distributed" aria-label="distributed">
+                      Distributed
+                    </md-checkbox>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.router.ha" aria-label="ha">
+                      HA
+                    </md-checkbox>
+                </md-input-container>
+            </div>
+        </md-content>
+    </md-tab>
+    <md-tab label="External Gateway Info" >
+        <md-content layout-padding>
+            <md-input-container class="md-block" flex-gt-xs>
+                <md-checkbox ng-model="$ctrl.router.external_gateway_info.enable_snat" aria-label="enable_snat">
+                  Enable SNAT
+                </md-checkbox>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Network</label>
+                <input ng-model="$ctrl.router.external_gateway_info.network" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
+            </md-input-container>
+            <label>External Fixed IP Addresses</label>
+            <md-button ng-click="$ctrl.add_external_fixed_ip()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+
+            <div ng-repeat="fixed_ip in $ctrl.router.external_gateway_info.external_fixed_ips" ng-class-odd="'odd'" ng-class-even="'even'">
+                <div layout-gt-xs="row" >
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>IP Address</label>
+                        <input ng-model="fixed_ip.ip_address" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Subnet</label>
+                        <input ng-model="fixed_ip.subnet" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
+                    </md-input-container>
+                    <md-button ng-click="$ctrl.delete_external_fixed_ip($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+
+                </div>
+            </div>
+        </md-content>
+    </md-tab>
+
+</md-tabs>

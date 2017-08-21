@@ -1,14 +1,14 @@
 <md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
     <md-tab label="Details" >
-      <md-content layout-padding>
+        <md-content layout-padding>
 
-        <md-input-container class="md-block">
-            <label>mountpoint</label>
-            <input ng-model="$ctrl.volumeattachment.mountpoint" name="mountpoint" ng-pattern="/^/[0-9a-z/-]+$/" />
-            <div ng-messages="$ctrl.formReference.mountpoint.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">Please input a valid device path.</div>
-            </div>
-        </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>mountpoint</label>
+                <input ng-model="$ctrl.volumeattachment.mountpoint" name="mountpoint" ng-pattern="/^/[0-9a-z/-]+$/" />
+                <div ng-messages="$ctrl.formReference.mountpoint.$error" role="alert" multiple>
+                  <div ng-message="pattern" class="my-message">Please input a valid device path.</div>
+                </div>
+            </md-input-container>
 
       </md-content>
     </md-tab>

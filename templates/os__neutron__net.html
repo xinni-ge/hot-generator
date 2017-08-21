@@ -1,45 +1,48 @@
 <md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
     <md-tab label="Details" >
-      <md-content layout-padding>
+        <md-content layout-padding>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Name</label>
+                <input ng-model="$ctrl.network.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
+                <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
+                    <div ng-message="pattern" class="my-message">That doesn't look like a valid network name.</div>
+                    <div ng-message="md-maxlength" class="my-message">Too long network name.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>QoS Policy</label>
+                <input ng-model="$ctrl.network.qos_policy" name="qos_policy" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
+                <div ng-messages="$ctrl.formReference.qos_policy.$error" role="alert" multiple>
+                  <div ng-message="pattern" class="my-message">That doesn't look like a valid uuid.</div>
+                </div>
+            </md-input-container>
 
-         <md-input-container class="md-block">
-            <label>Name</label>
-            <input ng-model="$ctrl.network.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
-            <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid network name.</div>
-              <div ng-message="md-maxlength" class="my-message">Too long network name.</div>
+            <div layout-gt-xs="row" >
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.network.admin_state_up" aria-label="admin_state_up">
+                      Admin State UP
+                    </md-checkbox>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.network.port_security_enabled" aria-label="port_security_enabled">
+                      Port Security Enabled
+                    </md-checkbox>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs>
+                    <md-checkbox ng-model="$ctrl.network.shared" aria-label="shared">
+                      Shared
+                    </md-checkbox>
+                </md-input-container>
             </div>
-        </md-input-container>
-
-        <md-input-container class="md-block">
-          <md-checkbox ng-model="$ctrl.network.admin_state_up" aria-label="admin_state_up">
-            Admin State UP
-          </md-checkbox>
-
-          <md-checkbox ng-model="$ctrl.network.port_security_enabled" aria-label="port_security_enabled">
-            Port Security Enabled
-          </md-checkbox>
-
-          <md-checkbox ng-model="$ctrl.network.shared" aria-label="shared">
-            Shared
-          </md-checkbox>
-        </md-input-container>
-
-        <md-input-container class="md-block">
-            <label>QoS Policy</label>
-            <input ng-model="$ctrl.network.qos_policy" name="qos_policy" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
-            <div ng-messages="$ctrl.formReference.qos_policy.$error" role="alert" multiple>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid uuid.</div>
-            </div>
-        </md-input-container>
-
-      </md-content>
+        </md-content>
     </md-tab>
 
-    <md-tab label="Administration" ng-if="$ctrl.admin">
+    <md-tab label="Administration" ng-if="$ctrl.admin" >
       <md-content layout-padding>
 
-        <md-input-container class="md-block" >
+        <md-input-container class="md-block" flex-gt-xs>
             <label>DHCP Agents</label>
             <md-chips ng-model="$ctrl.network.dhcp_agent_list"
                       placeholder="+ dhcp agent id"
@@ -49,7 +52,7 @@
             </md-chips>
         </md-input-container>
 
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" flex-gt-xs>
             <label>Tenant ID</label>
             <input ng-model="$ctrl.network.tenant_id" name="tenant_id" type="text" ng-pattern="/^[0-9a-f]{32}$/">
             <div ng-messages="$ctrl.formReference.tenant_id.$error" role="alert" multiple>

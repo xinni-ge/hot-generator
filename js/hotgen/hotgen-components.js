@@ -58,7 +58,6 @@
     // OS::Cinder::Volume
     function osCinderVolumeController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
-            debugger;
             if (typeof this.volume.metadata === 'undefined'){
                 this.volume.metadata = [];
             }
@@ -148,7 +147,7 @@
     });
 
     // OS::Neutron::Net
-    function osNeutronNet($scope, $rootScope){
+    function osNeutronNetController($scope, $rootScope){
         this.$onInit = function(){
             if (typeof this.network.dhcp_agent_ids === 'undefined'){
                 this.network.dhcp_agent_ids = [];
@@ -160,7 +159,7 @@
     }
     angular_module.component('osNeutronNet', {
       templateUrl: 'templates/os__neutron__net.html',
-      controller: osNeutronNet,
+      controller: osNeutronNetController,
       bindings:{
         'network': '=',
         'formReference': '<',
@@ -168,7 +167,7 @@
     });
 
     // OS::Neutron::Port
-    function osNeutronPort($scope, $rootScope){
+    function osNeutronPortController($scope, $rootScope){
         this.additional = false;
         this.$onInit = function(){
             if (typeof this.port.admin_state_up === 'undefined'){
@@ -243,13 +242,47 @@
 
     angular_module.component('osNeutronPort', {
       templateUrl: 'templates/os__neutron__port.html',
-      controller: osNeutronPort,
+      controller: osNeutronPortController,
       bindings:{
         'port': '=',
         'formReference': '<',
       }
     });
 
+    // OS::Neutron::Router
+    function osNeutronRouterController($scope, $rootScope) {
+        this.$onInit = function(){
+            if (typeof this.router.external_gateway_info === 'undefined'){
+                this.router.external_gateway_info = {"external_fixed_ips": [{}]};
+            }
+            if (typeof this.router.l3_agent_ids === 'undefined'){
+                this.router.l3_agent_ids = [];
+            }
+            if (typeof this.router.admin_state_up === 'undefined'){
+                this.router.admin_state_up = true;
+            }
+
+        };
+        this.add_external_fixed_ip = function(){
+            this.router.external_gateway_info.external_fixed_ips.push({})
+        }
+        this.delete_external_fixed_ip = function(index){
+            this.router.external_gateway_info.external_fixed_ips.splice(index, 1)
+        }
+
+    }
+
+    angular_module.component('osNeutronRouter', {
+      templateUrl: 'templates/os__neutron__router.html',
+      controller: osNeutronRouterController,
+      bindings:{
+        'router': '=',
+        'formReference': '<',
+      }
+    });
+
+
+    // OS::Neutron::SecurityGroup
     function osNeutronSecurityGroupController($scope, $rootScope) {
         this.$onInit = function(){
             if (typeof this.securitygroup.rules === 'undefined'){

@@ -1,7 +1,7 @@
 <md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
     <md-tab label="Details" >
         <md-content layout-padding>
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex-gt-xs>
                 <label>Name</label>
                 <input ng-model="$ctrl.securitygroup.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
                 <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
@@ -11,7 +11,7 @@
                 </div>
             </md-input-container>
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex-gt-xs>
                 <label>Description</label>
                 <textarea ng-model="$ctrl.securitygroup.description" rows="3" cols="150" md-maxlength="255"></textarea>
                 <div ng-messages="$ctrl.formReference.description.$error" role="alert" multiple>

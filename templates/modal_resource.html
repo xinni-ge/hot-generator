@@ -1,40 +1,40 @@
 <md-dialog aria-label="ResourceDialog" style="width:700px; min-width:600px">
-<form name="resourceForm">
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2 class="md-title"><b>Resource {{resource_type}}</b></h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="cancel()">
-          <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
-    <md-dialog-content>
-        <os-nova-server instance="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::Server'"></os-nova-server>
-        <os-nova-keypair keypair="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::KeyPair'"></os-nova-keypair>
-        <os-cinder-volume volume="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Cinder::Volume'"></os-cinder-volume>
-        <os-cinder-volume-attachment volumeattachment="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Cinder::VolumeAttachment'"></os-cinder-volume-attachment>
-        <os-neutron-floatingip floatingip="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::FloatingIP'"></os-neutron-floatingip>
-        <os-neutron-floatingip-association floatingipassociation="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::FloatingIPAssociation'"></os-neutron-floatingip-association>
-        <os-neutron-net network="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Net'"></os-neutron-net>
-        <os-neutron-port port="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Port'"></os-neutron-port>
-        <os-neutron-router router="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Router'"></os-neutron-router>
-        <os-neutron-router-interface routerinterface="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::RouterInterface'"></os-neutron-router-interface>
-        <os-neutron-security-group securitygroup="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::SecurityGroup'"></os-neutron-security-group>
-        <os-neutron-subnet subnet="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Subnet'"></os-neutron-subnet>
-    </md-dialog-content>
+    <form name="resourceForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 class="md-title"><b>Resource {{resource_type}}</b></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+          </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <os-nova-server instance="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::Server'"></os-nova-server>
+            <os-nova-keypair keypair="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Nova::KeyPair'"></os-nova-keypair>
+            <os-cinder-volume volume="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Cinder::Volume'"></os-cinder-volume>
+            <os-cinder-volume-attachment volumeattachment="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Cinder::VolumeAttachment'"></os-cinder-volume-attachment>
+            <os-neutron-floatingip floatingip="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::FloatingIP'"></os-neutron-floatingip>
+            <os-neutron-floatingip-association floatingipassociation="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::FloatingIPAssociation'"></os-neutron-floatingip-association>
+            <os-neutron-net network="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Net'"></os-neutron-net>
+            <os-neutron-port port="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Port'"></os-neutron-port>
+            <os-neutron-router router="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Router'"></os-neutron-router>
+            <os-neutron-router-interface routerinterface="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::RouterInterface'"></os-neutron-router-interface>
+            <os-neutron-security-group securitygroup="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::SecurityGroup'"></os-neutron-security-group>
+            <os-neutron-subnet subnet="resource" form-reference="resourceForm" ng-if="resource_type=='OS::Neutron::Subnet'"></os-neutron-subnet>
+        </md-dialog-content>
 
-    <md-dialog-actions layout="row">
-      <span flex></span>
-      <md-button class="md-raised md-warn" ng-click="delete_resource()" >
-        {{ 'Delete Resource' | translate }}
-      </md-button>
-      <md-button class="md-raised" ng-click="cancel()" >
-        {{ 'Cancel' | translate }}
-      </md-button>
-      <md-button class="md-raised  md-primary" ng-disabled="resourceForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
-        {{ 'OK' | translate }}
-      </md-button>
-    </md-dialog-actions>
-  </form>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised md-warn" ng-click="delete_resource()" >
+              {{ 'Delete Resource' | translate }}
+            </md-button>
+            <md-button class="md-raised" ng-click="cancel()" >
+              {{ 'Cancel' | translate }}
+            </md-button>
+            <md-button class="md-raised  md-primary" ng-disabled="resourceForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
+              {{ 'OK' | translate }}
+            </md-button>
+        </md-dialog-actions>
+    </form>
 </md-dialog>
