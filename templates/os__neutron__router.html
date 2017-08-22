@@ -54,7 +54,7 @@
                 </div>
             </md-input-container>
             <label>External Fixed IP Addresses</label>
-            <md-button ng-click="$ctrl.add_external_fixed_ip()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+            <md-button ng-click="$ctrl.add_external_fixed_ip()" aria-label="Add" class="md-icon-button"><i class="fa fa-fw fa-plus"></i></md-button>
 
             <div ng-repeat="fixed_ip in $ctrl.router.external_gateway_info.external_fixed_ips" ng-class-odd="'odd'" ng-class-even="'even'">
                 <div layout-gt-xs="row" >
@@ -66,7 +66,7 @@
                         <label>Subnet</label>
                         <input ng-model="fixed_ip.subnet" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
                     </md-input-container>
-                    <md-button ng-click="$ctrl.delete_external_fixed_ip($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+                    <md-button ng-click="$ctrl.delete_external_fixed_ip($index)" aria-label="Delete" class="md-icon-button"><i class="fa fa-fw fa-times"></i></md-button>
 
                 </div>
             </div>

@@ -103,7 +103,7 @@
         </md-input-container>
 
         <label>Metadata</label>
-        <md-button ng-click="$ctrl.add_metadata()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+        <md-button ng-click="$ctrl.add_metadata()" aria-label="Add"  class="md-icon-button"><i class="fa fa-fw fa-plus"></i></md-button>
         <div ng-repeat="record in $ctrl.instance.metadata" ng-class-odd="'odd'" ng-class-even="'even'">
             <div layout-gt-xs="row" >
                 <md-input-container class="md-block" flex-gt-xs>
@@ -114,7 +114,7 @@
                     <label>Value</label>
                     <input ng-model="record.value" type="text">
                 </md-input-container>
-                <md-button ng-click="$ctrl.delete_metadata($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+                <md-button ng-click="$ctrl.delete_metadata($index)" aria-label="Delete" class="md-icon-button"><i class="fa fa-fw fa-times"></i></md-button>
             </div>
         </div>
 

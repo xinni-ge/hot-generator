@@ -25,7 +25,7 @@
     <md-tab label="Rules" >
         <md-content layout-padding>
             <label>Rules</label>
-            <md-button ng-click="$ctrl.add_rule()" aria-label="Add"><i class="fa fa-fw fa-plus"></i></md-button>
+            <md-button ng-click="$ctrl.add_rule()" aria-label="Add" class="md-icon-button"><i class="fa fa-fw fa-plus"></i></md-button>
 
             <div ng-repeat="rule in $ctrl.securitygroup.rules" ng-class-odd="'odd'" ng-class-even="'even'">
                 <div layout-gt-xs="row" >
@@ -76,7 +76,7 @@
                         <label>Remote Group ID</label>
                         <input ng-model="rule.remote_group_id" name="remote_group_id" />
                     </md-input-container>
-                    <md-button ng-click="$ctrl.delete_rule($index)" aria-label="Delete"><i class="fa fa-fw fa-times"></i></md-button>
+                    <md-button ng-click="$ctrl.delete_rule($index)" aria-label="Delete"  class="md-icon-button"><i class="fa fa-fw fa-times"></i></md-button>
                 </div>
             </div>
 
