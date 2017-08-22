@@ -53,8 +53,16 @@ div.vis-network div.vis-manipulation div.vis-separator-line {
     height:80%;
     margin: 0px 1px 5px 15px;
 }
+.mat-tab-links {
+    display: table;
+    width: 100%;
+
+    .mat-tab-link {
+        display: table-cell;
+    }
+}
 md-content  {
-    min-height: 400px
+    min-height: 500px
 }
 md-input-container{
     margin: 25px 0 0 0;
@@ -86,4 +94,11 @@ md-pagination-wrapper{
     background-color:white;
     border:  1px solid rgb(63,81,181)
 }
+.animate-show-hide.ng-hide {
+  opacity: 0;
+}
 
+.animate-show-hide.ng-hide-add,
+.animate-show-hide.ng-hide-remove {
+  transition: all linear 0.5s;
+}

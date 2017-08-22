@@ -13,6 +13,10 @@
         $rootScope.edges = new VisDataSet();
         $rootScope.saved_resources = {};
         $rootScope.selected = {};
+        $rootScope.keypairs = [
+            {'name': 'default'},
+            {'name': 'openstack'},
+        ];
         $rootScope.security_groups = [
             {'id': 'default', 'name': 'default'},
             {'id': 'internal', 'name': 'internal'},

@@ -202,5 +202,11 @@
             },
         },
     });
+
+    angular_module.constant('necessary_properties', {
+        'OS__Nova__Server': {
+            'flavor': '',
+        }
+    });
 })(window.angular);
 

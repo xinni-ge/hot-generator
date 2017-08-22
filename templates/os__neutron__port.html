@@ -55,6 +55,14 @@
                     <div ng-message="pattern" class="my-message">That doesn't look like a valid mac address.</div>
                 </div>
             </md-input-container>
+            <md-input-container class="md-block">
+                <label>Security Groups</label>
+                <md-select ng-model="$ctrl.port.security_groups"  multiple>
+                    <md-option ng-repeat="sg in security_groups" ng-value="sg.id">
+                        {{sg.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
             <div layout-gt-xs="row" style="padding:0">
                 <md-input-container class="md-block" flex-gt-xs>
