@@ -12,7 +12,7 @@
                 }).then(function(){
                     hotgenNotify.show_success('Resource saved.');
                 }, function(){
-//                    hotgenNotify.show_info('dismiss a modal');
+                    hotgenNotify.show_info('dismiss a modal');
                 });
             };
             function DialogController($scope, $mdDialog) {
@@ -30,9 +30,9 @@
                 }
         }]);
 
-    angular_module.controller('FormModalCtrl', ['$scope', '$rootScope',
-        '$mdDialog', 'hotgenNotify', 'hotgenMessage',
-        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage,){
+    angular_module.controller('FormModalCtrl', ['$scope', '$rootScope', '$compile',
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals',
+        function($scope, $rootScope, $compile, $mdDialog, hotgenNotify, hotgenMessage, hotgenGlobals, ){
             $scope.showTabDialog = function(){
                 $mdDialog.show({
                   controller: DialogController,
@@ -84,16 +84,95 @@
                     if ($rootScope.selected.id in $rootScope.saved_resources){
                         $scope.resource = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
                     } else{
-                        $scope.resource = {count:1}
+                        $scope.resource = {}
                     }
+                    $scope.component = hotgenGlobals.get_resource_components()[$rootScope.selected.resource_type];
+
                 }
             };
-
             $scope.$on('handle_edit_node', function(event, args){
+                hotgenNotify.show_info('Show details of resource ' + args.replace(/_/g, ':') +'.');
                 $scope.showTabDialog();
             });
 
         }]);
+
+
+    angular_module.controller('EdgeFormModalCtrl',  ['$scope', '$rootScope',
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals',
+        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage, hotgenGlobals){
+            $scope.showTabDialog = function(){
+                    $mdDialog.show({
+                      controller: EdgeDialogController,
+                      controllerAs: 'ctrl',
+                      templateUrl: 'templates/modal_edge.html',
+                      parent: angular.element(document.body),
+                      clickOutsideToClose:true
+                    }).then(function(){
+                        hotgenNotify.show_success('The selected edge is saved successfully.');
+                    }, function(){
+    //                    hotgenNotify.show_error('dismiss a modal');
+                    });
+
+                function EdgeDialogController($scope, $rootScope, $mdDialog,) {
+                    $scope.delete_resource = function() {
+                        $rootScope.edges.remove($rootScope.selected.id);
+                        hotgenNotify.show_success('The selected edge has been delete successfully.')
+                        $mdDialog.cancel();
+                    };
+                    $scope.cancel = function() {
+                        $mdDialog.cancel();
+                    };
+                    $scope.save = function() {
+                        $mdDialog.hide();
+
+                        $rootScope.saved_resources[$rootScope.selected.id] = {
+                            data: angular.copy($scope.resource)
+                        };
+
+                        var edge_directions = hotgenGlobals.get_edge_directions();
+                        var from_type = $rootScope.selected.resource_type.from;
+                        var to_type = $rootScope.selected.resource_type.to;
+                        var label = edge_directions[from_type][to_type].label
+                        $rootScope.edges.update({
+                              id: $rootScope.selected.id,
+                              label: $scope.resource[label],
+                              font: { color: $rootScope.selected.from_node.icon.color},
+                            })
+
+                    };
+
+                    if ($rootScope.selected.id in $rootScope.saved_resources){
+                        $scope.resource = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
+                    } else{
+                        $scope.resource = {}
+                    }
+
+                    var from_type = $rootScope.selected.resource_type.from;
+                    var to_type = $rootScope.selected.resource_type.to;
+                    $scope.from_type = from_type.replace(/_/g, ':');
+                    $scope.to_type = to_type.replace(/_/g, ':');
+                    $scope.component = hotgenGlobals.get_resource_components()[from_type + '_' + to_type];
+                }
+            }
+            $scope.$on('handle_edit_edge', function(event, args){
+                /* Click a edge and decide to show modal or not */
+                var from_type = args.from;
+                var to_type = args.to;
+                var edge_directions = hotgenGlobals.get_edge_directions();
+                if ( !( from_type in edge_directions) || !(to_type in edge_directions[from_type])){
+                    hotgenNotify.show_warning('The edge might be invalid.');
+                    return;
+                }
+                if (! edge_directions[from_type][to_type].modal){
+                    hotgenNotify.show_info('No form dialog found of this edge.');
+                    return;
+                }
+
+                $scope.showTabDialog();
+            });
+        }]);
+
     angular_module.controller('DraftModalCtrl', ['$scope', '$rootScope',
         '$mdDialog', 'hotgenNotify', 'hotgenMessage',
          function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage,){

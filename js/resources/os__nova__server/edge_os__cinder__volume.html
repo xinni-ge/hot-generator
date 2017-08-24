@@ -1,0 +1,12 @@
+<md-tabs md-dynamic-height md-stretch-tabs="never" md-border-bottom>
+    <md-tab label="Details">
+        <md-content layout-padding>
+            <div layout-gt-xs="row" >
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Boot Index</label>
+                    <input ng-model="$ctrl.blockdevice.boot_index"  type="number" step="1" min="-1">
+                </md-input-container>
+            </div>
+        </md-content>
+    </md-tab>
+</md-tabs>

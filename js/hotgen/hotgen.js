@@ -9,6 +9,7 @@
 
     angular_module.run(function ($rootScope, $translate, VisDataSet, $timeout) {
         $translate.use('en');
+        $rootScope.message_level = 3;
         $rootScope.nodes = new VisDataSet();
         $rootScope.edges = new VisDataSet();
         $rootScope.saved_resources = {};

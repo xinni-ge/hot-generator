@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('IconCtrl', function($scope, resource_types){
-        $scope.resource_types = resource_types;
+    angular_module.controller('IconCtrl', function($scope, hotgenGlobals){
+        $scope.resource_types = hotgenGlobals.get_resource_icons();
     });
 
     angular_module.directive('draggable', function(){
@@ -19,7 +19,7 @@
 
         }
     });
-    angular_module.directive('droppable', function($rootScope, resource_types, hotgenUUID){
+    angular_module.directive('droppable', function($rootScope, hotgenGlobals, hotgenUUID){
         return {
             link: function (scope, element){
                 var el = element[0];
@@ -29,6 +29,7 @@
                     }
                 },true);
                 el.addEventListener('drop', function(e){
+                    var resource_types = hotgenGlobals.get_resource_icons();
                     var dropped_elem_id = e.dataTransfer.getData("text");
                     var dropped_elem_base = document.getElementById(dropped_elem_id);
                     var resource_type = dropped_elem_id;

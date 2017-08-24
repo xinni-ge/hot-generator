@@ -1,8 +1,8 @@
 <md-dialog aria-label="ResourceDialog" style="width:700px; min-width:600px; min-height:500px;">
-    <form name="resourceForm">
+    <form name="edgeForm">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2 class="md-title"><b>Resource {{resource_type}}</b></h2>
+                <h2 class="md-title"><b>Resource {{from_type}} -> {{to_type}}</b></h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon md-svg-src="css/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -21,7 +21,7 @@
             <md-button class="md-raised" ng-click="cancel()" >
               {{ 'Cancel' | translate }}
             </md-button>
-            <md-button class="md-raised  md-primary" ng-disabled="resourceForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
+            <md-button class="md-raised  md-primary" ng-disabled="edgeForm.$invalid" ng-click="save()" style="margin-right:20px;" type="submit">
               {{ 'Save' | translate }}
             </md-button>
         </md-dialog-actions>

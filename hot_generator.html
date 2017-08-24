@@ -5,10 +5,11 @@
         <meta content="utf-8" http-equiv="encoding">
         <title>OpenStack | HOT Generator</title>
 
-        <script src="js/angular/angular.js"></script>
-        <script src="js/angular/angular-animate.js"></script>
+        <script src="js/angular/angular.min.js"></script>
+        <script src="js/angular/angular-animate.min.js"></script>
         <script src="js/angular/angular-aria.min.js"></script>
         <script src="js/angular/angular-messages.min.js"></script>
+        <script src="js/angular/angular-sanitize.min.js"></script>
         <script src="js/angular/angular-material.min.js"></script>
         <script src="js/angular/angular-translate.min.js"></script>
         <script src="js/angular/angular-notify.js"></script>
@@ -104,21 +105,34 @@
         <div ng-controller="FormModalCtrl"  class="md-padding" id="popupContainer" ng-cloak>
         </div>
 
+        <div ng-controller="EdgeFormModalCtrl"  class="md-padding" id="popupEdgeContainer" ng-cloak>
+        </div>
+
         <div ng-controller="DraftModalCtrl"  class="md-padding" ng-cloak>
         </div>
 
         <script>
-            angular_module = angular.module('hotgen', ['hotgen-utils', 'ngMaterial', 'ngMessages',
+            angular_module = angular.module('hotgen', ['hotgen-utils', 'ngMaterial', 'ngMessages', 'ngSanitize',
                     'ui.bootstrap',
                     'ngVis',
                     'pascalprecht.translate']);
         </script>
-
+        <script src="js/hotgen/hotgen.js"></script>
+        <script src="js/resources/os__cinder__volume/os__cinder__volume.js"></script>
+        <script src="js/resources/os__cinder__volumeattachment/os__cinder__volumeattachment.js"></script>
+        <script src="js/resources/os__neutron__floatingip/os__neutron__floatingip.js"></script>
+        <script src="js/resources/os__neutron__floatingipassociation/os__neutron__floatingipassociation.js"></script>
+        <script src="js/resources/os__neutron__net/os__neutron__net.js"></script>
+        <script src="js/resources/os__neutron__port/os__neutron__port.js"></script>
+        <script src="js/resources/os__neutron__router/os__neutron__router.js"></script>
+        <script src="js/resources/os__neutron__routerinterface/os__neutron__routerinterface.js"></script>
+        <script src="js/resources/os__neutron__securitygroup/os__neutron__securitygroup.js"></script>
+        <script src="js/resources/os__neutron__subnet/os__neutron__subnet.js"></script>
+        <script src="js/resources/os__nova__keypair/os__nova__keypair.js"></script>
+        <script src="js/resources/os__nova__server/os__nova__server.js"></script>
         <script src="js/hotgen/hotgen-translate.js"></script>
         <script src="js/hotgen/hotgen-utils.js"></script>
-        <script src="js/hotgen/hotgen-components.js"></script>
         <script src="js/hotgen/hotgen-resources.js"></script>
-        <script src="js/hotgen/hotgen.js"></script>
         <script src="js/hotgen/hotgen-canvas.js"></script>
         <script src="js/hotgen/hotgen-vis-network.js"></script>
         <script src="js/hotgen/hotgen-modals.js"></script>

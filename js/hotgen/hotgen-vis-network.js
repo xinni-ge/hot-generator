@@ -1,12 +1,12 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('VisCtrl', ['$scope', '$rootScope', 'hotgenNotify', 'hotgenMessage', 'edge_directions',
-        function($scope, $rootScope, hotgenNotify, hotgenMessage, edge_directions) {
-
+    angular_module.controller('VisCtrl', ['$scope', '$rootScope', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals',
+        function($scope, $rootScope, hotgenNotify, hotgenMessage, hotgenGlobals) {
             $scope.options = {
                 autoResize: true,
                 edges: {
                     smooth: false,
+//                    arrows: 'to',
                     dashes: true,
 //                    length: 300,
                     color: {
@@ -84,7 +84,7 @@
             $scope.click = function(params){
                 if (params.nodes.length > 0){
                     var selected_id = params.nodes[0];
-                    var selected_node = $rootScope.nodes._data[selected_id];
+                    var selected_node = $rootScope.nodes.get(selected_id);
                     var selected_type = selected_node.title
                     $rootScope.selected = {
                         element: 'node',
@@ -95,7 +95,20 @@
 
                     hotgenMessage.broadcast_edit_node(selected_type);
                 } else if (params.edges.length > 0){
-                    ;
+                    var selected_id = params.edges[0];
+                    var selected_edge = $rootScope.edges.get(selected_id);
+                    var from_node = $rootScope.nodes.get(selected_edge.from);
+                    var to_node = $rootScope.nodes.get(selected_edge.to);
+
+                    $rootScope.selected = {
+                        element: 'edge',
+                        resource_type: {from: from_node.title, to: to_node.title},
+                        from_node: from_node,
+                        to_node: to_node,
+                        id: selected_id,
+                        edge: selected_edge,
+                    }
+                    hotgenMessage.broadcast_edit_edge(from_node.title, to_node.title);
                 } else {
                     ;
                 }
@@ -117,6 +130,7 @@
                 var to_node = $scope.data.nodes.get(data.to);
                 var from_node_type = from_node.title;
                 var to_node_type = to_node.title;
+                var edge_directions = hotgenGlobals.get_edge_directions()
                 if ((! edge_directions[from_node_type]) || !(edge_directions[from_node_type][to_node_type])){
                     hotgenNotify.show_error(to_node.label+" cannot be connected with "+from_node.label+".");
                     return false;
