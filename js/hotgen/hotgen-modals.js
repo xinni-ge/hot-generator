@@ -63,16 +63,10 @@
                           data: angular.copy($scope.resource)
                       };
                       var label = $rootScope.selected.node.label;
-                      if ($scope.resource.name){
-                        label = $scope.resource.name;
-                      } else if ($scope.resource.ip_address){
-                        label = $scope.resource.ip_address
-                      } else if ($scope.resource.floating_ip_address){
-                        label = $scope.resource.floating_ip_address
-                      } else if ($scope.resource.fixed_ip_address){
-                        label = $scope.resource.fixed_ip_address
-                      } else if ($scope.resource.mountpoint){
-                        label = $scope.resource.mountpoint
+                      var prop_label = $scope.get_label($rootScope.selected.resource_type);
+
+                      if (prop_label && $scope.resource[prop_label]){
+                        label = $scope.resource[prop_label];
                       }
                       $rootScope.nodes.update({
                             id: $rootScope.selected.id,
@@ -87,6 +81,10 @@
                         $scope.resource = {}
                     }
                     $scope.component = hotgenGlobals.get_resource_components()[$rootScope.selected.resource_type];
+
+                    $scope.get_label = function(node_type){
+                        return hotgenGlobals.get_node_labels()[node_type];
+                    }
 
                 }
             };
@@ -137,7 +135,8 @@
                         $rootScope.edges.update({
                               id: $rootScope.selected.id,
                               label: $scope.resource[label],
-                              font: { color: $rootScope.selected.from_node.icon.color},
+                              color: $rootScope.selected.from_node.icon.color,
+                              dashes: false,
                             })
 
                     };

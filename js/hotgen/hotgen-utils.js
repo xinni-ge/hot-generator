@@ -89,9 +89,13 @@
                 edge_directions: {},
                 necessary_properties: {},
                 resource_components: {},
+                node_labels: {},
             };
 
             return {
+                get_node_labels: function () {
+                    return globals.node_labels;
+                },
                 get_resource_icons: function () {
                     return globals.resource_icons;
                 },
@@ -103,6 +107,9 @@
                 },
                 get_necessary_properties: function () {
                     return globals.necessary_properties;
+                },
+                update_node_labels: function(key, value) {
+                    globals.node_labels[key] = value
                 },
                 update_resource_icons: function(key, value) {
                     globals.resource_icons[key] = value

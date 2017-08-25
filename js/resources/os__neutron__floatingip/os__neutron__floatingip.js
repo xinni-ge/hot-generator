@@ -12,6 +12,7 @@
                 code: '\uf22c',
                 color: '#40a5f2'
             },
+            label: 'floating_ip_address',
             modal_component: '<os-neutron-floatingip floatingip="resource" form-reference="resourceForm"></os-neutron-floatingip>',
             edge_settings: {
                 'OS__Neutron__Net': {
@@ -30,6 +31,10 @@
     )
 
     angular_module.run(function(osNeutronFloatingipSettings, hotgenGlobals){
+        hotgenGlobals.update_node_labels(
+            osNeutronFloatingipSettings.resource_key,
+            osNeutronFloatingipSettings.label);
+
         hotgenGlobals.update_resource_icons(
             osNeutronFloatingipSettings.resource_key,
             osNeutronFloatingipSettings.icon);

@@ -14,6 +14,7 @@
                 code: '\uf0a0',
                 color: '#0bb238'
             },
+            label: 'name',
             modal_component: '<os-cinder-volume volume="resource" form-reference="resourceForm"></os-cinder-volume>',
             edge_settings: null,
             necessary_properties: null
@@ -25,6 +26,11 @@
         hotgenGlobals.update_resource_icons(
             osCinderVolumeSettings.resource_key ,
             osCinderVolumeSettings.icon);
+
+        hotgenGlobals.update_node_labels(
+            osCinderVolumeSettings.resource_key ,
+            osCinderVolumeSettings.label);
+
         hotgenGlobals.update_resource_components(
             osCinderVolumeSettings.resource_key,
             osCinderVolumeSettings.modal_component);

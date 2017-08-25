@@ -15,6 +15,7 @@
                 code: '\uf1e6',
                 color: '#0bb238'
             },
+            label: 'mountpoint',
             modal_component: '<os-cinder-volume-attachment volumeattachment="resource" form-reference="resourceForm"></os-cinder-volume-attachment>',
             edge_settings: {
                 'OS__Cinder__Volume': {
@@ -47,6 +48,10 @@
             osCinderVolumeAttachmentSettings.resource_key,
             osCinderVolumeAttachmentSettings.icon);
 
+        hotgenGlobals.update_node_labels(
+            osCinderVolumeAttachmentSettings.resource_key,
+            osCinderVolumeAttachmentSettings.label);
+
         hotgenGlobals.update_resource_components(
             osCinderVolumeAttachmentSettings.resource_key,
             osCinderVolumeAttachmentSettings.modal_component);
@@ -67,7 +72,7 @@
 //        };
     }
     angular_module.component('osCinderVolumeAttachment', {
-      templateUrl: '/js/resources/os__cinder__volume/os__cinder__volume.html',
+      templateUrl: '/js/resources/os__cinder__volumeattachment/os__cinder__volumeattachment.html',
       controller: osCinderVolumeAttachmentController,
       bindings:{
         'volumeattachment': '=',

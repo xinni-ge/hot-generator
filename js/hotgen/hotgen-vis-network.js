@@ -36,7 +36,24 @@
                             callback(null);
                         } else{
                             hotgenNotify.show_success("Successfully connected.");
+                            var old_edge_ids = Object.keys($rootScope.edges._data)
                             callback(data);
+                            var new_edge_ids = Object.keys($rootScope.edges._data)
+                            var edge_id = $scope.get_added_edge_id(old_edge_ids, new_edge_ids);
+                            if (!edge_id){
+                                return;
+                            }
+                            // update new edge option
+                            var is_modal = $scope.get_modal(data);
+                            if (is_modal){
+                                ;
+                            } else{
+                                $rootScope.edges.update({
+                                    id: edge_id,
+                                    color: $rootScope.nodes.get(data.from).icon.color,
+                                    dashes: false,
+                                });
+                            }
                         }
                     },
                     addNode: false,
@@ -121,13 +138,44 @@
                 }
             };
 
+            $scope.get_added_edge_id = function(old_edge_ids, new_edge_ids){
+                for (var id in new_edge_ids){
+                    if (old_edge_ids.indexOf(new_edge_ids[id]) == -1){
+                        return new_edge_ids[id];
+                    }
+                }
+            }
+            $scope.get_modal = function(data){
+                var from_node = $scope.get_node(data.from);
+                var to_node = $scope.get_node(data.to);
+                var mapping = $scope.get_mapping(from_node.title, to_node.title);
+                if (mapping){
+                    return mapping.modal;
+                }
+                return ;
+            }
+
+            $scope.get_mapping = function (from_type, to_type){
+                var edge_directions = hotgenGlobals.get_edge_directions()
+                if ((! edge_directions[from_type]) || !(edge_directions[from_type][to_type])){
+                    hotgenNotify.show_error(to_type.replace(/_/g, ':')+" cannot be connected with "+from_type.replace(/_/g, ':')+".");
+                    return false;
+                }
+                return edge_directions[from_type][to_type]
+
+            }
+
+            $scope.get_node = function(node_id){
+                return $scope.data.nodes.get(node_id);
+            }
+
             $scope.validate_edge = function(data){
                 if (data.from == data.to ){
                     hotgenNotify.show_error(to_node.label+" has already been connected with "+from_node.label+".");
                     return false;
                 }
-                var from_node = $scope.data.nodes.get(data.from);
-                var to_node = $scope.data.nodes.get(data.to);
+                var from_node = $scope.get_node(data.from);
+                var to_node = $scope.get_node(data.to);
                 var from_node_type = from_node.title;
                 var to_node_type = to_node.title;
                 var edge_directions = hotgenGlobals.get_edge_directions()

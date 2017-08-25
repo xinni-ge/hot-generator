@@ -14,13 +14,14 @@
                 code: '\uf108',
                 color: '#483dff'
             },
+            label: name,
             modal_component: '<os-nova-server instance="resource" form-reference="resourceForm"></os-nova-server>',
             edge_settings: {
                 'OS__Cinder__Volume': {
                     'type': 'mapping',
                     'mapping': 'block_device_mapping_v2',
                     'limit': 99,
-                    'label': 'boot_index',
+                    'label': 'device_name',
                     'occupied': true,
                     'lonely': true,
                     'modal': '<os-nova-server-volume blockdevice="resource" form-reference="edgeForm"></os-nova-server-volume>'
@@ -65,6 +66,10 @@
         hotgenGlobals.update_resource_icons(
             osNovaServerSettings.resource_key,
             osNovaServerSettings.icon);
+
+        hotgenGlobals.update_node_labels(
+            osNovaServerSettings.resource_key,
+            osNovaServerSettings.label);
 
         hotgenGlobals.update_resource_components(
             osNovaServerSettings.resource_key,
