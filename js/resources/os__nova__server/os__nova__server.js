@@ -21,11 +21,9 @@
                     'type': 'mapping',
                     'mapping': 'block_device_mapping_v2',
                     'limit': 99,
-                    'label': 'device_name',
                     'occupied': true,
                     'lonely': true,
-                    'modal': '<os-nova-server-volume blockdevice="resource" form-reference="edgeForm"></os-nova-server-volume>'
-                },
+                   },
                 'OS__Nova__KeyPair': {
                     'type': 'property',
                     'property': 'key_name',
@@ -35,7 +33,6 @@
                     'type': 'mapping',
                     'mapping': 'networks',
                     'limit': 99,
-                    'modal': '<os-nova-server-net network="resource" form-reference="edgeForm"></os-nova-server-net>',
                 },
                 'OS__Neutron__FloatingIP': {
                     'type': 'mapping',
@@ -198,35 +195,5 @@
           'formReference': '<',
         }
     });
-
-    function osNovaServerNetController($scope, $rootScope, hotgenValidate, hotgenNotify){
-        $scope.allocate_networks = [
-                        {'name': 'none'},
-                        {'name': 'auto'},
-                ];
-    }
-
-    angular_module.component('osNovaServerNet', {
-        templateUrl: '/js/resources/os__nova__server/edge_os__neutron__net.html',
-        controller: osNovaServerNetController,
-        bindings:{
-          'network': '=',
-          'formReference': '<',
-        }
-    });
-
-    function osNovaServerVolumeController($scope, $rootScope, hotgenValidate, hotgenNotify) {
-
-    }
-
-    angular_module.component('osNovaServerVolume', {
-        templateUrl: '/js/resources/os__nova__server/edge_os__cinder__volume.html',
-        controller: osNovaServerVolumeController,
-        bindings:{
-          'blockdevice': '=',
-          'formReference': '<',
-        }
-    });
-
 
 })(window.angular);

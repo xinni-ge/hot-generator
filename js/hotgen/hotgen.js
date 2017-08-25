@@ -14,6 +14,16 @@
         $rootScope.edges = new VisDataSet();
         $rootScope.saved_resources = {};
         $rootScope.selected = {};
+        $rootScope.is_saved = {};
+
+        /* *********************************************************************
+         * The following selections should be replaced by OpenStack API response
+         */
+        $rootScope.auth = {
+            'tenant_id': '',
+            'admin': true,
+        }
+
         $rootScope.keypairs = [
             {'name': 'default'},
             {'name': 'openstack'},
@@ -23,8 +33,14 @@
             {'id': 'internal', 'name': 'internal'},
             {'id': 'outbound', 'name': 'outbound'},
         ];
+        $rootScope.volume_backups = [
+            {'id': 'a79c1fbc-2872-7c20-a28f-88ccdacc4332',  'name': 'volume-backup-20170102GMT120000'}
+        ]
         $rootScope.volume_snapshots = [
             {'id': '3e86fc96-9717-4800-a28f-87cce8f695a6', 'name': 'volume-snapshot-ubuntu1404-20170808'},
+        ];
+        $rootScope.instances = [
+            {'id': 'eea94a46-0a62-41b2-823c-22500175f99d', 'name': 'virtual-machine-for-test'},
         ];
         $rootScope.volumes = [
             {'id': 'c11a6d55-70e9-4d04-a086-4451f07da0d7', 'name': 'volume-image-ubuntu1404'},
@@ -51,6 +67,11 @@
              {'id': 'virtio', 'name': 'virtio'},
             ];
 
+        /*
+         * End replaced by API response
+         **********************************************************************
+         */
+
     });
     angular_module.controller('DraftMenuCtrl', ["$scope","$rootScope",
         "$mdDialog", "hotgenNotify", "hotgenMessage",
@@ -72,6 +93,7 @@
                     nodes: $rootScope.nodes._data,
                     edges: $rootScope.edges._data,
                     saved_resources: $rootScope.saved_resources,
+                    is_saved: $rootScope.is_saved,
                 }
 
                 var today = new Date();

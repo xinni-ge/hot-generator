@@ -36,28 +36,26 @@
                             callback(null);
                         } else{
                             hotgenNotify.show_success("Successfully connected.");
-                            var old_edge_ids = Object.keys($rootScope.edges._data)
-                            callback(data);
-                            var new_edge_ids = Object.keys($rootScope.edges._data)
-                            var edge_id = $scope.get_added_edge_id(old_edge_ids, new_edge_ids);
-                            if (!edge_id){
-                                return;
-                            }
-                            // update new edge option
-                            var is_modal = $scope.get_modal(data);
-                            if (is_modal){
-                                ;
-                            } else{
-                                $rootScope.edges.update({
-                                    id: edge_id,
-                                    color: $rootScope.nodes.get(data.from).icon.color,
-                                    dashes: false,
-                                });
-                            }
+                            callback(data);debugger;
+                            $rootScope.is_saved[data.id] = false;
                         }
                     },
                     addNode: false,
-                    editEdge: false
+                    editEdge: false,
+                    deleteNode: function(data, callback){
+                        delete $rootScope.is_saved[data.id]
+                    },
+                    deleteEdge: function(data, callback){ debugger;
+                        var edge_id = data.edges[0];
+                        delete $rootScope.is_saved[edge_id]
+                        var from_id = $rootScope.edges.get(edge_id).from
+                        $rootScope.is_saved[from_id] = false
+                        $rootScope.nodes.update({
+                            id: from_id,
+                            font: {color: '#343434'}
+                        })
+                        callback(data);
+                    },
                 },
                 locales: {
                     en: {
@@ -112,20 +110,6 @@
 
                     hotgenMessage.broadcast_edit_node(selected_type);
                 } else if (params.edges.length > 0){
-                    var selected_id = params.edges[0];
-                    var selected_edge = $rootScope.edges.get(selected_id);
-                    var from_node = $rootScope.nodes.get(selected_edge.from);
-                    var to_node = $rootScope.nodes.get(selected_edge.to);
-
-                    $rootScope.selected = {
-                        element: 'edge',
-                        resource_type: {from: from_node.title, to: to_node.title},
-                        from_node: from_node,
-                        to_node: to_node,
-                        id: selected_id,
-                        edge: selected_edge,
-                    }
-                    hotgenMessage.broadcast_edit_edge(from_node.title, to_node.title);
                 } else {
                     ;
                 }
@@ -135,6 +119,7 @@
                 click: $scope.click,
                 onload: function(network){
                     $scope.network = network;
+                    $rootScope.network = network;
                 }
             };
 

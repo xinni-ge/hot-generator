@@ -61,15 +61,11 @@
             var broadcast_edit_node = function(node_type){
                 $rootScope.$broadcast('handle_edit_node', node_type);
             };
-            var broadcast_edit_edge = function(from_type, to_type){
-                $rootScope.$broadcast('handle_edit_edge', {'from': from_type, 'to': to_type});
-            };
             var broadcast_load_draft = function(){
                 $rootScope.$broadcast('handle_load_draft');
             }
             return {
                 broadcast_edit_node: broadcast_edit_node,
-                broadcast_edit_edge: broadcast_edit_edge,
                 broadcast_load_draft: broadcast_load_draft,
             }
         })

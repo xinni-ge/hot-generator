@@ -12,7 +12,7 @@
                 code: '\uf185',
                 color: '#40a5f2'
             },
-            modal_component: '<os-neutron-router-interface routerinterface="resource" form-reference="resourceForm"></os-neutron-router-interface>',
+            modal_component: '<os-neutron-router-interface routerinterface="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-router-interface>',
             edge_settings: {
                 'OS__Neutron__Port': {
                     'type': 'property',
@@ -49,7 +49,10 @@
     });
 
     function osNeutronRouterInterfaceController($scope, $rootScope) {
-        this.message = 'Connect router interface icon to router and port/subnet in the canvas.';
+        this.$onInit = function(){debugger;
+            debugger;
+            this.connectedoptions;
+        }
 
     };
     angular_module.component('osNeutronRouterInterface', {
@@ -57,6 +60,7 @@
       controller: osNeutronRouterInterfaceController,
       bindings:{
         'routerinterface': '=',
+        'connectedoptions': '=',
         'formReference': '<',
       }
     });

@@ -16,7 +16,7 @@
                 color: '#0bb238'
             },
             label: 'mountpoint',
-            modal_component: '<os-cinder-volume-attachment volumeattachment="resource" form-reference="resourceForm"></os-cinder-volume-attachment>',
+            modal_component: '<os-cinder-volume-attachment volumeattachment="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-cinder-volume-attachment>',
             edge_settings: {
                 'OS__Cinder__Volume': {
                     'type': 'property',
@@ -63,21 +63,56 @@
     });
 
 
-    //* Define component os-cinder-volume */
+    // Define  <os-cinder-volume> controller
     function osCinderVolumeAttachmentController($scope, $rootScope, ){
-//        this.handle_edge_volume_id = function(){
-//        };
-//
-//        this.handle_edge_instance_uuid = function(){
-//        };
+        this.$onInit = function(){
+            if (typeof this.connectedoptions === 'undefined'){
+                $scope.connected_options = []
+            } else{
+                $scope.connected_options = this.connectedoptions;
+            }
+            $scope.volumes = $scope.get_volume_id_options();
+            $scope.instances = $scope.get_instance_uuid_options();
+
+        }
+        $scope.get_volume_id_options = function(){
+            if ('volume_id' in $scope.connected_options){
+                var resource_volumes = [];
+                for (var idx in $scope.connected_options.volume_id){
+                    var item = $scope.connected_options.volume_id[idx];
+                    resource_volumes.push({
+                        id: item.resource_type+' ('+item.id.slice(0, 6)+'...)',
+                        name: item.value
+                    })
+                }
+                return $rootScope.volumes.concat(resource_volumes);
+            }
+            return $rootScope.volumes;
+        }
+        $scope.get_instance_uuid_options = function(){
+            if ('instance_uuid' in $scope.connected_options){
+                var resource_instances = [];
+                for (var idx in $scope.connected_options.instance_uuid){
+                    var item = $scope.connected_options.instance_uuid[idx];
+                    resource_instances.push({
+                        id: item.resource_type+' ('+item.id.slice(0, 6)+'...)',
+                        name: item.value
+                    })
+                }
+                return $rootScope.instances.concat(resource_instances);
+            }
+            return $rootScope.instances;
+        }
     }
+
     angular_module.component('osCinderVolumeAttachment', {
-      templateUrl: '/js/resources/os__cinder__volumeattachment/os__cinder__volumeattachment.html',
-      controller: osCinderVolumeAttachmentController,
-      bindings:{
-        'volumeattachment': '=',
-        'formReference': '<',
-      }
+        templateUrl: '/js/resources/os__cinder__volumeattachment/os__cinder__volumeattachment.html',
+        controller: osCinderVolumeAttachmentController,
+        bindings:{
+            'volumeattachment': '=',
+            'connectedoptions': '<',
+            'formReference': '<',
+        }
     });
 
 })(window.angular);

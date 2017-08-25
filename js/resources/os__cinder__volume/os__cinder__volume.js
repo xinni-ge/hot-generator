@@ -15,7 +15,7 @@
                 color: '#0bb238'
             },
             label: 'name',
-            modal_component: '<os-cinder-volume volume="resource" form-reference="resourceForm"></os-cinder-volume>',
+            modal_component: '<os-cinder-volume volume="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-cinder-volume>',
             edge_settings: null,
             necessary_properties: null
         }
@@ -49,15 +49,14 @@
         }
         $scope.boot_sources = [
             {'id': 'image', 'name': 'image'},
-            {'id': 'image_snapshot', 'name': 'image snapshot'},
             {'id': 'volume', 'name': 'volume'},
             {'id': 'volume_snapshot', 'name': 'volume snapshot'},
             {'id': 'backup', 'name': 'backup'},
         ];
         $scope.availability_zones = $rootScope.availability_zones;
         $scope.images = $rootScope.images;
-        $scope.image_snapshots = $rootScope.image_snapshots;
         $scope.volumes = $rootScope.volumes;
+        $scope.backups = $rootScope.volume_backups;
         $scope.volume_snapshots = $rootScope.volume_snapshots;
         $scope.vtypes = $rootScope.volume_types;
 
@@ -84,6 +83,7 @@
       controller: osCinderVolumeController,
       bindings:{
         'volume': '=',
+        'connectedoptions': '=',
         'formReference': '<',
       }
     });

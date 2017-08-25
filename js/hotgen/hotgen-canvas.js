@@ -47,6 +47,7 @@
                             color: dragged_resource.color,
                         }
                     });
+                    $rootScope.is_saved[id] = false;
                     e.preventDefault();
                 },false);
             }
