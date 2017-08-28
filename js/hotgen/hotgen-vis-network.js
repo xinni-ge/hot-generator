@@ -36,7 +36,7 @@
                             callback(null);
                         } else{
                             hotgenNotify.show_success("Successfully connected.");
-                            callback(data);debugger;
+                            callback(data);
                             $rootScope.is_saved[data.id] = false;
                         }
                     },
@@ -45,7 +45,7 @@
                     deleteNode: function(data, callback){
                         delete $rootScope.is_saved[data.id]
                     },
-                    deleteEdge: function(data, callback){ debugger;
+                    deleteEdge: function(data, callback){
                         var edge_id = data.edges[0];
                         delete $rootScope.is_saved[edge_id]
                         var from_id = $rootScope.edges.get(edge_id).from
