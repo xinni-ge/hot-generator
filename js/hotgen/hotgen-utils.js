@@ -79,6 +79,14 @@
                 validate_keypair: validate_keypair,
             }
         })
+        .factory('hotgenUtils', function(){
+            var get_resource_string = function(identity){
+                return '{get_resource: '+identity+' }';
+            }
+            return {
+                get_resource_string: get_resource_string,
+            };
+        })
         .service('hotgenGlobals', function () {
             var globals = {
                 resource_icons: {},

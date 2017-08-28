@@ -3,20 +3,26 @@
         <md-content layout-padding>
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Instance UUID</label>
-                <md-select ng-model="$ctrl.volumeattachment.instance_uuid">
+                <md-select ng-model="$ctrl.volumeattachment.instance_uuid" name="instance_uuid" required ng-disabled='true'>
                     <md-option ng-repeat="iuuid in instances" ng-value="iuuid.id">
                         {{iuuid.name}}
                     </md-option>
                 </md-select>
+                <div ng-messages="$ctrl.formReference.instance_uuid.$error" role="alert" multiple>
+                    <div ng-message="required" class="my-message">You must supply an instance uuid.</div>
+                </div>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Volume ID</label>
-                <md-select ng-model="$ctrl.volumeattachment.volume_id">
+                <md-select ng-model="$ctrl.volumeattachment.volume_id" name="volume_id" required ng-disabled='true'>
                     <md-option ng-repeat="vol in volumes" ng-value="vol.id">
                         {{vol.name}}
                     </md-option>
                 </md-select>
+                <div ng-messages="$ctrl.formReference.volume_id.$error" role="alert" multiple>
+                    <div ng-message="required" class="my-message">You must supply an volume id.</div>
+                </div>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>

@@ -31,8 +31,8 @@
         }]);
 
     angular_module.controller('FormModalCtrl', ['$scope', '$rootScope', '$compile',
-        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals',
-        function($scope, $rootScope, $compile, $mdDialog, hotgenNotify, hotgenMessage, hotgenGlobals, ){
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals', 'hotgenUtils',
+        function($scope, $rootScope, $compile, $mdDialog, hotgenNotify, hotgenMessage, hotgenGlobals, hotgenUtils){
             $scope.showTabDialog = function(){
                 $mdDialog.show({
                     controller: DialogController,
@@ -121,7 +121,7 @@
                                 connected_options[property] = [];
                             }
                             connected_options[property].push({
-                                value: '{get_resource: '+node.title+'_'+node.id+' }',
+                                value: hotgenUtils.get_resource_string(node.title+'_'+node.id),
                                 id: node.id,
                                 resource_type: node.title,
                                 edge: edge

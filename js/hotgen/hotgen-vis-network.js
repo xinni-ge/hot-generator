@@ -156,7 +156,7 @@
 
             $scope.validate_edge = function(data){
                 if (data.from == data.to ){
-                    hotgenNotify.show_error(to_node.label+" has already been connected with "+from_node.label+".");
+                    hotgenNotify.show_error("The resource cannot be connected with itself.");
                     return false;
                 }
                 var from_node = $scope.get_node(data.from);

@@ -73,6 +73,15 @@
             }
             $scope.volumes = $scope.get_volume_id_options();
             $scope.instances = $scope.get_instance_uuid_options();
+            if (typeof $scope.volumeattachment == 'undefined'){
+                $scope.volumeattachment = {}
+            }
+            if ( $scope.connected_options.instance_uuid && $scope.connected_options.instance_uuid.length > 0){
+                this.volumeattachment['instance_uuid'] = $scope.connected_options.instance_uuid[0].id
+            }
+            if ( $scope.connected_options.volume_id && $scope.connected_options.volume_id.length > 0){
+                this.volumeattachment['volume_id'] = $scope.connected_options.volume_id[0].id
+            }
 
         }
         $scope.get_volume_id_options = function(){
@@ -81,7 +90,7 @@
                 for (var idx in $scope.connected_options.volume_id){
                     var item = $scope.connected_options.volume_id[idx];
                     resource_volumes.push({
-                        id: item.resource_type+' ('+item.id.slice(0, 6)+'...)',
+                        id: item.id,
                         name: item.value
                     })
                 }
@@ -95,7 +104,7 @@
                 for (var idx in $scope.connected_options.instance_uuid){
                     var item = $scope.connected_options.instance_uuid[idx];
                     resource_instances.push({
-                        id: item.resource_type+' ('+item.id.slice(0, 6)+'...)',
+                        id: item.id,
                         name: item.value
                     })
                 }
