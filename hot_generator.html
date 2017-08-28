@@ -5,18 +5,21 @@
         <meta content="utf-8" http-equiv="encoding">
         <title>OpenStack | HOT Generator</title>
 
-        <script src="js/angular/angular.min.js"></script>
-        <script src="js/angular/angular-animate.min.js"></script>
-        <script src="js/angular/angular-aria.min.js"></script>
-        <script src="js/angular/angular-messages.min.js"></script>
-        <script src="js/angular/angular-sanitize.min.js"></script>
-        <script src="js/angular/angular-material.min.js"></script>
-        <script src="js/angular/angular-translate.min.js"></script>
-        <script src="js/angular/angular-notify.js"></script>
-        <script src="js/angular/angular-uuid.js"></script>
-        <script src="js/angular/vis.js"></script>
-        <script src="js/angular/angular-vis.js"></script>
-        <script src="js/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-animate.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-aria.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-messages.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-sanitize.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-material.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-translate.min.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-notify.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-uuid.js"></script>
+        <script type="text/javascript" src="js/vendors/vis.js"></script>
+        <script type="text/javascript" src="js/vendors/angular-vis.js"></script>
+        <script type="text/javascript" src="js/vendors/ui-bootstrap-tpls-2.5.0.min.js"></script>
+        <script type="text/javascript" src="js/vendors/json2yaml.js"></script>
+        <script type="text/javascript" src="js/vendors/js-yaml.min.js"></script>
+        <script type="text/javascript" src="js/vendors/FileSaver.js"></script>
 
         <link href="css/angular-notify.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -103,6 +106,9 @@
         </div>
 
         <div ng-controller="FormModalCtrl"  class="md-padding" id="popupContainer" ng-cloak>
+        </div>
+
+        <div ng-controller="EdgeFormModalCtrl"  class="md-padding" id="popupEdgeContainer" ng-cloak>
         </div>
 
         <div ng-controller="DraftModalCtrl"  class="md-padding" ng-cloak>

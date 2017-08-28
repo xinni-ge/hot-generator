@@ -110,6 +110,20 @@
 
                     hotgenMessage.broadcast_edit_node(selected_type);
                 } else if (params.edges.length > 0){
+                    var selected_id = params.edges[0];
+                    var selected_edge = $rootScope.edges.get(selected_id);
+                    var from_node = $rootScope.nodes.get(selected_edge.from);
+                    var to_node = $rootScope.nodes.get(selected_edge.to);
+
+                    $rootScope.selected = {
+                        element: 'edge',
+                        resource_type: {from: from_node.title, to: to_node.title},
+                        from_node: from_node,
+                        to_node: to_node,
+                        id: selected_id,
+                        edge: selected_edge,
+                    }
+                    hotgenMessage.broadcast_edit_edge(from_node.title, to_node.title);
                 } else {
                     ;
                 }

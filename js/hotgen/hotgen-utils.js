@@ -61,11 +61,15 @@
             var broadcast_edit_node = function(node_type){
                 $rootScope.$broadcast('handle_edit_node', node_type);
             };
+            var broadcast_edit_edge = function(from_type, to_type){
+                $rootScope.$broadcast('handle_edit_edge', {'from': from_type, 'to': to_type});
+            };
             var broadcast_load_draft = function(){
                 $rootScope.$broadcast('handle_load_draft');
             }
             return {
                 broadcast_edit_node: broadcast_edit_node,
+                broadcast_edit_edge: broadcast_edit_edge,
                 broadcast_load_draft: broadcast_load_draft,
             }
         })
@@ -83,8 +87,27 @@
             var get_resource_string = function(identity){
                 return '{get_resource: '+identity+' }';
             }
+            var escape_characters = function(value){
+                return '"'+value.replace(/\\/g, '\\\\')
+                                .replace(/\"/g, '\\"')
+                                .replace(/\n/g, "\\n")+'"';
+            }
+            var extract_keyvalue = function(value){
+                var new_keyvalue = {}
+                if (value instanceof Array ){
+                    for (var idx in value){
+                        if (value[idx] instanceof Object){
+                            new_keyvalue[value[idx].key] = value[idx].value
+                        }
+                    }
+                }
+                return new_keyvalue
+
+            }
             return {
                 get_resource_string: get_resource_string,
+                escape_characters: escape_characters,
+                extract_keyvalue: extract_keyvalue,
             };
         })
         .service('hotgenGlobals', function () {

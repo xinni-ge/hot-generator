@@ -25,7 +25,7 @@
           <md-button ng-click="cancel()" >
             {{ 'Cancel' | translate }}
           </md-button>
-          <md-button ng-click="save()" style="margin-right:20px;" >
+          <md-button ng-click="save()" style="margin-right:20px;" ng-disabled="can_save" >
             {{ 'OK' | translate }}
           </md-button>
         </md-dialog-actions>

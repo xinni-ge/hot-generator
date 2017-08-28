@@ -1,7 +1,8 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('TempModalCtrl', ['$scope', '$mdDialog', 'hotgenNotify',
-        function($scope, $mdDialog, hotgenNotify){
+    angular_module.controller('TempModalCtrl', ['$scope', '$rootScope',
+        '$mdDialog', 'hotgenNotify', 'hotgenUtils',
+        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenUtils){
 
             $scope.open = function(){
                 $mdDialog.show({
@@ -15,17 +16,66 @@
                     hotgenNotify.show_info('dismiss a modal');
                 });
             };
-            function DialogController($scope, $mdDialog) {
-                    $scope.template = {
-                        title: 'Template',
-                        content: 'An example template string.'
-                    };
+            function DialogController($scope, $rootScope, $mdDialog) {
+                    $scope.can_save = false;
                     $scope.cancel = function() {
                       $mdDialog.cancel();
                     };
-
                     $scope.save = function(msg) {
+                      // jump to stack creation page.
                       $mdDialog.hide(msg);
+                    };
+                    $scope.generate = function(){
+                        var resource_root = {};
+                        if ( false in $rootScope.is_saved){
+                            hotgenNotify.show_error('Cannot generate, some resources are not saved.');
+                            $scope.can_save = false;
+                            return;
+                        }
+                        $scope.can_save = true;
+                        for (var idkey in $rootScope.saved_resources){
+                            var resource_type = $rootScope.saved_resources[idkey].type;
+                            var resource_name = resource_type + '_' + idkey;
+                            var copy_data = angular.copy($rootScope.saved_resources[idkey].data)
+                            var properties = $scope.extract_properties(copy_data);
+                            resource_root[resource_name] = {
+                                type: resource_type.replace(/_/g, ':'),
+                                properties: properties,
+                            };
+
+                        }
+                        var today = new Date();
+                        var template_root = {
+                            heat_template_version: "2016-04-08",
+                            description: 'created by HOT Generator at '+ today.toUTCString() + '.',
+                            resources: resource_root
+                        }
+                        var json_string = JSON.stringify(template_root);
+                        return json2yaml(json_string);
+                    }
+                    $scope.extract_properties = function(resource_data){
+                        for (var property in resource_data){
+                            var func = null;
+                            switch (property){
+                                case 'description':
+                                    func =  hotgenUtils.escape_characters;
+                                    break;
+                                case 'metadata':
+                                case 'tags':
+                                    func =  hotgenUtils.extract_keyvalue;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if ( func != null){
+                                resource_data[property] = func(resource_data[property]);
+                            }
+                        }
+                        return resource_data;
+                    }
+                    $scope.template = {
+                        title: 'Template',
+                        content: $scope.generate(),
                     };
                 }
         }]);
@@ -146,6 +196,67 @@
 
         }]);
 
+        angular_module.controller('EdgeFormModalCtrl',  ['$scope', '$rootScope',
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals',
+        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage, hotgenGlobals){
+            $scope.showTabDialog = function(){
+                    $mdDialog.show({
+                      controller: EdgeDialogController,
+                      controllerAs: 'ctrl',
+                      templateUrl: 'templates/modal_edge.html',
+                      parent: angular.element(document.body),
+                      clickOutsideToClose:true
+                    }).then(function(){
+                        hotgenNotify.show_success('The selected edge is saved successfully.');
+                    }, function(){
+    //                    hotgenNotify.show_error('dismiss a modal');
+                    });
+
+                function EdgeDialogController($scope, $rootScope, $mdDialog,) {
+                    $scope.delete_resource = function() {
+                        $rootScope.edges.remove($rootScope.selected.id);
+                        hotgenNotify.show_success('The selected edge has been delete successfully.')
+                        $mdDialog.cancel();
+                    };
+                    $scope.cancel = function() {
+                        $mdDialog.cancel();
+                    };
+
+                    if ($rootScope.selected.id in $rootScope.saved_resources){
+                        $scope.resource = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
+                    } else{
+                        $scope.resource = {}
+                    }
+
+                    var from_type = $rootScope.selected.resource_type.from;
+                    var to_type = $rootScope.selected.resource_type.to;
+                    $scope.from_type = from_type.replace(/_/g, ':');
+                    $scope.to_type = to_type.replace(/_/g, ':');
+                    $scope.from_node = {
+                        class: hotgenGlobals.get_resource_icons()[from_type].class,
+                        color: hotgenGlobals.get_resource_icons()[from_type].color,
+                        id: $rootScope.selected.from_node.id,
+                    }
+                    $scope.to_node = {
+                        class: hotgenGlobals.get_resource_icons()[to_type].class,
+                        color: hotgenGlobals.get_resource_icons()[to_type].color,
+                        id: $rootScope.selected.to_node.id,
+                    }
+                }
+            };
+            $scope.$on('handle_edit_edge', function(event, args){
+                /* Click a edge and decide to show modal or not */
+                var from_type = args.from;
+                var to_type = args.to;
+                var edge_directions = hotgenGlobals.get_edge_directions();
+                if ( !( from_type in edge_directions) || !(to_type in edge_directions[from_type])){
+                    hotgenNotify.show_warning('The edge might be invalid.');
+                    return;
+                }
+                $scope.showTabDialog();
+            });
+        }]);
+
     angular_module.controller('DraftModalCtrl', ['$scope', '$rootScope',
         '$mdDialog', 'hotgenNotify', 'hotgenMessage',
          function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage,){
@@ -180,6 +291,7 @@
                             $rootScope.edges.add(draft.edges[id]);
                         }
                         $rootScope.saved_resources = draft.saved_resources;
+                        $rootScope.is_saved = draft.is_saved;
 
                     };
                     $scope.cancel = function() {

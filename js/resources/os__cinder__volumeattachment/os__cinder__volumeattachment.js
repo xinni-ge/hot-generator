@@ -77,10 +77,10 @@
                 $scope.volumeattachment = {}
             }
             if ( $scope.connected_options.instance_uuid && $scope.connected_options.instance_uuid.length > 0){
-                this.volumeattachment['instance_uuid'] = $scope.connected_options.instance_uuid[0].id
+                this.volumeattachment['instance_uuid'] = $scope.connected_options.instance_uuid[0].value
             }
             if ( $scope.connected_options.volume_id && $scope.connected_options.volume_id.length > 0){
-                this.volumeattachment['volume_id'] = $scope.connected_options.volume_id[0].id
+                this.volumeattachment['volume_id'] = $scope.connected_options.volume_id[0].value
             }
 
         }
@@ -90,7 +90,7 @@
                 for (var idx in $scope.connected_options.volume_id){
                     var item = $scope.connected_options.volume_id[idx];
                     resource_volumes.push({
-                        id: item.id,
+                        id: item.value,
                         name: item.value
                     })
                 }
@@ -104,7 +104,7 @@
                 for (var idx in $scope.connected_options.instance_uuid){
                     var item = $scope.connected_options.instance_uuid[idx];
                     resource_instances.push({
-                        id: item.id,
+                        id: item.value,
                         name: item.value
                     })
                 }
