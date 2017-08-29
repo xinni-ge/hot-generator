@@ -66,11 +66,24 @@
                                 case 'value_specs':
                                     func =  hotgenUtils.extract_keyvalue;
                                     break;
+                                case 'allocation_pools':
+                                case 'allowed_address_pairs':
+                                case 'host_routes':
+                                    func = hotgenUtils.extract_list_of_keyvalue;
+                                    break;
+                                case 'dns_nameservers':
+                                case 'dhcp_agent_ids':
+                                    func = hotgenUtils.extract_list;
                                 default:
                                     break;
                             }
                             if ( func != null){
-                                resource_data[property] = func(resource_data[property]);
+                                var processed_value = func(resource_data[property]);
+                                if (processed_value != null){
+                                    resource_data[property] = processed_value;
+                                } else{
+                                    delete resource_data[property]
+                                }
                             }
                         }
                         return resource_data;

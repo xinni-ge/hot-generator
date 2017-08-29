@@ -35,6 +35,7 @@
 
     function osNeutronNetController($scope, $rootScope){
         this.$onInit = function(){
+            this.admin = $rootScope.auth.admin;
             if (typeof this.network.dhcp_agent_ids === 'undefined'){
                 this.network.dhcp_agent_ids = [];
             }

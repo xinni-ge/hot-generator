@@ -96,18 +96,47 @@
                 var new_keyvalue = {}
                 if (value instanceof Array ){
                     for (var idx in value){
-                        if (value[idx] instanceof Object){
+                        if (value[idx] instanceof Object ){
+                            if (Object.keys(value[idx]).length == 0){
+                                continue;
+                            }
                             new_keyvalue[value[idx].key] = value[idx].value
                         }
                     }
                 }
-                return new_keyvalue
+                if (Object.keys(new_keyvalue).length == 0){
+                    return null;
+                }
+                return new_keyvalue;
 
+            }
+            var extract_list_of_keyvalue = function(value_list){
+                if (value_list instanceof Array ){
+                    for (var idx in value_list){
+                        if (Object.keys(value_list[idx]).length == 0){
+                            value_list.splice(idx,1)
+                        }
+                    }
+                }
+                if (value_list.length == 0){
+                    return null;
+                }
+                return value_list
+            }
+            var extract_list = function(value_list){
+                if (value_list instanceof Array){
+                    if (value_list.length == 0){
+                        return null;
+                    }
+                }
+                return value_list
             }
             return {
                 get_resource_string: get_resource_string,
                 escape_characters: escape_characters,
                 extract_keyvalue: extract_keyvalue,
+                extract_list_of_keyvalue: extract_list_of_keyvalue,
+                extract_list: extract_list,
             };
         })
         .service('hotgenGlobals', function () {
