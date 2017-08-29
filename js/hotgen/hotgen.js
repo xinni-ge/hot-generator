@@ -62,6 +62,9 @@
         $rootScope.ports = [
             {'id': '97175254-b807-9717-0ab6-001750687cec', 'name': 'Port 1'},
         ];
+        $rootScope.floatingips = [
+            {'id': '8d32c99c-b65c-f07d-0ab6-8f694a600171', 'name': 'FloatingIP 01'},
+        ];
         $rootScope.flavors = [
              {'id': 'm1.small', 'name': 'm1.small'},
              {'id': 'm1.medium', 'name': 'm1.medium'},

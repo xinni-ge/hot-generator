@@ -9,6 +9,24 @@
             </div>
         </md-input-container>
 
+        <md-input-container class="md-block" flex-gt-xs>
+            <label>Floating IP</label>
+            <md-select ng-model="$ctrl.floatingipassociation.floatingip_id" name="floatingip_id" ng-disabled='true'>
+                <md-option ng-repeat="fip in floatingips" ng-value="fip.id">
+                    {{fip.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-xs>
+            <label>Port ID</label>
+            <md-select ng-model="$ctrl.floatingipassociation.port_id" name="port_id" ng-disabled='true'>
+                <md-option ng-repeat="port in ports" ng-value="port.id">
+                    {{port.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
       </md-content>
     </md-tab>
 
