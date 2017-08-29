@@ -73,6 +73,7 @@
         this.searchTextChange   = searchTextChange;
 
         $scope.security_groups = $rootScope.security_groups;
+        $scope.qos_policies = $rootScope.qos_policies;
 
         this.add_allowed_address_pair = function(){
             this.port.allowed_address_pairs.push({})

@@ -43,11 +43,13 @@
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>QoS Policy</label>
-                <input ng-model="$ctrl.port.qos_policy" name="qos_policy" type="text" ng-pattern="/^[0-9a-f-]{36}$/">
-                <div ng-messages="$ctrl.formReference.qos_policy.$error" role="alert" multiple>
-                    <div ng-message="pattern" class="my-message">That doesn't look like a valid uuid.</div>
-                </div>
+                <md-select ng-model="$ctrl.port.qos_policy" >
+                    <md-option ng-repeat="qos in qos_policies" ng-value="qos.id">
+                        {{qos.name}}
+                    </md-option>
+                </md-select>
             </md-input-container>
+
             <md-input-container class="md-block" flex-gt-xs>
                 <label>MAC Address</label>
                 <input ng-model="$ctrl.port.mac_address" name="mac_address" type="text" ng-pattern="/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/">
@@ -55,6 +57,7 @@
                     <div ng-message="pattern" class="my-message">That doesn't look like a valid mac address.</div>
                 </div>
             </md-input-container>
+
             <md-input-container class="md-block">
                 <label>Security Groups</label>
                 <md-select ng-model="$ctrl.port.security_groups"  multiple>

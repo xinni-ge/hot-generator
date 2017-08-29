@@ -36,13 +36,28 @@
     function osNeutronNetController($scope, $rootScope){
         this.$onInit = function(){
             this.admin = $rootScope.auth.admin;
+            if (typeof this.network.tags == 'undefined'){
+                this.network.tags = []
+            }
             if (typeof this.network.dhcp_agent_ids === 'undefined'){
                 this.network.dhcp_agent_ids = [];
             }
             if (typeof this.network.admin_state_up === 'undefined'){
                 this.network.admin_state_up = true;
             }
+            if (typeof this.network.value_specs == 'undefined'){
+                this.network.value_specs = [{}]
+            }
+
         }
+        this.add_value_specs = function(){
+            this.network.value_specs.push({})
+        }
+        this.delete_value_specs = function(index){
+            this.network.value_specs.splice(index, 1)
+        }
+
+        $scope.qos_policies = $rootScope.qos_policies;
     }
     angular_module.component('osNeutronNet', {
       templateUrl: '/js/resources/os__neutron__net/os__neutron__net.html',

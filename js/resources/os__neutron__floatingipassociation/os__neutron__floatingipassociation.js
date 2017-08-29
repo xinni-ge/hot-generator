@@ -69,7 +69,6 @@
                     var item = $scope.connected_options.floatingip_id[idx];
                     resource_fip.push({
                         id: item.value,
-                        name: item.value
                     })
                 }
                 return $rootScope.floatingips.concat(resource_fip);

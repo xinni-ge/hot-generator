@@ -17,7 +17,7 @@
                 });
             };
             function DialogController($scope, $rootScope, $mdDialog) {
-                    $scope.can_save = false;
+                    $scope.all_saved = false;
                     $scope.cancel = function() {
                       $mdDialog.cancel();
                     };
@@ -27,12 +27,15 @@
                     };
                     $scope.generate = function(){
                         var resource_root = {};
-                        if ( false in $rootScope.is_saved){
-                            hotgenNotify.show_error('Cannot generate, some resources are not saved.');
-                            $scope.can_save = false;
-                            return;
+                        if( Object.keys($rootScope.is_saved).length == 0 || Object.keys($rootScope.saved_resources).length == 0){
+                            $scope.all_saved = false;
+                            return 'Cannot generate, no resource has been saved.';
                         }
-                        $scope.can_save = true;
+                        if ( false in $rootScope.is_saved){
+                            $scope.all_saved = false;
+                            return 'Cannot generate, some resources are not saved.';
+                        }
+                        $scope.all_saved = true;
                         for (var idkey in $rootScope.saved_resources){
                             var resource_type = $rootScope.saved_resources[idkey].type;
                             var resource_name = resource_type + '_' + idkey;
@@ -61,7 +64,6 @@
                                     func =  hotgenUtils.escape_characters;
                                     break;
                                 case 'metadata':
-                                case 'tags':
                                 case 'scheduler_hints':
                                 case 'value_specs':
                                     func =  hotgenUtils.extract_keyvalue;
@@ -73,6 +75,7 @@
                                     break;
                                 case 'dns_nameservers':
                                 case 'dhcp_agent_ids':
+                                case 'tags':
                                     func = hotgenUtils.extract_list;
                                 default:
                                     break;

@@ -63,13 +63,13 @@
             {'id': '97175254-b807-9717-0ab6-001750687cec', 'name': 'Port 1'},
         ];
         $rootScope.floatingips = [
-            {'id': '8d32c99c-b65c-f07d-0ab6-8f694a600171', 'name': 'FloatingIP 01'},
+            {'id': '8d32c99c-b65c-f07d-0ab6-8f694a600171', },
         ];
         $rootScope.flavors = [
-             {'id': 'm1.small', 'name': 'm1.small'},
-             {'id': 'm1.medium', 'name': 'm1.medium'},
-             {'id': 'm1.large', 'name': 'm1.large'},
-            ];
+            {'id': 'm1.small', 'name': 'm1.small'},
+            {'id': 'm1.medium', 'name': 'm1.medium'},
+            {'id': 'm1.large', 'name': 'm1.large'},
+        ];
         $rootScope.availability_zones = [
             { "id": "", "name": "Any Group/Zone"},
             { "id": "zone_groupa", "name": "Zone1/Group A"},
@@ -77,7 +77,10 @@
         ];
         $rootScope.volume_types = [
              {'id': 'virtio', 'name': 'virtio'},
-            ];
+        ];
+        $rootScope.qos_policies = [
+             {'id': '7d22dfdb-d293-4379-9814-e03758f870ef', 'name': 'Policy1'},
+        ];
 
         /*
          * End replaced by API response

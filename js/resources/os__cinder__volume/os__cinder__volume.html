@@ -4,7 +4,7 @@
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Name</label>
-                <input ng-model="$ctrl.volume.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
+                <input ng-model="$ctrl.volume.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z_-]+$/" md-maxlength="255">
                 <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
                     <div ng-message="required" class="my-message">You must supply an volume name.</div>
                     <div ng-message="pattern" class="my-message">That doesn't look like a valid volume name.</div>

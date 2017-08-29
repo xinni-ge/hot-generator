@@ -13,7 +13,7 @@
             <label>Floating IP</label>
             <md-select ng-model="$ctrl.floatingipassociation.floatingip_id" name="floatingip_id" ng-disabled='true'>
                 <md-option ng-repeat="fip in floatingips" ng-value="fip.id">
-                    {{fip.name}}
+                    {{fip.id}}
                 </md-option>
             </md-select>
         </md-input-container>
@@ -22,7 +22,7 @@
             <label>Port ID</label>
             <md-select ng-model="$ctrl.floatingipassociation.port_id" name="port_id" ng-disabled='true'>
                 <md-option ng-repeat="port in ports" ng-value="port.id">
-                    {{port.name}}
+                    {{port.name}} ({{port.id}})
                 </md-option>
             </md-select>
         </md-input-container>
