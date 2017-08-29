@@ -45,11 +45,11 @@
                     deleteNode: function(data, callback){
                         delete $rootScope.is_saved[data.id]
                     },
-                    deleteEdge: function(data, callback){
+                    deleteEdge: function(data, callback){ 
                         var edge_id = data.edges[0];
-                        delete $rootScope.is_saved[edge_id]
-                        var from_id = $rootScope.edges.get(edge_id).from
-                        $rootScope.is_saved[from_id] = false
+                        delete $rootScope.is_saved[edge_id];
+                        var from_id = $rootScope.edges.get(edge_id).from;
+                        $rootScope.is_saved[from_id] = false;
                         $rootScope.nodes.update({
                             id: from_id,
                             font: {color: '#343434'}

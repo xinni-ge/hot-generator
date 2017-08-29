@@ -62,6 +62,8 @@
                                     break;
                                 case 'metadata':
                                 case 'tags':
+                                case 'scheduler_hints':
+                                case 'value_specs':
                                     func =  hotgenUtils.extract_keyvalue;
                                     break;
                                 default:
@@ -214,7 +216,7 @@
 
                 function EdgeDialogController($scope, $rootScope, $mdDialog,) {
                     $scope.delete_resource = function() {
-                        $rootScope.edges.remove($rootScope.selected.id);
+                        $rootScope.network.deleteSelected();
                         hotgenNotify.show_success('The selected edge has been delete successfully.')
                         $mdDialog.cancel();
                     };

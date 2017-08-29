@@ -44,7 +44,7 @@
                 this.volume.metadata = [{}];
             }
             if (typeof this.volume.scheduler_hints === 'undefined'){
-                this.volume.scheduler_hints = [];
+                this.volume.scheduler_hints = [{}];
             }
         }
         $scope.boot_sources = [
@@ -60,21 +60,19 @@
         $scope.volume_snapshots = $rootScope.volume_snapshots;
         $scope.vtypes = $rootScope.volume_types;
 
-        $scope.validateSchedulerHints = function(input_string){
-            var match = hotgenValidate.validate_keypair(input_string);
-            if (match){
-                return undefined;
-            } else{
-                hotgenNotify.show_error('Invalid characters are used in scheduler_hints.');
-                return null;
-            }
-        }
         this.delete_metadata = function(index){
             this.volume.metadata.splice(index, 1)
 
         }
         this.add_metadata = function(){
             this.volume.metadata.push({})
+        }
+        this.delete_scheduler_hints = function(index){
+            this.volume.scheduler_hints.splice(index, 1)
+
+        }
+        this.add_scheduler_hints= function(){
+            this.volume.scheduler_hints.push({})
         }
     }
 

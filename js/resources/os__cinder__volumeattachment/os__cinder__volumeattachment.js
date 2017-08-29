@@ -37,8 +37,8 @@
                 },
             },
             necessary_properties: {
-                'instance_uuid': 'OS__Nova__Server',
-                'volume_id': 'OS__Cinder__Volume',
+                'instance_uuid': ['OS__Nova__Server',],
+                'volume_id': ['OS__Cinder__Volume',]
             }
         }
     );
@@ -73,9 +73,7 @@
             }
             $scope.volumes = $scope.get_volume_id_options();
             $scope.instances = $scope.get_instance_uuid_options();
-            if (typeof $scope.volumeattachment == 'undefined'){
-                $scope.volumeattachment = {}
-            }
+
             if ( $scope.connected_options.instance_uuid && $scope.connected_options.instance_uuid.length > 0){
                 this.volumeattachment['instance_uuid'] = $scope.connected_options.instance_uuid[0].value
             }

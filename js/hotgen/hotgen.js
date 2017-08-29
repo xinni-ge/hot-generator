@@ -53,6 +53,15 @@
             {'id': 'df1944a7-ca45-4709-9ec6-e31664133650', 'name': 'CentOS-7.1-1503_64'},
             {'id': 'c99c0ab6-00a1-4119-b807-71229b0d9804', 'name': 'RedHatEnterpriseLinux-7.1'},
         ];
+        $rootScope.floating_networks = [
+            {'id': '823ca3a8-bd8a-417d-8d32-fd1839e09d7f', 'name': 'public network'},
+        ];
+        $rootScope.floating_subnets = [
+            {'id': 'ca454447-a5b8-4891-bb61-5ff5a0e681af', 'name': 'public subnet'},
+        ];
+        $rootScope.ports = [
+            {'id': '97175254-b807-9717-0ab6-001750687cec', 'name': 'Port 1'},
+        ];
         $rootScope.flavors = [
              {'id': 'm1.small', 'name': 'm1.small'},
              {'id': 'm1.medium', 'name': 'm1.medium'},
