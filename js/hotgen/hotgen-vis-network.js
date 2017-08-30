@@ -37,7 +37,12 @@
                         } else{
                             hotgenNotify.show_success("Successfully connected.");
                             callback(data);
+                            $rootScope.nodes.update({
+                                id: data.from,
+                                font: {color: '#343434'}
+                            })
                             $rootScope.is_saved[data.id] = false;
+                            $rootScope.is_saved[data.from] = false;
                         }
                     },
                     addNode: false,

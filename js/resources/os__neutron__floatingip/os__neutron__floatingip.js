@@ -63,6 +63,11 @@
             } else{
                 $scope.connected_options = this.connectedoptions;
             }
+            this.disable = {
+                'floating_network': false,
+                'floating_subnet': false,
+                'port_id': false
+            }
             $scope.floating_networks = $scope.get_floating_network_options();
             $scope.floating_subnets = $scope.get_floating_subnet_options();
             $scope.ports = $scope.get_port_options();
@@ -71,12 +76,15 @@
             }
             if ( $scope.connected_options.floating_network && $scope.connected_options.floating_network.length > 0){
                 this.floatingip['floating_network'] = $scope.connected_options.floating_network[0].value
+                this.disable.floating_network = true
             }
             if ( $scope.connected_options.floating_subnet && $scope.connected_options.floating_subnet.length > 0){
                 this.floatingip['floating_subnet'] = $scope.connected_options.floating_subnet[0].value
+                this.disable.floating_subnet = true
             }
             if ( $scope.connected_options.port_id && $scope.connected_options.port_id.length > 0){
                 this.floatingip['port_id'] = $scope.connected_options.port_id[0].value
+                this.disable.port_id = true
             }
         }
         this.add_value_specs = function(){

@@ -56,8 +56,14 @@
         $rootScope.floating_networks = [
             {'id': '823ca3a8-bd8a-417d-8d32-fd1839e09d7f', 'name': 'public network'},
         ];
+        $rootScope.networks = [
+            {'id': 'fd7439dd-715d-4685-8478-f1c6b65c1ba1', 'name': 'internal network 01'},
+        ];
         $rootScope.floating_subnets = [
             {'id': 'ca454447-a5b8-4891-bb61-5ff5a0e681af', 'name': 'public subnet'},
+        ];
+        $rootScope.subnets = [
+            {'id': '19760c5c-bffe-482e-97cb-544e6c4092ab', 'name': 'internal subnet 01'},
         ];
         $rootScope.ports = [
             {'id': '97175254-b807-9717-0ab6-001750687cec', 'name': 'Port 1'},

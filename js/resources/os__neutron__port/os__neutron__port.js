@@ -12,20 +12,27 @@
                 code: '\uf22d',
                 color: '#40a5f2',
             },
-            modal_component: '<os-neutron-port port="resource" form-reference="resourceForm"></os-neutron-port>',
+            modal_component: '<os-neutron-port port="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-port>',
             edge_settings: {
                 'OS__Neutron__Net': {
                     'type': 'property',
                     'property': 'network',
                     'limit': 1,
                 },
+                'OS__Neutron__Subnet': {
+                    'type': 'complex',
+                    'property': 'fixed_ips.subnet_id',
+                    'limit': 1,
+                },
                 'OS__Neutron__SecurityGroup': {
                     'type': 'list',
-                    'list': 'security_groups',
+                    'property': 'security_groups',
                     'limit': 99,
                 },
             },
-            necessary_properties: null
+            necessary_properties: {
+                'network': ['OS__Neutron__Net'],
+            }
         }
     );
 
@@ -45,8 +52,17 @@
     });
 
     function osNeutronPortController($scope, $rootScope){
-        this.additional = false;
         this.$onInit = function(){
+            if (typeof this.connectedoptions === 'undefined'){
+                $scope.connected_options = []
+            } else{
+                $scope.connected_options = this.connectedoptions;
+            }
+            this.disable = {
+                'network': false,
+                'security_groups': [],
+            }
+
             if (typeof this.port.admin_state_up === 'undefined'){
                 this.port.admin_state_up = true;
             }
@@ -56,15 +72,32 @@
             if (typeof this.port.allowed_address_pairs === 'undefined'){
                 this.port.allowed_address_pairs = [{}];
             }
-            if (this.additional === true && typeof this.port.fixed_ips === 'undefined'){
-                this.port.fixed_ips = [];
+            if (typeof this.port.fixed_ips === 'undefined'){
+                this.port.fixed_ips = [{}];
             }
-            if (this.additional === true && typeof this.port.security_groups === 'undefined'){
+            if (typeof this.port.security_groups === 'undefined'){
                 this.port.security_groups = [{}];
+            }
+            if (typeof this.port.value_specs == 'undefined'){
+                this.port.value_specs = [{}]
             }
             if (this.port.device_owner){
                 this.searchText = this.port.device_owner;
             }
+
+            if ( $scope.connected_options.network && $scope.connected_options.network.length > 0){
+                this.port['network'] = $scope.connected_options.network[0].value;
+                this.disable.network = true;
+            }
+            if ( $scope.connected_options.security_groups && $scope.connected_options.security_groups.length > 0){
+                for (var idx in $scope.connected_options.security_groups){
+                    this.port['security_groups'].push($scope.connected_options.security_groups[idx].value);
+                    this.disable.security_groups.push($scope.connected_options.security_groups[idx].value);
+                }
+            }
+
+            $scope.networks = $scope.get_networks_options();
+            $scope.security_groups = $scope.get_security_groups_options();
         };
         this.device_owners = load_device_owners();
         this.querySearch = querySearch;
@@ -72,8 +105,45 @@
         this.selectedItemChange = selectedItemChange;
         this.searchTextChange   = searchTextChange;
 
-        $scope.security_groups = $rootScope.security_groups;
+        $scope.get_networks_options = function(){
+            if ('network' in $scope.connected_options){
+                var resource_nw = [];
+                for (var idx in $scope.connected_options.network){
+                    var item = $scope.connected_options.network[idx];
+                    resource_nw.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.networks.concat(resource_nw);
+            }
+            return $rootScope.networks;
+        }
+
+        $scope.get_security_groups_options = function(){
+            if ('security_groups' in $scope.connected_options){
+                var resource_secgroups = [];
+                for (var idx in $scope.connected_options.security_groups){
+                    var item = $scope.connected_options.security_groups[idx];
+                    resource_secgroups.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.security_groups.concat(resource_secgroups);
+            }
+            return $rootScope.security_groups;
+        }
+
         $scope.qos_policies = $rootScope.qos_policies;
+
+
+        this.add_value_specs = function(){
+            this.port.value_specs.push({})
+        }
+        this.delete_value_specs = function(index){
+            this.port.value_specs.splice(index, 1)
+        }
 
         this.add_allowed_address_pair = function(){
             this.port.allowed_address_pairs.push({})
@@ -121,12 +191,13 @@
     }
 
     angular_module.component('osNeutronPort', {
-      templateUrl: '/js/resources/os__neutron__port/os__neutron__port.html',
-      controller: osNeutronPortController,
-      bindings:{
-        'port': '=',
-        'formReference': '<',
-      }
+        templateUrl: '/js/resources/os__neutron__port/os__neutron__port.html',
+        controller: osNeutronPortController,
+        bindings:{
+            'port': '=',
+            'connectedoptions': '<',
+            'formReference': '<',
+        }
     });
 
 })(window.angular);

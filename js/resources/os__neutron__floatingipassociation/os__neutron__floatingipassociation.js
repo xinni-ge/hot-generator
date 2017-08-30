@@ -53,13 +53,16 @@
             } else{
                 $scope.connected_options = this.connectedoptions;
             }
+            this.disable = {'floatingip_id': false, 'port_id': false}
             $scope.floatingips = $scope.get_floatingip_options();
             $scope.ports = $scope.get_port_options();
             if ( $scope.connected_options.floatingip_id && $scope.connected_options.floatingip_id.length > 0){
-                this.floatingipassociation['floatingip_id'] = $scope.connected_options.floatingip_id[0].value
+                this.floatingipassociation['floatingip_id'] = $scope.connected_options.floatingip_id[0].value;
+                this.disable.floatingip_id = true;
             }
             if ( $scope.connected_options.port_id && $scope.connected_options.port_id.length > 0){
-                this.floatingipassociation['port_id'] = $scope.connected_options.port_id[0].value
+                this.floatingipassociation['port_id'] = $scope.connected_options.port_id[0].value;
+                this.disable.port_id = true;
             }
         }
         $scope.get_floatingip_options = function(){

@@ -71,14 +71,17 @@
             } else{
                 $scope.connected_options = this.connectedoptions;
             }
+            this.disable = {'instance_uuid': false, 'volume_id': false}
             $scope.volumes = $scope.get_volume_id_options();
             $scope.instances = $scope.get_instance_uuid_options();
 
             if ( $scope.connected_options.instance_uuid && $scope.connected_options.instance_uuid.length > 0){
                 this.volumeattachment['instance_uuid'] = $scope.connected_options.instance_uuid[0].value
+                this.disable.instance_uuid = true
             }
             if ( $scope.connected_options.volume_id && $scope.connected_options.volume_id.length > 0){
                 this.volumeattachment['volume_id'] = $scope.connected_options.volume_id[0].value
+                this.disable.volume_id = true
             }
 
         }

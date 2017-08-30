@@ -31,7 +31,7 @@
                             $scope.all_saved = false;
                             return 'Cannot generate, no resource has been saved.';
                         }
-                        if ( false in $rootScope.is_saved){
+                        if (Object.values($rootScope.is_saved).indexOf(false) >= 0){
                             $scope.all_saved = false;
                             return 'Cannot generate, some resources are not saved.';
                         }
@@ -70,6 +70,7 @@
                                     break;
                                 case 'allocation_pools':
                                 case 'allowed_address_pairs':
+                                case 'fixed_ips':
                                 case 'host_routes':
                                     func = hotgenUtils.extract_list_of_keyvalue;
                                     break;
@@ -145,7 +146,7 @@
                         $rootScope.is_saved[$rootScope.selected.id] = true;
 
                         // Mark edges connected from the node are saved and update style.
-                        for (var idx in $scope.connectedoptions){ // debugger;
+                        for (var idx in $scope.connectedoptions){
                             var connected_option = $scope.connectedoptions[idx];
                             for (var idx_edge in connected_option){
                                 $rootScope.is_saved[connected_option[idx_edge].edge.id] = true;
