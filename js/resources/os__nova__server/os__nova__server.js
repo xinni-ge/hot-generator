@@ -193,6 +193,7 @@
         controller: osNovaServerController,
         bindings:{
           'instance': '=',
+          'connectedoptions': '=',
           'formReference': '<',
         }
     });

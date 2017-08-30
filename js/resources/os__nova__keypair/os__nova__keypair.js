@@ -35,12 +35,12 @@
     }
 
     angular_module.component('osNovaKeypair', {
-      templateUrl: '/js/resources/os__nova__keypair/os__nova__keypair.html',
-      controller: osNovaKeypairController,
-      bindings:{
-        'keypair': '=',
-        'formReference': '<',
-      }
+        templateUrl: '/js/resources/os__nova__keypair/os__nova__keypair.html',
+        controller: osNovaKeypairController,
+        bindings:{
+          'keypair': '=',
+          'formReference': '<',
+        }
     });
 
 })(window.angular);

@@ -14,7 +14,7 @@
                 code: '\uf0ee',
                 color: '#40a5f2'
             },
-            modal_component: '<os-neutron-subnet subnet="resource" form-reference="resourceForm"></os-neutron-subnet>',
+            modal_component: '<os-neutron-subnet subnet="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-subnet>',
             edge_settings: {
                 'OS__Neutron__Net': {
                     'type': 'property',
@@ -22,7 +22,9 @@
                     'limit': 1,
                 },
             },
-            necessary_properties: null
+            necessary_properties: {
+                'network': ['OS__Neutron__Net']
+            }
         }
     );
 
@@ -43,8 +45,18 @@
 
 
     function osNeutronSubnetController($scope, $rootScope, hotgenNotify) {
-        this.admin=true
-        this.$onInit = function(){
+        this.admin=$rootScope.auth.admin;
+
+        this.$onInit = function(){ 
+            if (typeof this.connectedoptions === 'undefined'){
+                $scope.connected_options = []
+            } else{
+                $scope.connected_options = this.connectedoptions;
+            }
+
+            this.disable = {'network': false}
+            $scope.networks = $scope.get_networks_options();
+
             if (typeof this.subnet.allocation_pools === 'undefined'){
                 this.subnet.allocation_pools = [{}];
             }
@@ -53,6 +65,10 @@
             }
             if (typeof this.subnet.dns_nameservers === 'undefined'){
                 this.subnet.dns_nameservers = [];
+            }
+            if ( $scope.connected_options.network && $scope.connected_options.network.length > 0){
+                this.subnet['network'] = $scope.connected_options.network[0].value
+                this.disable.network = true
             }
 
         }
@@ -69,25 +85,39 @@
             this.subnet.host_routes.splice(index, 1)
         }
         $scope.validate_dns = function (input_string){
-            var re =  /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            var re =  /^.*$/;
             var match = re.exec(input_string);
             if (match){
-                return undefined;
+                return input_string;
             } else{
-                hotgenNotify.show_error('Invalid nameserver address.');
+                hotgenNotify.show_error('Invalid name server address.');
                 return null;
             }
-
+        }
+        $scope.get_networks_options = function(){
+            if ('network' in $scope.connected_options){
+                var resource_nws = [];
+                for (var idx in $scope.connected_options.network){
+                    var item = $scope.connected_options.network[idx];
+                    resource_nws.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.networks.concat(resource_nws);
+            }
+            return $rootScope.networks;
         }
     }
 
     angular_module.component('osNeutronSubnet', {
-      templateUrl: '/js/resources/os__neutron__subnet/os__neutron__subnet.html',
-      controller: osNeutronSubnetController,
-      bindings:{
-        'subnet': '=',
-        'formReference': '<',
-      }
+        templateUrl: '/js/resources/os__neutron__subnet/os__neutron__subnet.html',
+        controller: osNeutronSubnetController,
+        bindings:{
+            'subnet': '=',
+            'connectedoptions': '<',
+            'formReference': '<',
+        }
     });
 
 

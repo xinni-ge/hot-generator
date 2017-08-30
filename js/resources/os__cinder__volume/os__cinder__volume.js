@@ -78,7 +78,7 @@
       controller: osCinderVolumeController,
       bindings:{
         'volume': '=',
-        'connectedoptions': '=',
+        'connectedoptions': '<',
         'formReference': '<',
       }
     });

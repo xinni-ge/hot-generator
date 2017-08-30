@@ -121,13 +121,13 @@
         }
     };
     angular_module.component('osNeutronRouterInterface', {
-      templateUrl: '/js/resources/os__neutron__routerinterface/os__neutron__routerinterface.html',
-      controller: osNeutronRouterInterfaceController,
-      bindings:{
-        'routerinterface': '=',
-        'connectedoptions': '=',
-        'formReference': '<',
-      }
+        templateUrl: '/js/resources/os__neutron__routerinterface/os__neutron__routerinterface.html',
+        controller: osNeutronRouterInterfaceController,
+        bindings:{
+            'routerinterface': '=',
+            'connectedoptions': '<',
+            'formReference': '<',
+        }
     });
 
 
