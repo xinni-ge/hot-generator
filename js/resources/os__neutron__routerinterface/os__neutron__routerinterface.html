@@ -2,19 +2,30 @@
     <md-tab label="Details" >
         <md-content layout-padding>
             <p ng-if="$ctrl.message">{{$ctrl.message}}</p>
-            <md-input-container class="md-block" flex-gt-xs ng-if="$ctrl.routerinterface.router">
+            <md-input-container class="md-block" flex-gt-xs>
                 <label>Router</label>
-                <input ng-model="$ctrl.routerinterface.router" type="text" readonly>
+                <md-select ng-model="$ctrl.routerinterface.router" ng-disabled="$ctrl.disable.router">
+                    <md-option ng-repeat="router in routers" ng-value="router.id" >
+                        {{router.name}}
+                    </md-option>
+                </md-select>
             </md-input-container>
-            <md-input-container class="md-block" flex-gt-xs ng-if="$ctrl.routerinterface.port">
+            <md-input-container class="md-block" flex-gt-xs>
                 <label>Port</label>
-                <input ng-model="$ctrl.routerinterface.port" type="text" readonly>
+                <md-select ng-model="$ctrl.routerinterface.port" ng-disabled="$ctrl.disable.port">
+                    <md-option ng-repeat="port in ports" ng-value="port.id" >
+                        {{port.name}}
+                    </md-option>
+                </md-select>
             </md-input-container>
-            <md-input-container class="md-block" flex-gt-xs ng-if="$ctrl.routerinterface.subnet">
+            <md-input-container class="md-block" flex-gt-xs>
                 <label>Subnet</label>
-                <input ng-model="$ctrl.routerinterface.subnet" type="text" readonly>
+                <md-select ng-model="$ctrl.routerinterface.subnet" ng-disabled="$ctrl.disable.subnet">
+                    <md-option ng-repeat="subnet in subnets" ng-value="subnet.id" >
+                        {{subnet.name}}
+                    </md-option>
+                </md-select>
             </md-input-container>
       </md-content>
     </md-tab>
-
 </md-tabs>

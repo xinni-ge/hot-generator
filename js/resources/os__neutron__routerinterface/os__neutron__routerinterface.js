@@ -52,11 +52,73 @@
     });
 
     function osNeutronRouterInterfaceController($scope, $rootScope) {
-        this.$onInit = function(){debugger;
-            debugger;
-            this.connectedoptions;
-        }
+        this.$onInit = function(){
+            if (typeof this.connectedoptions === 'undefined'){
+                $scope.connected_options = []
+            } else{
+                $scope.connected_options = this.connectedoptions;
+            }
+            this.disable = {'port': false, 'router': false, 'subnet': false}
+            $scope.subnets = $scope.get_subnets_options();
+            $scope.routers = $scope.get_routers_options();
+            $scope.ports = $scope.get_ports_options();
 
+
+            if ( $scope.connected_options.port && $scope.connected_options.port.length > 0){
+                this.routerinterface['port'] = $scope.connected_options.port[0].value
+                this.disable.port = true
+            }
+            if ( $scope.connected_options.router && $scope.connected_options.router.length > 0){
+                this.routerinterface['router'] = $scope.connected_options.router[0].value
+                this.disable.router = true
+            }
+            if ( $scope.connected_options.subnet && $scope.connected_options.subnet.length > 0){
+                this.routerinterface['subnet'] = $scope.connected_options.subnet[0].value
+                this.disable.subnet = true
+            }
+        }
+        $scope.get_subnets_options = function(){
+            if ('subnet' in $scope.connected_options){
+                var resource_subnets = [];
+                for (var idx in $scope.connected_options.subnet){
+                    var item = $scope.connected_options.subnet[idx];
+                    resource_subnets.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.subnets.concat(resource_subnets);
+            }
+            return $rootScope.subnets;
+        }
+        $scope.get_ports_options = function(){
+            if ('port' in $scope.connected_options){
+                var resource_ports = [];
+                for (var idx in $scope.connected_options.port){
+                    var item = $scope.connected_options.port[idx];
+                    resource_ports.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.ports.concat(resource_ports);
+            }
+            return $rootScope.ports;
+        }
+        $scope.get_routers_options = function(){
+            if ('router' in $scope.connected_options){
+                var resource_routers = [];
+                for (var idx in $scope.connected_options.router){
+                    var item = $scope.connected_options.router[idx];
+                    resource_routers.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.routers.concat(resource_routers);
+            }
+            return $rootScope.routers;
+        }
     };
     angular_module.component('osNeutronRouterInterface', {
       templateUrl: '/js/resources/os__neutron__routerinterface/os__neutron__routerinterface.html',

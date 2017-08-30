@@ -68,6 +68,9 @@
         $rootScope.ports = [
             {'id': '97175254-b807-9717-0ab6-001750687cec', 'name': 'Port 1'},
         ];
+        $rootScope.routers = [
+            {'id': 'f8375510-efc8-4839-9593-56e3dad07014', 'name': 'Router 1'},
+        ];
         $rootScope.floatingips = [
             {'id': '8d32c99c-b65c-f07d-0ab6-8f694a600171', },
         ];

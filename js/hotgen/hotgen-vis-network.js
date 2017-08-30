@@ -47,7 +47,7 @@
                     },
                     addNode: false,
                     editEdge: false,
-                    deleteNode: function(data, callback){ 
+                    deleteNode: function(data, callback){
                         var node_ids = data.nodes;
                         var edge_ids = data.edges;
                         for (var idx in node_ids){
