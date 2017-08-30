@@ -8,6 +8,7 @@
     angular_module.value('osNovaServerSettings',
         {
             resource_key: "OS__Nova__Server",
+            admin: false,
             icon: {
                 class: 'fa-desktop ',
                 name: 'OS::Nova::Server',

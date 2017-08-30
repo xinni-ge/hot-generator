@@ -7,6 +7,7 @@
     angular_module.value('osNeutronSubnetSettings',
         {
             resource_key: "OS__Neutron__Subnet",
+            admin: false,
             icon: {
                 class: 'fa-cloud-upload ',
                 name: 'OS::Neutron::Subnet',

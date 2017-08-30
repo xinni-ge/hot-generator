@@ -6,6 +6,7 @@
     angular_module.value('osNeutronRouterInterfaceSettings',
         {
             resource_key: "OS__Neutron__RouterInterface",
+            admin: false,
             icon: {
                 class: 'fa-sun-o',
                 name: 'OS::Neutron::RouterInterface',
@@ -30,7 +31,9 @@
                     'limit': 1,
                 },
             },
-            necessary_properties: null
+            necessary_properties: {
+                'router': ['OS__Neutron__Router'],
+            }
         }
     );
 

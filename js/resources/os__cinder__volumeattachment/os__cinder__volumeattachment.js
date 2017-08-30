@@ -9,6 +9,7 @@
     angular_module.value('osCinderVolumeAttachmentSettings',
         {
             resource_key: "OS__Cinder__VolumeAttachment",
+            admin: false,
             icon: {
                 class: 'fa-plug',
                 name: 'OS::Cinder::VolumeAttachment',

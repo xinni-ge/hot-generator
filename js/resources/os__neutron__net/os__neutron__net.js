@@ -6,6 +6,7 @@
     angular_module.value('osNeutronNetSettings',
         {
             resource_key: "OS__Neutron__Net",
+            admin: false,
             icon: {
                 class: 'fa-cloud',
                 name: 'OS::Neutron::Net',

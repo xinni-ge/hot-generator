@@ -1,7 +1,10 @@
 (function(angular) {
     'use strict';
-    angular_module.controller('IconCtrl', function($scope, hotgenGlobals){
+    angular_module.controller('IconCtrl', function($scope, $rootScope, hotgenGlobals){
         $scope.resource_types = hotgenGlobals.get_resource_icons();
+        $scope.admin = $rootScope.auth.admin;
+        $scope.resource_admin = hotgenGlobals.get_node_admin();
+
     });
 
     angular_module.directive('draggable', function(){

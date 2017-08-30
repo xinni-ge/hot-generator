@@ -20,7 +20,7 @@
         <script type="text/javascript" src="js/vendors/json2yaml.js"></script>
         <script type="text/javascript" src="js/vendors/js-yaml.min.js"></script>
         <script type="text/javascript" src="js/vendors/FileSaver.js"></script>
-        <script type="text/javascript" src="js/vendors/feather.min.js"></script>
+        <!--<script type="text/javascript" src="js/vendors/feather.min.js"></script>-->
 
         <link href="css/angular-notify.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -45,9 +45,11 @@
             <div class="col-sm-2"></div>
 
             <div class="col-sm-7">
+                <!-- Generated Template Modal -->
                 <div ng-controller="TempModalCtrl" style="display:inline-block">
                     <md-button class="md-fab md-primary" ng-click="open()" aria-label="Create Template"><i class="fa fa-lg fa-file-text-o"></i></md-button>
                 </div>
+                <!-- End Generated Template Modal -->
                 <div class="md-menu" ng-controller="DraftMenuCtrl" style="display:inline-block"  ng-cloak>
                     <md-menu>
                         <md-button class="md-fab" ng-click="openMenu($mdOpenMenu, $event)" aria-label="Manage Drafts">
@@ -87,9 +89,10 @@
             <div class="col-sm-3"></div>
         </div>
 
+        <!-- Drag sidebar -->
         <div class="col-sm-3" ng-controller="IconCtrl">
             <div>
-               <div draggable ng-repeat="(reskey, resobj) in resource_types" class="os-resource" draggable="true" id="{{reskey}}">
+               <div draggable ng-repeat="(reskey, resobj) in resource_types" ng-if="admin || (!resource_admin[reskey])" class="os-resource" draggable="true" id="{{reskey}}">
                     <span class="fa-stack fa-lg" style="color: {{resobj.color}}">
                         <i class="fa fa-square-o fa-stack-2x"></i>
                         <i class="fa {{ resobj.class }} fa-stack-1x "></i>
@@ -98,22 +101,31 @@
                </div>
             </div>
         </div>
+        <!-- End Drag sidebar -->
 
+        <!-- Drop Canvas -->
         <div class="col-sm-6">
             <div ng-controller="VisCtrl" id="canvas_area" droppable>
                 <vis-network component="hotnetwork" data="data" options="options" events="events">
                 </vis-network>
             </div>
         </div>
+        <!-- End Drop Canvas -->
 
+        <!-- Node Modal -->
         <div ng-controller="FormModalCtrl"  class="md-padding" id="popupContainer" ng-cloak>
         </div>
+        <!-- End Node Modal -->
 
+        <!-- Edge Modal -->
         <div ng-controller="EdgeFormModalCtrl"  class="md-padding" id="popupEdgeContainer" ng-cloak>
         </div>
+        <!-- End Edge Modal -->
 
+        <!-- Load Draft Modal -->
         <div ng-controller="DraftModalCtrl"  class="md-padding" ng-cloak>
         </div>
+        <!-- End Load Draft Modal -->
 
         <script>
             angular_module = angular.module('hotgen', ['hotgen-utils', 'ngMaterial', 'ngMessages', 'ngSanitize',

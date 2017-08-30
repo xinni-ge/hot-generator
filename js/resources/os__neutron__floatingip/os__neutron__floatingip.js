@@ -6,6 +6,7 @@
     angular_module.value('osNeutronFloatingipSettings',
         {
             resource_key: "OS__Neutron__FloatingIP",
+            admin: false,
             icon: {
                 class: 'fa-neuter ',
                 name: 'OS::Neutron::FloatingIP',

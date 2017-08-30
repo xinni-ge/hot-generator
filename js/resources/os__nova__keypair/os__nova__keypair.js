@@ -5,6 +5,7 @@
     angular_module.value('osNovaKeypairSettings',
         {
             resource_key: "OS__Nova__KeyPair",
+            admin: false,
             icon: {
                 class: 'fa-key ',
                 name: 'OS::Nova::KeyPair',

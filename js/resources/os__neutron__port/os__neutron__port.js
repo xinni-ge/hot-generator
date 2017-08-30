@@ -6,6 +6,7 @@
     angular_module.value('osNeutronPortSettings',
         {
             resource_key: "OS__Neutron__Port",
+            admin: false,
             icon: {
                 class: 'fa-genderless',
                 name: 'OS::Neutron::Port',
@@ -21,8 +22,8 @@
                 },
                 'OS__Neutron__Subnet': {
                     'type': 'complex',
-                    'property': 'fixed_ips.subnet_id',
-                    'limit': 1,
+                    'property': 'fixed_ips.subnet',
+                    'limit': 99,
                 },
                 'OS__Neutron__SecurityGroup': {
                     'type': 'list',
@@ -60,6 +61,7 @@
             }
             this.disable = {
                 'network': false,
+                'subnets': [],
                 'security_groups': [],
             }
 
@@ -95,9 +97,16 @@
                     this.disable.security_groups.push($scope.connected_options.security_groups[idx].value);
                 }
             }
+            if ( $scope.connected_options['fixed_ips.subnet'] && $scope.connected_options['fixed_ips.subnet'].length > 0){
+                for (var idx in $scope.connected_options['fixed_ips.subnet']){
+                    this.port.fixed_ips.splice(0,0, {subnet: $scope.connected_options['fixed_ips.subnet'][idx].value});
+                    this.disable.subnets.push($scope.connected_options['fixed_ips.subnet'][idx].value);
+                }
+            }
 
             $scope.networks = $scope.get_networks_options();
             $scope.security_groups = $scope.get_security_groups_options();
+            $scope.subnets = $scope.get_subnets_options();
         };
         this.device_owners = load_device_owners();
         this.querySearch = querySearch;
@@ -133,6 +142,20 @@
                 return $rootScope.security_groups.concat(resource_secgroups);
             }
             return $rootScope.security_groups;
+        }
+        $scope.get_subnets_options = function(){
+            if ('fixed_ips.subnet' in $scope.connected_options){
+                var resource_subnets = [];
+                for (var idx in $scope.connected_options['fixed_ips.subnet']){
+                    var item = $scope.connected_options['fixed_ips.subnet'][idx];
+                    resource_subnets.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.subnets.concat(resource_subnets);
+            }
+            return $rootScope.subnets;
         }
 
         $scope.qos_policies = $rootScope.qos_policies;

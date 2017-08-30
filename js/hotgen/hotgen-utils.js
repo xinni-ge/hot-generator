@@ -146,26 +146,36 @@
                 necessary_properties: {},
                 resource_components: {},
                 node_labels: {},
+                node_admin: {},
             };
 
             return {
+                get_element: function(ele){
+                    return globals[ele];
+                },
                 get_node_labels: function () {
-                    return globals.node_labels;
+                    return this.get_element('node_labels');
+                },
+                get_node_admin: function () {
+                    return this.get_element('node_admin');
                 },
                 get_resource_icons: function () {
-                    return globals.resource_icons;
+                    return this.get_element('resource_icons');
                 },
                 get_resource_components: function () {
-                    return globals.resource_components;
+                    return this.get_element('resource_components');
                 },
                 get_edge_directions: function () {
-                    return globals.edge_directions;
+                    return this.get_element('edge_directions');
                 },
                 get_necessary_properties: function () {
-                    return globals.necessary_properties;
+                    return this.get_element('necessary_properties');
                 },
                 update_node_labels: function(key, value) {
                     globals.node_labels[key] = value
+                },
+                update_node_admin: function(key, value) {
+                    globals.node_admin[key] = value
                 },
                 update_resource_icons: function(key, value) {
                     globals.resource_icons[key] = value

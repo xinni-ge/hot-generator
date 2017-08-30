@@ -6,6 +6,7 @@
     angular_module.value('osNeutronRouterSettings',
         {
             resource_key: "OS__Neutron__Router",
+            admin: true,
             icon: {
                 class: 'fa-life-bouy',
                 name: 'OS::Neutron::Router',
@@ -33,6 +34,10 @@
         hotgenGlobals.update_resource_icons(
             osNeutronRouterSettings.resource_key,
             osNeutronRouterSettings.icon);
+
+        hotgenGlobals.update_node_admin(
+            osNeutronRouterSettings.resource_key,
+            osNeutronRouterSettings.admin);
 
         hotgenGlobals.update_resource_components(
             osNeutronRouterSettings.resource_key,

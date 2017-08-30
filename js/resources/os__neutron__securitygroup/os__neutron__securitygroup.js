@@ -6,6 +6,7 @@
     angular_module.value('osNeutronSecurityGroupSettings',
         {
             resource_key: "OS__Neutron__SecurityGroup",
+            admin: false,
             icon: {
                 class: 'fa-shield ',
                 name: 'OS::Neutron::SecurityGroup',

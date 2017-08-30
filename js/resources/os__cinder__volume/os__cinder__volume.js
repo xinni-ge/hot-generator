@@ -8,6 +8,7 @@
     angular_module.value('osCinderVolumeSettings',
         {
             resource_key: "OS__Cinder__Volume",
+            admin: false,
             icon: {
                 class: 'fa-hdd-o ',
                 name: 'OS::Cinder::Volume',
@@ -26,10 +27,6 @@
         hotgenGlobals.update_resource_icons(
             osCinderVolumeSettings.resource_key ,
             osCinderVolumeSettings.icon);
-
-        hotgenGlobals.update_node_labels(
-            osCinderVolumeSettings.resource_key ,
-            osCinderVolumeSettings.label);
 
         hotgenGlobals.update_resource_components(
             osCinderVolumeSettings.resource_key,

@@ -6,6 +6,7 @@
     angular_module.value('osNeutronFloatingipAssociationSettings',
         {
             resource_key: "OS__Neutron__FloatingIPAssociation",
+            admin: false,
             icon: {
                 class: 'fa-paperclip',
                 name: 'OS::Neutron::FloatingIPAssociation',
