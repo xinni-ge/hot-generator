@@ -118,7 +118,7 @@
                 function DialogController($scope, $rootScope, $mdDialog,) {
                     $scope.delete_resource = function() {
                         var label = $rootScope.selected.node.label;
-                        $rootScope.nodes.remove($rootScope.selected.id);
+                        $rootScope.network.deleteSelected();
                         hotgenNotify.show_success(label + ' has been delete successfully.')
                         $mdDialog.cancel();
                     };

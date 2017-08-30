@@ -4,7 +4,7 @@
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Name</label>
-                <input ng-model="$ctrl.port.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
+                <input ng-model="$ctrl.port.name" name="name" type="text" ng-pattern="/^[0-9a-zA-Z._-]+$/" md-maxlength="255">
                 <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
                     <div ng-message="pattern" class="my-message">That doesn't look like a valid port name.</div>
                     <div ng-message="md-maxlength" class="my-message">Too long port name.</div>
@@ -137,7 +137,7 @@
                     </md-input-container>
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>IP Address</label>
-                        <input ng-model="pair.ip_address" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[012]|[12]?[0-9]))$/" />
+                        <input ng-model="pair.ip_address" type="text" ng-pattern="/^.*$/" />
                     </md-input-container>
                     <md-button ng-click="$ctrl.delete_allowed_address_pair($index)" aria-label="Delete" class="md-icon-button"><i class="fa fa-fw fa-times"></i></md-button>
                 </div>
@@ -153,7 +153,7 @@
                 <div layout-gt-xs="row" >
                     <md-input-container class="md-block" flex-gt-xs="50">
                         <label>IP Address</label>
-                        <input ng-model="fixed_ip.ip_address" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+                        <input ng-model="fixed_ip.ip_address" type="text" ng-pattern="/^.*$/" />
                     </md-input-container>
                     <md-input-container class="md-block" flex-gt-xs="50">
                         <label>Subnet</label>

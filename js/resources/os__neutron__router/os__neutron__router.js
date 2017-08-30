@@ -13,16 +13,11 @@
                 code: '\uf1cd',
                 color: '#40a5f2'
             },
-            modal_component: '<os-neutron-router router="resource" form-reference="resourceForm"></os-neutron-router>',
+            modal_component: '<os-neutron-router router="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-router>',
             edge_settings: {
-                'OS__Neutron__Net': {
-                    'type': 'mapping',
-                    'property': 'external_gateway_info',
-                    'limit': 99,
-                },
                 'OS__Neutron__Subnet': {
-                    'type': 'mapping',
-                    'mapping': 'external_gateway_info',
+                    'type': 'property',
+                    'property': 'ext_fixed_ips.subnet',
                     'limit': 99,
                 },
             },
@@ -51,16 +46,39 @@
 
     function osNeutronRouterController($scope, $rootScope) {
         this.$onInit = function(){
+            if (typeof this.connectedoptions === 'undefined'){
+                $scope.connected_options = []
+            } else{
+                $scope.connected_options = this.connectedoptions;
+            }
             if (typeof this.router.external_gateway_info === 'undefined'){
                 this.router.external_gateway_info = {"external_fixed_ips": [{}]};
             }
             if (typeof this.router.l3_agent_ids === 'undefined'){
                 this.router.l3_agent_ids = [];
             }
+            if (typeof this.router.tags == 'undefined'){
+                this.router.tags = []
+            }
+
             if (typeof this.router.admin_state_up === 'undefined'){
                 this.router.admin_state_up = true;
             }
+            if (typeof this.router.value_specs == 'undefined'){
+                this.router.value_specs = [{}]
+            }
+            this.disable = {
+                'subnets': [],
+            }
 
+            if ( $scope.connected_options['ext_fixed_ips.subnet'] && $scope.connected_options['ext_fixed_ips.subnet'].length > 0){
+                for (var idx in $scope.connected_options['ext_fixed_ips.subnet']){
+                    this.router.external_gateway_info.external_fixed_ips.splice(0,0, {subnet: $scope.connected_options['ext_fixed_ips.subnet'][idx].value});
+                    this.disable.subnets.push($scope.connected_options['ext_fixed_ips.subnet'][idx].value);
+                }
+            }
+
+            $scope.subnets = $scope.get_subnets_options();
         };
         this.add_external_fixed_ip = function(){
             this.router.external_gateway_info.external_fixed_ips.push({})
@@ -69,15 +87,38 @@
             this.router.external_gateway_info.external_fixed_ips.splice(index, 1)
         }
 
+        this.add_value_specs = function(){
+            this.router.value_specs.push({})
+        }
+        this.delete_value_specs = function(index){
+            this.router.value_specs.splice(index, 1)
+        }
+
+        $scope.get_subnets_options = function(){
+            if ('ext_fixed_ips.subnet' in $scope.connected_options){
+                var resource_subnets = [];
+                for (var idx in $scope.connected_options['ext_fixed_ips.subnet']){
+                    var item = $scope.connected_options['ext_fixed_ips.subnet'][idx];
+                    resource_subnets.push({
+                        id: item.value,
+                        name: item.value
+                    })
+                }
+                return $rootScope.subnets.concat(resource_subnets);
+            }
+            return $rootScope.subnets;
+        }
+
     }
 
     angular_module.component('osNeutronRouter', {
-      templateUrl: '/js/resources/os__neutron__router/os__neutron__router.html',
-      controller: osNeutronRouterController,
-      bindings:{
-        'router': '=',
-        'formReference': '<',
-      }
+        templateUrl: '/js/resources/os__neutron__router/os__neutron__router.html',
+        controller: osNeutronRouterController,
+        bindings:{
+            'router': '=',
+            'connectedoptions': '<',
+            'formReference': '<',
+        }
     });
 
 

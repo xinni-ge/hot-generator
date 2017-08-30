@@ -47,18 +47,30 @@
                     },
                     addNode: false,
                     editEdge: false,
-                    deleteNode: function(data, callback){
-                        delete $rootScope.is_saved[data.id]
+                    deleteNode: function(data, callback){ 
+                        var node_ids = data.nodes;
+                        var edge_ids = data.edges;
+                        for (var idx in node_ids){
+                            delete $rootScope.is_saved[node_ids[idx]];
+                        }
+                        for (var idx in edge_ids){
+                            delete $rootScope.is_saved[edge_ids[idx]];
+                        }
+                        callback(data);
                     },
                     deleteEdge: function(data, callback){
-                        var edge_id = data.edges[0];
-                        delete $rootScope.is_saved[edge_id];
-                        var from_id = $rootScope.edges.get(edge_id).from;
-                        $rootScope.is_saved[from_id] = false;
-                        $rootScope.nodes.update({
-                            id: from_id,
-                            font: {color: '#343434'}
-                        })
+                        var edge_ids = data.edges;
+                        for (var idx in edge_ids){
+                            var edge_id = edge_ids[idx];
+                            delete $rootScope.is_saved[edge_id];
+                            var from_id = $rootScope.edges.get(edge_id).from;
+                            $rootScope.is_saved[from_id] = false;
+                            $rootScope.nodes.update({
+                                id: from_id,
+                                font: {color: '#343434'}
+                            })
+                        }
+
                         callback(data);
                     },
                 },
