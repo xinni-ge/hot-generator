@@ -49,8 +49,8 @@
                         }
                         var today = new Date();
                         var template_root = {
-                            heat_template_version: "2016-04-08",
-                            description: 'created by HOT Generator at '+ today.toUTCString() + '.',
+                            heat_template_version: "2017-09-01",
+                            description: 'version 2017-09-01 created by HOT Generator at '+ today.toUTCString() + '.',
                             resources: resource_root
                         }
                         var json_string = JSON.stringify(template_root);
@@ -61,6 +61,7 @@
                             var func = null;
                             switch (property){
                                 case 'description':
+                                case 'public_key':
                                     func =  hotgenUtils.escape_characters;
                                     break;
                                 case 'metadata':
@@ -70,8 +71,11 @@
                                     break;
                                 case 'allocation_pools':
                                 case 'allowed_address_pairs':
+                                case 'block_device_mapping':
+                                case 'block_device_mapping_v2':
                                 case 'fixed_ips':
                                 case 'host_routes':
+                                case 'personality':
                                     func = hotgenUtils.extract_list_of_keyvalue;
                                     break;
                                 case 'dns_nameservers':

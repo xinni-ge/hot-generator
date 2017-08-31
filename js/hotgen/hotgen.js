@@ -24,6 +24,11 @@
             'admin': true,
         }
 
+        $rootScope.keypair_types = [
+            {'name': 'ssh'},
+            {'name': 'x509'},
+        ];
+
         $rootScope.keypairs = [
             {'name': 'default'},
             {'name': 'openstack'},
@@ -145,6 +150,7 @@
                 $rootScope.edges.clear();
                 $rootScope.selected = {};
                 $rootScope.saved_resources = {};
+                $rootScope.is_saved = {};
                 hotgenNotify.show_success('The Canvas has been initialized.');
             };
 

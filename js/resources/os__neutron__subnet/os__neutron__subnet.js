@@ -47,7 +47,7 @@
     function osNeutronSubnetController($scope, $rootScope, hotgenNotify) {
         this.admin=$rootScope.auth.admin;
 
-        this.$onInit = function(){ 
+        this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
             } else{

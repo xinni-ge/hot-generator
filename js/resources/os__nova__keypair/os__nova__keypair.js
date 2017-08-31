@@ -14,7 +14,9 @@
             },
             modal_component: '<os-nova-keypair keypair="resource" form-reference="resourceForm"></os-nova-keypair>',
             edge_settings: null,
-            necessary_properties: null
+            necessary_properties: {
+                'name': null
+            }
         }
     );
 
@@ -31,7 +33,8 @@
 
 
     function osNovaKeypairController($scope, $rootScope){
-        ;
+        $scope.keypair_types = $rootScope.keypair_types;
+        $scope.admin = $rootScope.auth.admin;
     }
 
     angular_module.component('osNovaKeypair', {

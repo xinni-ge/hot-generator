@@ -4,11 +4,14 @@
             <p ng-if="$ctrl.message">{{$ctrl.message}}</p>
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Router</label>
-                <md-select ng-model="$ctrl.routerinterface.router" ng-disabled="$ctrl.disable.router">
+                <md-select ng-model="$ctrl.routerinterface.router" name="router" ng-disabled="$ctrl.disable.router">
                     <md-option ng-repeat="router in routers" ng-value="router.id" >
                         {{router.name}}
                     </md-option>
                 </md-select>
+                <div ng-messages="$ctrl.formReference.router.$error" role="alert" multiple>
+                    <div ng-message="required" class="my-message">You must supply a router.</div>
+                </div>
             </md-input-container>
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Port</label>
