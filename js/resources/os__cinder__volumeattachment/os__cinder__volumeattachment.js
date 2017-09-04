@@ -6,7 +6,7 @@
      */
 
 
-    angular_module.value('osCinderVolumeAttachmentSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osCinderVolumeAttachmentSettings',
         {
             resource_key: "OS__Cinder__VolumeAttachment",
             admin: false,
@@ -44,7 +44,8 @@
         }
     );
 
-    angular_module.run(function(osCinderVolumeAttachmentSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osCinderVolumeAttachmentSettings', 'hotgenGlobals', function(osCinderVolumeAttachmentSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osCinderVolumeAttachmentSettings.resource_key,
             osCinderVolumeAttachmentSettings.icon);
@@ -61,7 +62,7 @@
             osCinderVolumeAttachmentSettings.resource_key,
             osCinderVolumeAttachmentSettings.edge_settings);
 
-    });
+    }]);
 
 
     // Define  <os-cinder-volume> controller
@@ -116,8 +117,15 @@
         }
     }
 
-    angular_module.component('osCinderVolumeAttachment', {
-        templateUrl: '/js/resources/os__cinder__volumeattachment/os__cinder__volumeattachment.html',
+    osCinderVolumeAttachmentController.$inject = ['$scope', '$rootScope', ];
+    osCinderVolumeAttachmentPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osCinderVolumeAttachmentPath (basePath){
+        return  basePath + 'js/resources/os__cinder__volumeattachment/os__cinder__volumeattachment.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osCinderVolumeAttachment', {
+        templateUrl: osCinderVolumeAttachmentPath,
         controller: osCinderVolumeAttachmentController,
         bindings:{
             'volumeattachment': '=',

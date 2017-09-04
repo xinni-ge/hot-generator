@@ -3,7 +3,7 @@
 
     /* OS::Neutron::FloatingIP */
 
-    angular_module.value('osNeutronFloatingipSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronFloatingipSettings',
         {
             resource_key: "OS__Neutron__FloatingIP",
             admin: false,
@@ -38,7 +38,8 @@
         }
     )
 
-    angular_module.run(function(osNeutronFloatingipSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronFloatingipSettings', 'hotgenGlobals', function(osNeutronFloatingipSettings, hotgenGlobals){
         hotgenGlobals.update_node_labels(
             osNeutronFloatingipSettings.resource_key,
             osNeutronFloatingipSettings.label);
@@ -54,7 +55,7 @@
         hotgenGlobals.update_edge_directions(
             osNeutronFloatingipSettings.resource_key,
             osNeutronFloatingipSettings.edge_settings);
-    });
+    }]);
 
 
     function osNeutronFloatingipController($scope, $rootScope){
@@ -138,8 +139,15 @@
             return $rootScope.ports;
         }
     }
-    angular_module.component('osNeutronFloatingip', {
-      templateUrl: '/js/resources/os__neutron__floatingip/os__neutron__floatingip.html',
+    osNeutronFloatingipController.$inject = ['$scope', '$rootScope', ];
+    osNeutronFloatingipPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNeutronFloatingipPath(basePath){
+        return basePath + 'js/resources/os__neutron__floatingip/os__neutron__floatingip.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronFloatingip', {
+      templateUrl: osNeutronFloatingipPath,
       controller: osNeutronFloatingipController,
       bindings:{
           'floatingip': '=',

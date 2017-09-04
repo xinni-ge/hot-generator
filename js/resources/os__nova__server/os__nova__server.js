@@ -5,7 +5,7 @@
     // OS::Nova::Server
 
 
-    angular_module.value('osNovaServerSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNovaServerSettings',
         {
             resource_key: "OS__Nova__Server",
             admin: false,
@@ -62,7 +62,8 @@
         }
     );
 
-    angular_module.run(function(osNovaServerSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNovaServerSettings', 'hotgenGlobals', function(osNovaServerSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNovaServerSettings.resource_key,
             osNovaServerSettings.icon);
@@ -87,7 +88,7 @@
             osNovaServerSettings.resource_key,
             osNovaServerSettings.edge_settings);
 
-    });
+    }]);
 
     function osNovaServerController($scope, $rootScope, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
@@ -214,7 +215,7 @@
         }
 
         $scope.get_volumes_options = function(){
-            if ('security_groups' in $scope.connected_options){
+            if ('block_device_mapping_v2.volume_id' in $scope.connected_options){
                 var resource_volumes = [];
                 for (var idx in $scope.connected_options['block_device_mapping_v2.volume_id']){
                     var item = $scope.connected_options['block_device_mapping_v2.volume_id'][idx];
@@ -406,11 +407,18 @@
         this.add_scheduler_hints= function(){
             this.instance.scheduler_hints.push({})
         }
-
     }
 
-    angular_module.component('osNovaServer', {
-        templateUrl: '/js/resources/os__nova__server/os__nova__server.html',
+    osNovaServerController.$inject = ['$scope', '$rootScope', 'hotgenValidate', 'hotgenNotify'];
+    osNovaServerPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+
+    function osNovaServerPath(basePath){
+        return basePath + 'js/resources/os__nova__server/os__nova__server.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNovaServer', {
+        templateUrl: osNovaServerPath,
         controller: osNovaServerController,
         bindings:{
             'instance': '=',

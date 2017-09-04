@@ -5,7 +5,8 @@
      *
      */
 
-    angular_module.value('osCinderVolumeSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+      .value('osCinderVolumeSettings',
         {
             resource_key: "OS__Cinder__Volume",
             admin: false,
@@ -23,7 +24,8 @@
     )
 
     // Register the resource to globals
-    angular_module.run(function(osCinderVolumeSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+      .run(['osCinderVolumeSettings','hotgenGlobals', function(osCinderVolumeSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osCinderVolumeSettings.resource_key ,
             osCinderVolumeSettings.icon);
@@ -31,7 +33,7 @@
         hotgenGlobals.update_resource_components(
             osCinderVolumeSettings.resource_key,
             osCinderVolumeSettings.modal_component);
-    });
+    }]);
 
 
     // Define  <os-cinder-volume> controller
@@ -73,14 +75,22 @@
         }
     }
 
-    angular_module.component('osCinderVolume', {
-      templateUrl: '/js/resources/os__cinder__volume/os__cinder__volume.html',
-      controller: osCinderVolumeController,
-      bindings:{
-        'volume': '=',
-        'connectedoptions': '<',
-        'formReference': '<',
-      }
+    function osCinderVolumePath (basePath){
+        return  basePath + 'js/resources/os__cinder__volume/os__cinder__volume.html';
+    }
+
+    osCinderVolumeController.$inject = ['$scope', '$rootScope', 'hotgenValidate', 'hotgenNotify'];
+    osCinderVolumePath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+      .component('osCinderVolume', {
+        templateUrl: osCinderVolumePath,
+        controller: osCinderVolumeController,
+        bindings: {
+          'volume': '=',
+          'connectedoptions': '<',
+          'formReference': '<',
+        }
     });
 
 

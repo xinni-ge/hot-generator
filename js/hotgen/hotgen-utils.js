@@ -1,12 +1,12 @@
 (function(angular) {
     'use strict';
     angular.module('hotgen-utils', ['cgNotify', 'angular-uuid'])
-         .factory('hotgenUUID', function(uuid) {
+         .factory('hotgenUUID', ['uuid', function(uuid) {
             return {
               uuid: uuid.v4,
             };
-         })
-         .factory('hotgenNotify', function(notify, $rootScope) {
+         }])
+         .factory('hotgenNotify', ['notify', '$rootScope', function(notify, $rootScope) {
             notify.config({
                 position: 'right',
                 duration: 0,
@@ -56,8 +56,8 @@
                 show_info: show_info,
                 show_warning: show_warning
             };
-         })
-         .factory('hotgenMessage', function($rootScope){
+         }])
+         .factory('hotgenMessage', ['$rootScope', function($rootScope){
             var broadcast_edit_node = function(node_type){
                 $rootScope.$broadcast('handle_edit_node', node_type);
             };
@@ -72,8 +72,8 @@
                 broadcast_edit_edge: broadcast_edit_edge,
                 broadcast_load_draft: broadcast_load_draft,
             }
-        })
-        .factory('hotgenValidate', function(){
+        }])
+        .factory('hotgenValidate', [function(){
 
             var validate_keypair = function(input_string){
                 var re=/^([0-9a-zA-Z_.-]{1,255})=([0-9a-zA-Z_.-]{1,255})$/
@@ -82,7 +82,7 @@
             return {
                 validate_keypair: validate_keypair,
             }
-        })
+        }])
         .factory('hotgenUtils', function(){
             var get_resource_string = function(identity){
                 return '{get_resource: '+identity+' }';
@@ -138,6 +138,37 @@
                 extract_list_of_keyvalue: extract_list_of_keyvalue,
                 extract_list: extract_list,
             };
+        })
+        .service('hotgenStates', function(){
+            var saved_flags = {};
+            var selected = {};
+            var saved_resources = {};
+            var get_selected = function(){
+                return selected;
+            }
+            var update_selected = function(to_update){
+                selected.extend(to_update);
+            }
+            var update_saved_resources = function(resource_type, data){
+                saved_resources[resource_type] = data;
+            };
+            var is_all_saved = function(){
+                return false in Object.keys(saved_flags);
+            };
+            var upate_saved_flags = function(to_update){
+                saved_flags.extend(to_update)
+            }
+            var get_saved_resources = function(){
+                return angular.copy(saved_resources);
+            }
+            return {
+                update_saved_resources: update_saved_resources,
+                get_saved_resources: get_saved_resources,
+                is_all_saved: is_all_saved,
+                get_selected: get_selected,
+                update_selected: update_selected,
+                upate_saved_flags: upate_saved_flags,
+            }
         })
         .service('hotgenGlobals', function () {
             var globals = {

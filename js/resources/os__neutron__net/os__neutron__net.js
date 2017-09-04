@@ -3,7 +3,7 @@
 
     // OS::Neutron::Net
 
-    angular_module.value('osNeutronNetSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronNetSettings',
         {
             resource_key: "OS__Neutron__Net",
             admin: false,
@@ -19,7 +19,8 @@
         }
     );
 
-    angular_module.run(function(osNeutronNetSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronNetSettings', 'hotgenGlobals', function(osNeutronNetSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNeutronNetSettings.resource_key,
             osNeutronNetSettings.icon);
@@ -32,7 +33,7 @@
             osNeutronNetSettings.resource_key,
             osNeutronNetSettings.edge_settings);
 
-    });
+    }]);
 
     function osNeutronNetController($scope, $rootScope){
         this.$onInit = function(){
@@ -60,8 +61,16 @@
 
         $scope.qos_policies = $rootScope.qos_policies;
     }
-    angular_module.component('osNeutronNet', {
-      templateUrl: '/js/resources/os__neutron__net/os__neutron__net.html',
+
+    osNeutronNetController.$inject = ['$scope', '$rootScope', ];
+    osNeutronNetPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNeutronNetPath(basePath){
+        return basePath + 'js/resources/os__neutron__net/os__neutron__net.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronNet', {
+      templateUrl: osNeutronNetPath,
       controller: osNeutronNetController,
       bindings:{
         'network': '=',

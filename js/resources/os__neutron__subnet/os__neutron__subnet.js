@@ -4,7 +4,7 @@
 
     // OS::Neutron::Subnet
 
-    angular_module.value('osNeutronSubnetSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronSubnetSettings',
         {
             resource_key: "OS__Neutron__Subnet",
             admin: false,
@@ -28,7 +28,8 @@
         }
     );
 
-    angular_module.run(function(osNeutronSubnetSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronSubnetSettings', 'hotgenGlobals', function(osNeutronSubnetSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNeutronSubnetSettings.resource_key,
             osNeutronSubnetSettings.icon);
@@ -41,7 +42,7 @@
             osNeutronSubnetSettings.resource_key,
             osNeutronSubnetSettings.edge_settings);
 
-    });
+    }]);
 
 
     function osNeutronSubnetController($scope, $rootScope, hotgenNotify) {
@@ -110,8 +111,15 @@
         }
     }
 
-    angular_module.component('osNeutronSubnet', {
-        templateUrl: '/js/resources/os__neutron__subnet/os__neutron__subnet.html',
+    osNeutronSubnetController.$inject = ['$scope', '$rootScope', 'hotgenNotify'];
+    osNeutronSubnetPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNeutronSubnetPath(basePath){
+        return basePath + 'js/resources/os__neutron__subnet/os__neutron__subnet.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronSubnet', {
+        templateUrl: osNeutronSubnetPath,
         controller: osNeutronSubnetController,
         bindings:{
             'subnet': '=',

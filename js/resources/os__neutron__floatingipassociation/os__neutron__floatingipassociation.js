@@ -3,7 +3,7 @@
 
     // OS::Neutron::FloatingIPAssociation
 
-    angular_module.value('osNeutronFloatingipAssociationSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronFloatingipAssociationSettings',
         {
             resource_key: "OS__Neutron__FloatingIPAssociation",
             admin: false,
@@ -33,7 +33,8 @@
         }
     )
 
-    angular_module.run(function(osNeutronFloatingipAssociationSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronFloatingipAssociationSettings', 'hotgenGlobals', function(osNeutronFloatingipAssociationSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNeutronFloatingipAssociationSettings.resource_key,
             osNeutronFloatingipAssociationSettings.icon);
@@ -46,8 +47,8 @@
             osNeutronFloatingipAssociationSettings.resource_key,
             osNeutronFloatingipAssociationSettings.edge_settings);
 
-    });
-    function osNeutronFloatingipAssocationController($scope, $rootScope){
+    }]);
+    function osNeutronFloatingipAssociationController($scope, $rootScope){
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -95,9 +96,16 @@
             return $rootScope.ports;
         }
     }
-    angular_module.component('osNeutronFloatingipAssociation', {
-        templateUrl: '/js/resources/os__neutron__floatingipassociation/os__neutron__floatingipassociation.html',
-        controller: osNeutronFloatingipAssocationController,
+    osNeutronFloatingipAssociationController.$inject = ['$scope', '$rootScope', ];
+    osNeutronFloatingipAssociationPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNeutronFloatingipAssociationPath(basePath){
+        return basePath + 'js/resources/os__neutron__floatingipassociation/os__neutron__floatingipassociation.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronFloatingipAssociation', {
+        templateUrl: osNeutronFloatingipAssociationPath,
+        controller: osNeutronFloatingipAssociationController,
         bindings:{
           'floatingipassociation': '=',
           'formReference': '<',

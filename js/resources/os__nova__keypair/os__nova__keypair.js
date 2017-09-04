@@ -2,7 +2,7 @@
     'use strict';
 
     // OS::Nova::KeyPair
-    angular_module.value('osNovaKeypairSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNovaKeypairSettings',
         {
             resource_key: "OS__Nova__KeyPair",
             admin: false,
@@ -20,7 +20,8 @@
         }
     );
 
-    angular_module.run(function(osNovaKeypairSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNovaKeypairSettings', 'hotgenGlobals', function( osNovaKeypairSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNovaKeypairSettings.resource_key,
             osNovaKeypairSettings.icon);
@@ -29,7 +30,7 @@
             osNovaKeypairSettings.resource_key,
             osNovaKeypairSettings.modal_component);
 
-    });
+    }]);
 
 
     function osNovaKeypairController($scope, $rootScope){
@@ -37,8 +38,15 @@
         $scope.admin = $rootScope.auth.admin;
     }
 
-    angular_module.component('osNovaKeypair', {
-        templateUrl: '/js/resources/os__nova__keypair/os__nova__keypair.html',
+    osNovaKeypairController.$inject = ['$scope', '$rootScope', ];
+    osNovaKeypairPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNovaKeypairPath(basePath){
+        return basePath + 'js/resources/os__nova__keypair/os__nova__keypair.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNovaKeypair', {
+        templateUrl: osNovaKeypairPath,
         controller: osNovaKeypairController,
         bindings:{
           'keypair': '=',

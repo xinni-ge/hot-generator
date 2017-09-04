@@ -3,7 +3,7 @@
 
     // OS::Neutron::SecurityGroup
 
-    angular_module.value('osNeutronSecurityGroupSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronSecurityGroupSettings',
         {
             resource_key: "OS__Neutron__SecurityGroup",
             admin: false,
@@ -19,7 +19,8 @@
         }
     );
 
-    angular_module.run(function(osNeutronSecurityGroupSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronSecurityGroupSettings', 'hotgenGlobals', function(osNeutronSecurityGroupSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNeutronSecurityGroupSettings.resource_key,
             osNeutronSecurityGroupSettings.icon);
@@ -32,7 +33,7 @@
             osNeutronSecurityGroupSettings.resource_key,
             osNeutronSecurityGroupSettings.edge_settings);
 
-    });
+    }]);
 
     function osNeutronSecurityGroupController($scope, $rootScope) {
         this.$onInit = function(){
@@ -48,9 +49,16 @@
             this.securitygroup.rules.splice(index, 1)
         }
     }
+    osNeutronSecurityGroupController.$inject = ['$scope', '$rootScope', ];
+    osNeutronSecurityGroupPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
-    angular_module.component('osNeutronSecurityGroup', {
-      templateUrl: '/js/resources/os__neutron__securitygroup/os__neutron__securitygroup.html',
+    function osNeutronSecurityGroupPath(basePath){
+        return basePath + 'js/resources/os__neutron__securitygroup/os__neutron__securitygroup.html';
+    }
+
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronSecurityGroup', {
+      templateUrl: osNeutronSecurityGroupPath,
       controller: osNeutronSecurityGroupController,
       bindings:{
         'securitygroup': '=',

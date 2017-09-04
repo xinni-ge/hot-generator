@@ -3,7 +3,7 @@
 
     // OS::Neutron::RouterInterface
 
-    angular_module.value('osNeutronRouterInterfaceSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronRouterInterfaceSettings',
         {
             resource_key: "OS__Neutron__RouterInterface",
             admin: false,
@@ -37,7 +37,8 @@
         }
     );
 
-    angular_module.run(function(osNeutronRouterInterfaceSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronRouterInterfaceSettings', 'hotgenGlobals',function( osNeutronRouterInterfaceSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNeutronRouterInterfaceSettings.resource_key,
             osNeutronRouterInterfaceSettings.icon);
@@ -49,7 +50,7 @@
         hotgenGlobals.update_edge_directions(
             osNeutronRouterInterfaceSettings.resource_key,
             osNeutronRouterInterfaceSettings.edge_settings);
-    });
+    }]);
 
     function osNeutronRouterInterfaceController($scope, $rootScope) {
         this.$onInit = function(){
@@ -120,8 +121,16 @@
             return $rootScope.routers;
         }
     };
-    angular_module.component('osNeutronRouterInterface', {
-        templateUrl: '/js/resources/os__neutron__routerinterface/os__neutron__routerinterface.html',
+
+    osNeutronRouterInterfaceController.$inject = ['$scope', '$rootScope', ];
+    osNeutronRouterInterfacePath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNeutronRouterInterfacePath(basePath){
+        return basePath + 'js/resources/os__neutron__routerinterface/os__neutron__routerinterface.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronRouterInterface', {
+        templateUrl: osNeutronRouterInterfacePath,
         controller: osNeutronRouterInterfaceController,
         bindings:{
             'routerinterface': '=',

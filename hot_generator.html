@@ -11,7 +11,6 @@
         <script type="text/javascript" src="js/vendors/angular-messages.min.js"></script>
         <script type="text/javascript" src="js/vendors/angular-sanitize.min.js"></script>
         <script type="text/javascript" src="js/vendors/angular-material.min.js"></script>
-        <script type="text/javascript" src="js/vendors/angular-translate.min.js"></script>
         <script type="text/javascript" src="js/vendors/angular-notify.js"></script>
         <script type="text/javascript" src="js/vendors/angular-uuid.js"></script>
         <script type="text/javascript" src="js/vendors/vis.js"></script>
@@ -27,18 +26,15 @@
         <link href="css/vis.css" rel="stylesheet">
         <link href="css/angular-material.min.css" rel="stylesheet">
 
-        <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
         <link href="css/hotgen.css" rel="stylesheet">
-        <style type="text/css">
-
-        </style>
     </head>
 
-    <body ng-app="hotgen">
+    <body ng-app='horizon.dashboard.project.heat_dashboard.template_generator'>
         <div class="page-header">
-            <h1>{{ 'TITLE' | translate }}</h1>
-            <p>{{ 'SUBTITLE' | translate }}</p>
+            <h1>Generate Template</h1>
+            <p>Please drag and drop resource icons into center canvas to define resource for template.</p>
         </div>
 
         <div class="row table_action">
@@ -46,7 +42,7 @@
 
             <div class="col-sm-7">
                 <!-- Generated Template Modal -->
-                <div ng-controller="TempModalCtrl" style="display:inline-block">
+                <div ng-controller="horizon.dashboard.project.heat_dashboard.template_generator.TempModalCtrl" style="display:inline-block">
                     <md-button class="md-fab md-primary" ng-click="open()" aria-label="Create Template"><i class="fa fa-lg fa-file-text-o"></i></md-button>
                 </div>
                 <!-- End Generated Template Modal -->
@@ -127,12 +123,6 @@
         </div>
         <!-- End Load Draft Modal -->
 
-        <script>
-            angular_module = angular.module('hotgen', ['hotgen-utils', 'ngMaterial', 'ngMessages', 'ngSanitize',
-                    'ui.bootstrap',
-                    'ngVis',
-                    'pascalprecht.translate']);
-        </script>
         <script src="js/hotgen/hotgen.js"></script>
         <script src="js/resources/os__cinder__volume/os__cinder__volume.js"></script>
         <script src="js/resources/os__cinder__volumeattachment/os__cinder__volumeattachment.js"></script>
@@ -146,9 +136,7 @@
         <script src="js/resources/os__neutron__subnet/os__neutron__subnet.js"></script>
         <script src="js/resources/os__nova__keypair/os__nova__keypair.js"></script>
         <script src="js/resources/os__nova__server/os__nova__server.js"></script>
-        <script src="js/hotgen/hotgen-translate.js"></script>
         <script src="js/hotgen/hotgen-utils.js"></script>
-        <script src="js/hotgen/hotgen-resources.js"></script>
         <script src="js/hotgen/hotgen-canvas.js"></script>
         <script src="js/hotgen/hotgen-vis-network.js"></script>
         <script src="js/hotgen/hotgen-modals.js"></script>

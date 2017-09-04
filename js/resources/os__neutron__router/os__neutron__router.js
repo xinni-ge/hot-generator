@@ -3,7 +3,7 @@
 
     // OS::Neutron::Router
 
-    angular_module.value('osNeutronRouterSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronRouterSettings',
         {
             resource_key: "OS__Neutron__Router",
             admin: true,
@@ -25,7 +25,8 @@
         }
     );
 
-    angular_module.run(function(osNeutronRouterSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronRouterSettings', 'hotgenGlobals', function(osNeutronRouterSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNeutronRouterSettings.resource_key,
             osNeutronRouterSettings.icon);
@@ -42,7 +43,7 @@
             osNeutronRouterSettings.resource_key,
             osNeutronRouterSettings.edge_settings);
 
-    });
+    }]);
 
     function osNeutronRouterController($scope, $rootScope) {
         this.$onInit = function(){
@@ -111,8 +112,15 @@
 
     }
 
-    angular_module.component('osNeutronRouter', {
-        templateUrl: '/js/resources/os__neutron__router/os__neutron__router.html',
+    osNeutronRouterController.$inject = ['$scope', '$rootScope', ];
+    osNeutronRouterPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNeutronRouterPath(basePath){
+        return basePath + 'js/resources/os__neutron__router/os__neutron__router.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronRouter', {
+        templateUrl: osNeutronRouterPath,
         controller: osNeutronRouterController,
         bindings:{
             'router': '=',

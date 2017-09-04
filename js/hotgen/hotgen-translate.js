@@ -1,6 +1,7 @@
-(function(angular) {
+(function() {
     'use strict';
-    angular_module.config(function ($translateProvider) {
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .config(['$translateProvider', function ($translateProvider) {
         $translateProvider.translations('en', {
             TITLE: 'Generate Template',
             SUBTITLE: 'Please drag and drop resource icons into center canvas to define resource for template.',
@@ -35,5 +36,5 @@
         });
         $translateProvider.preferredLanguage('en');
         $translateProvider.useSanitizeValueStrategy('escape');
-    });
-})(window.angular);
+    }]);
+})();

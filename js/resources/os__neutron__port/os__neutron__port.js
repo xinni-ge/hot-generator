@@ -3,7 +3,7 @@
 
     // OS::Neutron::Port
 
-    angular_module.value('osNeutronPortSettings',
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').value('osNeutronPortSettings',
         {
             resource_key: "OS__Neutron__Port",
             admin: false,
@@ -37,7 +37,8 @@
         }
     );
 
-    angular_module.run(function(osNeutronPortSettings, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .run(['osNeutronPortSettings', 'hotgenGlobals',  function(osNeutronPortSettings, hotgenGlobals){
         hotgenGlobals.update_resource_icons(
             osNeutronPortSettings.resource_key,
             osNeutronPortSettings.icon);
@@ -50,7 +51,7 @@
             osNeutronPortSettings.resource_key,
             osNeutronPortSettings.edge_settings);
 
-    });
+    }]);
 
     function osNeutronPortController($scope, $rootScope){
         this.$onInit = function(){
@@ -213,8 +214,15 @@
         }
     }
 
-    angular_module.component('osNeutronPort', {
-        templateUrl: '/js/resources/os__neutron__port/os__neutron__port.html',
+    osNeutronPortController.$inject = ['$scope', '$rootScope', ];
+    osNeutronPortPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
+
+    function osNeutronPortPath(basePath){
+        return basePath + 'js/resources/os__neutron__port/os__neutron__port.html';
+    }
+
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').component('osNeutronPort', {
+        templateUrl: osNeutronPortPath,
         controller: osNeutronPortController,
         bindings:{
             'port': '=',
