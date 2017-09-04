@@ -221,7 +221,7 @@
                         <md-input-container class="md-block" flex-gt-xs="90">
                             <label>Source</label>
                             <md-select ng-model="bdpv2_source[$index]" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(record.volume_id) > -1">
-                                <md-option ng-repeat="source in volume_sources_v2" ng-value="source.id">
+                                <md-option ng-repeat="source in volume_sources_v2" ng-value="source.id" >
                                     {{source.name}}
                                 </md-option>
                             </md-select>
@@ -240,7 +240,7 @@
                         <md-input-container class="md-block" ng-if="bdpv2_source[$index]=='volume'" flex-gt-xs="70">
                             <label>Volume</label>
                             <md-select ng-model="record.volume_id" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(record.volume_id) > -1">
-                                <md-option ng-repeat="vol in volumes" ng-value="vol.id">
+                                <md-option ng-repeat="vol in volumes" ng-value="vol.id" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(vol.id) > -1">
                                     {{vol.name}}
                                 </md-option>
                             </md-select>

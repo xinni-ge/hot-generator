@@ -147,11 +147,47 @@
                 }
             }
             if ( $scope.connected_options['block_device_mapping_v2.volume_id'] && $scope.connected_options['block_device_mapping_v2.volume_id'].length > 0){
+                this.disable.length = 0;
+                $scope.bdpv2_source = {};
+                var new_array = [];
+
+                var exist_volume_map = {}
+                for (var idx in this.instance.block_device_mapping_v2){
+                    var disk = this.instance.block_device_mapping_v2[idx];
+                    if (disk.volume_id && disk.volume_id.length > 0 ){
+                        exist_volume_map[disk.volume_id] = disk;
+                    }
+                }
+
                 for (var idx in $scope.connected_options['block_device_mapping_v2.volume_id']){
-                    this.instance.block_device_mapping_v2.splice(idx, 0, {volume_id: $scope.connected_options['block_device_mapping_v2.volume_id'][idx].value});
-                    this.disable['block_device_mapping_v2.volume_id'].push($scope.connected_options['block_device_mapping_v2.volume_id'][idx].value);
+                    var connected_vol_id = $scope.connected_options['block_device_mapping_v2.volume_id'][idx].value;
+                    var item = exist_volume_map[connected_vol_id];
+                    if (item == null){
+                        item = {volume_id: connected_vol_id}
+                    }
+                    new_array.push(item);
+                    this.disable['block_device_mapping_v2.volume_id'].push(connected_vol_id);
                     $scope.bdpv2_source[idx.toString()] = 'volume';
                 }
+                for (var idx in this.instance.block_device_mapping_v2){
+                    var disk = this.instance.block_device_mapping_v2[idx];
+                    if (disk.volume_id && disk.volume_id.indexOf('get_resource') != -1){
+                        continue;
+                    }
+                    var source = '';
+                    if (disk.volume && disk.volume_id != '') {
+                        source = 'volume';
+                    } else if (disk.image && disk.image != '') {
+                        source = 'image';
+                    } else if (disk.snapshot_id && disk.snapshot_id != '') {
+                        source = 'volume_snapshot';
+                    }
+
+                    $scope.bdpv2_source[new_array.length.toString()] = source;
+                    new_array.push(disk);
+                }
+
+                this.instance.block_device_mapping_v2 = new_array;
             }
 
             if ( $scope.connected_options['networks.network'] && $scope.connected_options['networks.network'].length > 0){
