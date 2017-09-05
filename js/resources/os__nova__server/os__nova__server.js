@@ -90,7 +90,7 @@
 
     }]);
 
-    function osNovaServerController($scope, $rootScope, hotgenValidate, hotgenNotify) {
+    function osNovaServerController($scope, $rootScope, hotgenValidate, hotgenNotify, hotgenUtils,) {
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -113,16 +113,16 @@
                 this.instance.scheduler_hints = [];
             }
             if (typeof this.instance.block_device_mapping === 'undefined'){
-                this.instance.block_device_mapping = [{}];
+                this.instance.block_device_mapping = [];
             }
             if (typeof this.instance.security_groups === 'undefined'){
                 this.instance.security_groups = [];
             }
             if (typeof this.instance.block_device_mapping_v2 === 'undefined'){
-                this.instance.block_device_mapping_v2 = [{}];
+                this.instance.block_device_mapping_v2 = [];
             }
             if (typeof this.instance.networks === 'undefined'){
-                this.instance.networks = [{}];
+                this.instance.networks = [];
             }
             $scope.show_passwd = false;
             $scope.show_passwd_type = "password";
@@ -140,88 +140,147 @@
                 this.instance['key_name'] = $scope.connected_options.key_name[0].value;
                 this.disable.key_name = true;
             }
+
+            var old_array = hotgenUtils.filter_and_return_get_resource_element(this.instance['security_groups']);
             if ( $scope.connected_options.security_groups && $scope.connected_options.security_groups.length > 0){
                 for (var idx in $scope.connected_options.security_groups){
                     this.instance['security_groups'].push($scope.connected_options.security_groups[idx].value);
                     this.disable.security_groups.push($scope.connected_options.security_groups[idx].value);
                 }
             }
-            if ( $scope.connected_options['block_device_mapping_v2.volume_id'] && $scope.connected_options['block_device_mapping_v2.volume_id'].length > 0){
-                this.disable.length = 0;
-                $scope.bdpv2_source = {};
-                var new_array = [];
 
-                var exist_volume_map = {}
-                for (var idx in this.instance.block_device_mapping_v2){
-                    var disk = this.instance.block_device_mapping_v2[idx];
-                    if (disk.volume_id && disk.volume_id.length > 0 ){
-                        exist_volume_map[disk.volume_id] = disk;
-                    }
+            var old_array = hotgenUtils.filter_and_return_get_resource_element(this.instance['block_device_mapping_v2'], 'volume_id');
+            var exist_volume_map = {}
+            for (var idx in old_array){
+                if (old_array[idx].volume_id && old_array[idx].volume_id.length > 0 ){
+                    exist_volume_map[old_array[idx].volume_id] = old_array[idx];
                 }
-
+            }
+            this.disable.length = 0;
+            $scope.bdpv2_source = {};
+            if ( $scope.connected_options['block_device_mapping_v2.volume_id'] && $scope.connected_options['block_device_mapping_v2.volume_id'].length > 0){
                 for (var idx in $scope.connected_options['block_device_mapping_v2.volume_id']){
                     var connected_vol_id = $scope.connected_options['block_device_mapping_v2.volume_id'][idx].value;
                     var item = exist_volume_map[connected_vol_id];
                     if (item == null){
                         item = {volume_id: connected_vol_id}
                     }
-                    new_array.push(item);
+                    this.instance.block_device_mapping_v2.push(item);
                     this.disable['block_device_mapping_v2.volume_id'].push(connected_vol_id);
-                    $scope.bdpv2_source[idx.toString()] = 'volume';
                 }
-                for (var idx in this.instance.block_device_mapping_v2){
-                    var disk = this.instance.block_device_mapping_v2[idx];
-                    if (disk.volume_id && disk.volume_id.indexOf('get_resource') != -1){
-                        continue;
-                    }
-                    var source = '';
-                    if (disk.volume && disk.volume_id != '') {
-                        source = 'volume';
-                    } else if (disk.image && disk.image != '') {
-                        source = 'image';
-                    } else if (disk.snapshot_id && disk.snapshot_id != '') {
-                        source = 'volume_snapshot';
-                    }
-
-                    $scope.bdpv2_source[new_array.length.toString()] = source;
-                    new_array.push(disk);
+            }
+            for (var idx in this.instance.block_device_mapping_v2){
+                var disk = this.instance.block_device_mapping_v2[idx];
+                var source = '';
+                if (disk.volume_id && disk.volume_id != '') {
+                    source = 'volume';
+                } else if (disk.image && disk.image != '') {
+                    source = 'image';
+                } else if (disk.snapshot_id && disk.snapshot_id != '') {
+                    source = 'volume_snapshot';
                 }
+                $scope.bdpv2_source[idx.toString()] = source;
+            }
 
-                this.instance.block_device_mapping_v2 = new_array;
+            var old_net_array = hotgenUtils.filter_and_return_get_resource_element(this.instance['networks'], 'uuid');
+            var exist_network_map = {}
+            for (var idx in old_net_array){
+                if (old_net_array[idx].uuid && old_net_array[idx].uuid.length > 0 ){
+                    exist_network_map[old_net_array[idx].uuid] = old_net_array[idx];
+                }
+            }
+
+            var old_subnet_array = hotgenUtils.filter_and_return_get_resource_element(this.instance['networks'], 'subnet');
+            var exist_subnet_map = {}
+            for (var idx in old_subnet_array){
+                if (old_subnet_array[idx].subnet && old_subnet_array[idx].subnet.length > 0 ){
+                    exist_subnet_map[old_subnet_array[idx].subnet] = old_subnet_array[idx];
+                }
+            }
+
+            var old_port_array = hotgenUtils.filter_and_return_get_resource_element(this.instance['networks'], 'port');
+            var exist_port_map = {}
+            for (var idx in old_port_array){
+                if (old_port_array[idx].port && old_port_array[idx].port.length > 0 ){
+                    exist_port_map[old_port_array[idx].port] = old_port_array[idx];
+                }
+            }
+
+            var old_fip_array = hotgenUtils.filter_and_return_get_resource_element(this.instance['networks'], 'floating_ip');
+            var exist_fip_map = {}
+            for (var idx in old_fip_array){
+                if (old_fip_array[idx].floating_ip && old_fip_array[idx].floating_ip.length > 0 ){
+                    exist_fip_map[old_fip_array[idx].floating_ip] = old_fip_array[idx];
+                }
             }
 
             if ( $scope.connected_options['networks.network'] && $scope.connected_options['networks.network'].length > 0){
                 for (var idx in $scope.connected_options['networks.network']){
-                    var before_length = this.instance.networks.length-1;
-                    this.instance.networks.splice(before_length, 0, {uuid: $scope.connected_options['networks.network'][idx].value});
-                    this.disable.networks[before_length.toString()] = true;
-                    $scope.how2config_networks[before_length.toString()] = 'network';
+                    var connected_nw_id = $scope.connected_options['networks.network'][idx].value;
+                    var item = exist_network_map[connected_nw_id];
+                    if (item == null){
+                        item = {uuid: connected_nw_id}
+                    }
+                    this.disable.networks[this.instance.networks.length.toString()] = true;
+                    $scope.how2config_networks[this.instance.networks.length.toString()] = 'network';
+                    this.instance.networks.push(item);
                 }
             }
+
             if ( $scope.connected_options['networks.subnet'] && $scope.connected_options['networks.subnet'].length > 0){
                 for (var idx in $scope.connected_options['networks.subnet']){
-                    var before_length = this.instance.networks.length-1;
-                    this.instance.networks.splice(before_length, 0, {subnet: $scope.connected_options['networks.subnet'][idx].value});
-                    this.disable.networks[before_length.toString()] = true;
-                    $scope.how2config_networks[before_length.toString()] = 'subnet';
+                    var connected_subnet_id = $scope.connected_options['networks.subnet'][idx].value;
+                    var item = exist_subnet_map[connected_subnet_id];
+                    if (item == null){
+                        item = {subnet: connected_subnet_id}
+                    }
+                    this.disable.networks[this.instance.networks.length] = true;
+                    $scope.how2config_networks[this.instance.networks.length.toString()] = 'subnet';
+                    this.instance.networks.push(item);
                 }
             }
+
             if ( $scope.connected_options['networks.port'] && $scope.connected_options['networks.port'].length > 0){
                 for (var idx in $scope.connected_options['networks.port']){
-                    var before_length = this.instance.networks.length-1;
-                    this.instance.networks.splice(before_length, 0, {port: $scope.connected_options['networks.port'][idx].value});
-                    this.disable.networks[before_length.toString()] = true;
-                    $scope.how2config_networks[before_length.toString()] = 'port';
+                    var connected_port_id = $scope.connected_options['networks.port'][idx].value;
+                    var item = exist_port_map[connected_port_id];
+                    if (item == null){
+                        item = {port: connected_port_id}
+                    }
+                    this.disable.networks[this.instance.networks.length] = true;
+                    $scope.how2config_networks[this.instance.networks.length.toString()] = 'port';
+                    this.instance.networks.push(item);
                 }
             }
+
+
             if ( $scope.connected_options['networks.floating_ip'] && $scope.connected_options['networks.floating_ip'].length > 0){
                 for (var idx in $scope.connected_options['networks.floating_ip']){
-                    var before_length = this.instance.networks.length-1;
-                    this.instance.networks.splice(before_length, 0, {floating_ip: $scope.connected_options['networks.floating_ip'][idx].value});
-                    this.disable.networks[before_length.toString()] = true;
-                    $scope.how2config_networks[before_length.toString()] = 'floating_ip';
+                    var connected_fip_id = $scope.connected_options['networks.floating_ip'][idx].value;
+                    var item = exist_fip_map[connected_fip_id];
+                    if (item == null){
+                        item = {floating_ip: connected_fip_id}
+                    }
+                    this.disable.networks[this.instance.networks.length] = true;
+                    $scope.how2config_networks[this.instance.networks.length.toString()] = 'floating_ip';
+                    this.instance.networks.push(item);
                 }
             }
+            for (var idx in this.instance.networks){
+                var netconfig = this.instance.networks[idx];
+                var source = '';
+                if (netconfig.uuid && netconfig.uuid != '') {
+                    source = 'network';
+                } else if (netconfig.subnet && netconfig.subnet != '') {
+                    source = 'subnet';
+                } else if (netconfig.port && netconfig.port != '') {
+                    source = 'port';
+                } else if (netconfig.floating_ip && netconfig.floating_ip != '') {
+                    source = 'floating_ip';
+                }
+                $scope.how2config_networks[idx.toString()] = source;
+            }
+
             $scope.keypairs = $scope.get_keypairs_options();
             $scope.networks = $scope.get_networks_options();
             $scope.subnets = $scope.get_subnets_options();
@@ -230,6 +289,37 @@
             $scope.security_groups = $scope.get_security_groups_options();
             $scope.volumes = $scope.get_volumes_options();
 
+        }
+        $scope.update_source = function (index) {
+                if ($scope.bdpv2_source[index] == 'volume'){
+                    this.$ctrl.instance.block_device_mapping_v2[index].image = null;
+                    this.$ctrl.instance.block_device_mapping_v2[index].snapshot_id = null;
+                } else if ($scope.bdpv2_source[index] == 'volume_snapshot'){
+                    this.$ctrl.instance.block_device_mapping_v2[index].volume_id = null;
+                    this.$ctrl.instance.block_device_mapping_v2[index].image = null;
+                } else if ($scope.bdpv2_source[index] == 'image'){
+                    this.$ctrl.instance.block_device_mapping_v2[index].volume_id = null;
+                    this.$ctrl.instance.block_device_mapping_v2[index].snapshot_id = null;
+                }
+        }
+        $scope.update_nwconfig = function (index) {
+                if ($scope.how2config_networks[index] == 'network'){
+                    this.$ctrl.instance.networks[index].subnet = null;
+                    this.$ctrl.instance.networks[index].port = null;
+                    this.$ctrl.instance.networks[index].floating_ip = null;
+                } else if ($scope.how2config_networks[index] == 'subnet'){
+                    this.$ctrl.instance.networks[index].network = null;
+                    this.$ctrl.instance.networks[index].port = null;
+                    this.$ctrl.instance.networks[index].floating_ip = null;
+                } else if ($scope.how2config_networks[index] == 'port'){
+                    this.$ctrl.instance.networks[index].subnet = null;
+                    this.$ctrl.instance.networks[index].network = null;
+                    this.$ctrl.instance.networks[index].floating_ip = null;
+                } else if ($scope.how2config_networks[index] == 'floating_ip'){
+                    this.$ctrl.instance.networks[index].subnet = null;
+                    this.$ctrl.instance.networks[index].port = null;
+                    this.$ctrl.instance.networks[index].network = null;
+                }
         }
         $scope.$watch("show_passwd", function(newValue, oldValue) {
             $scope.show_passwd_type = $scope.show_passwd ? "text" : "password";
@@ -445,7 +535,7 @@
         }
     }
 
-    osNovaServerController.$inject = ['$scope', '$rootScope', 'hotgenValidate', 'hotgenNotify'];
+    osNovaServerController.$inject = ['$scope', '$rootScope', 'hotgenValidate', 'hotgenNotify', 'hotgenUtils'];
     osNovaServerPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
 

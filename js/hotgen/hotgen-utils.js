@@ -85,7 +85,24 @@
         }])
         .factory('hotgenUtils', function(){
             var get_resource_string = function(identity){
-                return '{get_resource: '+identity+' }';
+                return '{ get_resource: '+identity+' }';
+            }
+            var filter_and_return_get_resource_element = function(array, property){
+                var return_val = [];
+                var idx = array.length-1;
+                while (idx >= 0) {
+                    if (typeof array[idx] == 'string'){
+                        if (array[idx].indexOf('get_resource') != -1){
+                            return_val = return_val.concat(array.splice(idx, 1))
+                        }
+                    } else if (typeof array[idx] == 'object' && property){
+                        if (array[idx][property] && array[idx][property].indexOf('get_resource') != -1){
+                            return_val = return_val.concat(array.splice(idx, 1))
+                        }
+                    }
+                    idx = idx-1;
+                }
+                return return_val;
             }
             var escape_characters = function(value){
                 return '"'+value.replace(/\\/g, '\\\\')
@@ -137,6 +154,7 @@
                 extract_keyvalue: extract_keyvalue,
                 extract_list_of_keyvalue: extract_list_of_keyvalue,
                 extract_list: extract_list,
+                filter_and_return_get_resource_element: filter_and_return_get_resource_element,
             };
         })
         .service('hotgenStates', function(){

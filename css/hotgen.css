@@ -73,7 +73,10 @@ md-input-container{
     max-height:500px;
 }
 
-.fa-lg {
+i.fa.fa-lg.ng-scope {
+    font-size: 2.0em
+}
+span.fa-stack.fa-lg{
     font-size: 2.0em
 }
 md-pagination-wrapper{

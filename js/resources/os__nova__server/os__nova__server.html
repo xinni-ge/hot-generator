@@ -220,8 +220,8 @@
                     <div layout-gt-xs="row">
                         <md-input-container class="md-block" flex-gt-xs="90">
                             <label>Source</label>
-                            <md-select ng-model="bdpv2_source[$index]" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(record.volume_id) > -1">
-                                <md-option ng-repeat="source in volume_sources_v2" ng-value="source.id" >
+                            <md-select ng-model="bdpv2_source[$index]" name="bdpv2_source" ng-change="update_source($index)" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(record.volume_id) > -1">
+                                <md-option ng-repeat="source in volume_sources_v2" ng-value="source.id">
                                     {{source.name}}
                                 </md-option>
                             </md-select>
@@ -332,7 +332,7 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container class="md-block" flex-gt-xs="45" ng-disabled=" record.allocate_network.length > 0 ">
+                        <md-input-container class="md-block" flex-gt-xs="45" ng-disabled="record.allocate_network.length > 0 ">
                             <label>Specify Property</label>
                             <md-select ng-model="how2config_networks[$index]" ng-disabled="$ctrl.disable.networks[$index]">
                                 <md-option value="network">network</md-option>
@@ -350,7 +350,7 @@
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'network' ">
                                 <label>Network ID</label>
                                 <md-select ng-model="record.uuid" name="uuid" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="nw in networks" ng-value="nw.id">
+                                    <md-option ng-repeat="nw in networks" ng-value="nw.id" ng-disabled="nw.id.indexOf('get_resource') != -1">
                                         {{nw.name}}
                                     </md-option>
                                 </md-select>
@@ -358,7 +358,7 @@
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'subnet' ">
                                 <label>Subnet</label>
                                 <md-select ng-model="record.subnet" name="subnet" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="subnet in subnets" ng-value="subnet.id">
+                                    <md-option ng-repeat="subnet in subnets" ng-value="subnet.id" ng-disabled="subnet.id.indexOf('get_resource') != -1">
                                         {{subnet.name}}
                                     </md-option>
                                 </md-select>
@@ -366,7 +366,7 @@
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'port' ">
                                 <label>Port</label>
                                 <md-select ng-model="record.port" name="port" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="port in ports" ng-value="port.id">
+                                    <md-option ng-repeat="port in ports" ng-value="port.id" ng-disabled="port.id.indexOf('get_resource') != -1">
                                         {{port.name}}
                                     </md-option>
                                 </md-select>
@@ -374,7 +374,7 @@
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'floating_ip' ">
                                 <label>Floating IP</label>
                                 <md-select ng-model="record.floating_ip" name="floating_ip" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="fip in floatingips" ng-value="fip.id">
+                                    <md-option ng-repeat="fip in floatingips" ng-value="fip.id" ng-disabled="fip.id.indexOf('get_resource') != -1">
                                         {{fip.id}}
                                     </md-option>
                                 </md-select>
