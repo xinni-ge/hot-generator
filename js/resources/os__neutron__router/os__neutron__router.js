@@ -13,6 +13,7 @@
                 code: '\uf1cd',
                 color: '#40a5f2'
             },
+            label: 'name',
             modal_component: '<os-neutron-router router="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-router>',
             edge_settings: {
                 'OS__Neutron__Subnet': {
@@ -45,7 +46,7 @@
 
     }]);
 
-    function osNeutronRouterController($scope, $rootScope) {
+    function osNeutronRouterController($scope, hotgenGlobals) {
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -79,8 +80,11 @@
                 }
             }
 
-            $scope.subnets = $scope.get_subnets_options();
+            $scope.update = {subnets: $scope.get_subnets_options()}
         };
+
+        $scope.options = hotgenGlobals.get_resource_options();
+
         this.add_external_fixed_ip = function(){
             this.router.external_gateway_info.external_fixed_ips.push({})
         }
@@ -105,14 +109,14 @@
                         name: item.value
                     })
                 }
-                return $rootScope.subnets.concat(resource_subnets);
+                return $scope.options.subnets.concat(resource_subnets);
             }
-            return $rootScope.subnets;
+            return $scope.options.subnets;
         }
 
     }
 
-    osNeutronRouterController.$inject = ['$scope', '$rootScope', ];
+    osNeutronRouterController.$inject = ['$scope', 'hotgenGlobals', ];
     osNeutronRouterPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronRouterPath(basePath){

@@ -15,7 +15,7 @@
                 <label>Network</label>
                 <md-select ng-model="$ctrl.subnet.network" name="network" ng-disabled="$ctrl.disable.network" required>
                     <md-option ng-repeat="nw in networks" ng-value="nw.id" >
-                        {{nw.name}}
+                        {{ nw.name }}
                     </md-option>
                 </md-select>
                 <div ng-messages="$ctrl.formReference.network.$error" role="alert" multiple>
@@ -95,16 +95,16 @@
                 <div layout-gt-xs="row" >
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>Start</label>
-                        <input ng-model="allocation_pool.start" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" />
+                        <input ng-model="allocation_pool.start" type="text" ng-pattern="/^.*$/" />
                     </md-input-container>
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>End</label>
-                        <input ng-model="allocation_pool.end" type="text" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/">
+                        <input ng-model="allocation_pool.end" type="text" ng-pattern="/^.*$/">
                     </md-input-container>
                     <md-button ng-click="$ctrl.delete_allocation_pool($index)" aria-label="Delete" class="md-icon-button"><i class="fa fa-fw fa-times"></i></md-button>
                 </div>
             </div>
-            <br/>
+
             <label>Host Routes</label>
             <md-button ng-click="$ctrl.add_hostroute()" aria-label="Add" class="md-icon-button"><i class="fa fa-fw fa-plus"></i></md-button>
             <div ng-repeat="hostroute in $ctrl.subnet.host_routes" ng-class-odd="'odd'" ng-class-even="'even'">

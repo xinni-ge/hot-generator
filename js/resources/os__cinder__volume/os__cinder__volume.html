@@ -30,8 +30,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Volume Type</label>
                 <md-select ng-model="$ctrl.volume.volume_type" >
-                    <md-option ng-repeat="vtype in vtypes" ng-value="vtype.id">
-                        {{vtype.name}}
+                    <md-option ng-repeat="vtype in options.volume_types" ng-value="vtype.id">
+                        {{ vtype.name }} 
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -39,8 +39,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Availability Zone</label>
                 <md-select ng-model="$ctrl.volume.availability_zone">
-                    <md-option ng-repeat="az in availability_zones" ng-value="az.id">
-                      {{az.name}}
+                    <md-option ng-repeat="az in options.availability_zones" ng-value="az.id">
+                      {{ az.name }} 
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -64,7 +64,7 @@
                 <label>Create from source</label>
                 <md-select ng-model="$ctrl.volume.boot_source">
                     <md-option ng-repeat="source in boot_sources" ng-value="source.id">
-                        {{source.name}}
+                        {{ source.name }} 
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -72,8 +72,8 @@
             <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='backup'" flex-gt-xs>
                 <label>Backup ID</label>
                 <md-select ng-model="$ctrl.volume.backup_id" >
-                    <md-option ng-repeat="backup in backups" ng-value="backup.id">
-                        {{backup.name}}
+                    <md-option ng-repeat="backup in options.volume_backups" ng-value="backup.id">
+                        {{ backup.name }} 
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -81,8 +81,8 @@
             <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='image'" flex-gt-xs>
                 <label>Image</label>
                 <md-select ng-model="$ctrl.volume.image" >
-                    <md-option ng-repeat="image in images" ng-value="image.id">
-                        {{image.name}}
+                    <md-option ng-repeat="image in options.images" ng-value="image.id">
+                        {{ image.name }} 
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -90,8 +90,8 @@
             <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='volume_snapshot'" flex-gt-xs>
                 <label>Snapshot</label>
                 <md-select ng-model="$ctrl.volume.snapshot_id" >
-                    <md-option ng-repeat="snapshot in volume_snapshots" ng-value="snapshot.id">
-                        {{snapshot.name}}
+                    <md-option ng-repeat="snapshot in options.volume_snapshots" ng-value="snapshot.id">
+                        {{ snapshot.name }} 
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -99,8 +99,8 @@
             <md-input-container class="md-block" ng-if="$ctrl.volume.boot_source=='volume'" flex-gt-xs>
                 <label>Source Volume</label>
                 <md-select ng-model="$ctrl.volume.source_volid" >
-                    <md-option ng-repeat="volume in volumes" ng-value="volume.id">
-                        {{volume.name}}
+                    <md-option ng-repeat="volume in options.volumes" ng-value="volume.id">
+                        {{ volume.name }} 
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -120,7 +120,7 @@
                     <md-button ng-click="$ctrl.delete_metadata($index)" aria-label="Delete" class="md-icon-button"><i class="fa fa-fw fa-times"></i></md-button>
                 </div>
             </div>
-            <br/>
+
             <label>Scheduler Hints</label>
             <md-button ng-click="$ctrl.add_scheduler_hints()" aria-label="Add" class="md-icon-button"><i class="fa fa-fw fa-plus"></i></md-button>
             <div ng-repeat="record in $ctrl.volume.scheduler_hints" ng-class-odd="'odd'" ng-class-even="'even'">

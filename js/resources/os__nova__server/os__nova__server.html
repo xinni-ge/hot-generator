@@ -17,8 +17,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Availability Zone</label>
                 <md-select ng-model="$ctrl.instance.availability_zone">
-                    <md-option ng-repeat="az in availability_zones" ng-value="az.id">
-                      {{az.name}}
+                    <md-option ng-repeat="az in options.availability_zones" ng-value="az.id">
+                      {{ az.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -26,69 +26,69 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Flavor</label>
                 <md-select ng-model="$ctrl.instance.flavor" required>
-                    <md-option ng-repeat="flavor in flavors" ng-value="flavor.id">
-                      {{flavor.name}}
+                    <md-option ng-repeat="flavor in options.flavors" ng-value="flavor.id">
+                      {{ flavor.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Flavor Update Policy</label>
                 <md-select ng-model="$ctrl.instance.flavor_update_policy">
-                    <md-option ng-repeat="fup in flavor_update_policies" ng-value="fup.name">
-                      {{fup.name}} <span ng-if="fup.default">(Default)</span>
+                    <md-option ng-repeat="fup in options.flavor_update_policies" ng-value="fup.name">
+                      {{ fup.name }} <span ng-if="fup.default">(Default)</span>
                     </md-option>
                 </md-select>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Boot from source</label>
-                <md-select ng-model="$ctrl.instance.boot_source" required>
-                    <md-option ng-repeat="source in boot_sources" ng-value="source.id">
-                        {{source.name}}
+                <md-select ng-model="boot_source" ng-change="update_boot_source()" required>
+                    <md-option ng-repeat="source in options.boot_sources" ng-value="source.id">
+                        {{ source.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block animate-show-hide" ng-if="$ctrl.instance.boot_source=='image'" flex-gt-xs>
+            <md-input-container class="md-block animate-show-hide" ng-if="boot_source=='image'" flex-gt-xs>
                 <label>Image</label>
                 <md-select ng-model="$ctrl.instance.image" >
-                    <md-option ng-repeat="image in images" ng-value="image.id">
-                        {{image.name}}
+                    <md-option ng-repeat="image in options.images" ng-value="image.id">
+                        {{ image.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
-            <md-input-container class="md-block animate-show-hide" ng-if="$ctrl.instance.boot_source=='image'" flex-gt-xs>
+            <md-input-container class="md-block animate-show-hide" ng-if="boot_source=='image'" flex-gt-xs>
                 <label>Image Update Policy</label>
                 <md-select ng-model="$ctrl.instance.image_update_policy">
-                    <md-option ng-repeat="iup in image_update_policies" ng-value="iup.name">
-                      {{iup.name}} <span ng-if="iup.default">(Default)</span>
+                    <md-option ng-repeat="iup in options.image_update_policies" ng-value="iup.name">
+                      {{ iup.name }} <span ng-if="iup.default">(Default)</span>
                     </md-option>
                 </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block animate-show-hide" ng-if="$ctrl.instance.boot_source=='image_snapshot'" flex-gt-xs>
+            <md-input-container class="md-block animate-show-hide" ng-if="boot_source=='image_snapshot'" flex-gt-xs>
                 <label>Image Snapshot</label>
                 <md-select ng-model="$ctrl.instance.image_snapshot" >
-                    <md-option ng-repeat="iss in image_snapshots" ng-value="iss.id">
-                        {{iss.name}}
+                    <md-option ng-repeat="iss in options.image_snapshots" ng-value="iss.id">
+                        {{ iss.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block animate-show-hide" ng-if="$ctrl.instance.boot_source=='volume'" flex-gt-xs>
+            <md-input-container class="md-block animate-show-hide" ng-if="boot_source=='volume'" flex-gt-xs>
                 <label>Volume</label>
                 <md-select ng-model="$ctrl.instance.volume">
-                    <md-option ng-repeat="vol in volumes" ng-value="vol.id">
-                        {{vol.name}}
+                    <md-option ng-repeat="vol in update.volumes" ng-value="vol.id">
+                        {{ vol.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block animate-show-hide" ng-if="$ctrl.instance.boot_source=='volume_snapshot'" flex-gt-xs>
+            <md-input-container class="md-block animate-show-hide" ng-if="boot_source=='volume_snapshot'" flex-gt-xs>
                 <label>Volume Snapshot</label>
                 <md-select ng-model="$ctrl.instance.volume_snapshot">
-                    <md-option ng-repeat="volss in volume_snapshots" ng-value="volss.id">
-                        {{volss.name}}
+                    <md-option ng-repeat="volss in options.volume_snapshots" ng-value="volss.id">
+                        {{ volss.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -130,7 +130,7 @@
             <div layout-gt-xs="row" >
                 <md-input-container class="md-block" flex-gt-xs>
                 <label>Admin Password</label>
-                    <input ng-model="$ctrl.instance.admin_pass" name="admin_pass" type="{{show_passwd_type}}" >
+                    <input ng-model="$ctrl.instance.admin_pass" name="admin_pass" type="{{ show_passwd_type }}" >
                 </md-input-container>
                 <md-switch class="md-primary" name="show_passwd" ng-model="show_passwd">
                   Show Password
@@ -140,8 +140,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Key Name</label>
                 <md-select ng-model="$ctrl.instance.key_name" ng-disabled="$ctrl.disable.key_name">
-                    <md-option ng-repeat="kname in keypairs" ng-value="kname.name" >
-                        {{kname.name}}
+                    <md-option ng-repeat="kname in update.keypairs" ng-value="kname.name" >
+                        {{ kname.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -149,8 +149,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Security Groups</label>
                 <md-select ng-model="$ctrl.instance.security_groups"  multiple>
-                    <md-option ng-repeat="sg in security_groups" ng-value="sg.id" ng-disabled="$ctrl.disable.security_groups.indexOf(sg.id) > -1">
-                        {{sg.name}}
+                    <md-option ng-repeat="sg in update.security_groups" ng-value="sg.id" ng-disabled="$ctrl.disable.security_groups.indexOf(sg.id) > -1">
+                        {{ sg.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -179,16 +179,16 @@
                         <md-input-container class="md-block" flex-gt-xs="20">
                             <label>Disk Type</label>
                             <md-select ng-model="record.disk_type">
-                                <md-option ng-repeat="dtype in disk_types" ng-value="dtype.name">
-                                    {{dtype.name}}
+                                <md-option ng-repeat="dtype in options.disk_types" ng-value="dtype.name">
+                                    {{ dtype.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-xs="20">
                             <label>Disk Bus</label>
                             <md-select ng-model="record.disk_bus">
-                                <md-option ng-repeat="diskbus in disk_buses" ng-value="diskbus.name">
-                                    {{diskbus.name}}
+                                <md-option ng-repeat="diskbus in options.disk_buses" ng-value="diskbus.name">
+                                    {{ diskbus.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -198,8 +198,8 @@
                         <md-input-container class="md-block" flex-gt-xs="30">
                             <label>Ephemeral Format</label>
                             <md-select ng-model="record.ephemeral_format">
-                                <md-option ng-repeat="eformat in ephemeral_formats" ng-value="eformat.name">
-                                    {{eformat.name}}
+                                <md-option ng-repeat="eformat in options.ephemeral_formats" ng-value="eformat.name">
+                                    {{ eformat.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -221,8 +221,8 @@
                         <md-input-container class="md-block" flex-gt-xs="90">
                             <label>Source</label>
                             <md-select ng-model="bdpv2_source[$index]" name="bdpv2_source" ng-change="update_source($index)" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(record.volume_id) > -1">
-                                <md-option ng-repeat="source in volume_sources_v2" ng-value="source.id">
-                                    {{source.name}}
+                                <md-option ng-repeat="source in options.volume_sources_v2" ng-value="source.id">
+                                    {{ source.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -231,8 +231,8 @@
                         <md-input-container class="md-block" ng-if="bdpv2_source[$index]=='image'" flex-gt-xs="90">
                             <label>Image</label>
                             <md-select ng-model="record.image">
-                                <md-option ng-repeat="image in images" ng-value="image.id">
-                                    {{image.name}}
+                                <md-option ng-repeat="image in options.images" ng-value="image.id">
+                                    {{ image.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -240,8 +240,8 @@
                         <md-input-container class="md-block" ng-if="bdpv2_source[$index]=='volume'" flex-gt-xs="70">
                             <label>Volume</label>
                             <md-select ng-model="record.volume_id" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(record.volume_id) > -1">
-                                <md-option ng-repeat="vol in volumes" ng-value="vol.id" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(vol.id) > -1">
-                                    {{vol.name}}
+                                <md-option ng-repeat="vol in update.volumes" ng-value="vol.id" ng-disabled="$ctrl.disable['block_device_mapping_v2.volume_id'].indexOf(vol.id) > -1">
+                                    {{ vol.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -253,8 +253,8 @@
                         <md-input-container class="md-block" ng-if="bdpv2_source[$index]=='volume_snapshot'" flex-gt-xs="90">
                             <label>Snapshot</label>
                             <md-select ng-model="record.snapshot_id">
-                                <md-option ng-repeat="volss in volume_snapshots" ng-value="volss.id">
-                                    {{volss.name}}
+                                <md-option ng-repeat="volss in options.volume_snapshots" ng-value="volss.id">
+                                    {{ volss.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -275,7 +275,7 @@
                             <!--<label>Source</label>-->
                             <!--<md-select ng-model="volume_source">-->
                                 <!--<md-option ng-repeat="source in volume_sources" ng-value="source.id">-->
-                                    <!--{{source.name}}-->
+                                    <!--{{ source.name }}-->
                                 <!--</md-option>-->
                             <!--</md-select>-->
                         <!--</md-input-container>-->
@@ -286,7 +286,7 @@
                             <!--<label>Volume</label>-->
                             <!--<md-select ng-model="record.volume_id">-->
                                 <!--<md-option ng-repeat="vol in volumes" ng-value="vol.id">-->
-                                    <!--{{vol.name}}-->
+                                    <!--{{ vol.name }}-->
                                 <!--</md-option>-->
                             <!--</md-select>-->
                         <!--</md-input-container>-->
@@ -300,7 +300,7 @@
                             <!--<label>Snapshot</label>-->
                             <!--<md-select ng-model="record.snapshot_id">-->
                                 <!--<md-option ng-repeat="volss in volume_snapshots" ng-value="volss.id">-->
-                                    <!--{{volss.name}}-->
+                                    <!--{{ volss.name }}-->
                                 <!--</md-option>-->
                             <!--</md-select>-->
                         <!--</md-input-container>-->
@@ -327,8 +327,8 @@
                             <label>Allocate Network</label>
                             <md-select ng-model="record.allocate_network" name="allocate_network" ng-disabled="how2config_networks[$index].length > 0 ">
                                 <md-option value=""></md-option>
-                                <md-option ng-repeat="alloc_net in allocate_networks" ng-value="alloc_net.name">
-                                    {{alloc_net.name}}
+                                <md-option ng-repeat="alloc_net in options.allocate_networks" ng-value="alloc_net.name">
+                                    {{ alloc_net.name }}
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -350,32 +350,32 @@
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'network' ">
                                 <label>Network ID</label>
                                 <md-select ng-model="record.uuid" name="uuid" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="nw in networks" ng-value="nw.id" ng-disabled="nw.id.indexOf('get_resource') != -1">
-                                        {{nw.name}}
+                                    <md-option ng-repeat="nw in update.networks" ng-value="nw.id" ng-disabled="nw.id.indexOf('get_resource') != -1">
+                                        {{ nw.name }}
                                     </md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'subnet' ">
                                 <label>Subnet</label>
                                 <md-select ng-model="record.subnet" name="subnet" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="subnet in subnets" ng-value="subnet.id" ng-disabled="subnet.id.indexOf('get_resource') != -1">
-                                        {{subnet.name}}
+                                    <md-option ng-repeat="subnet in update.subnets" ng-value="subnet.id" ng-disabled="subnet.id.indexOf('get_resource') != -1">
+                                        {{ subnet.name }}
                                     </md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'port' ">
                                 <label>Port</label>
                                 <md-select ng-model="record.port" name="port" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="port in ports" ng-value="port.id" ng-disabled="port.id.indexOf('get_resource') != -1">
-                                        {{port.name}}
+                                    <md-option ng-repeat="port in update.ports" ng-value="port.id" ng-disabled="port.id.indexOf('get_resource') != -1">
+                                        {{ port.name }}
                                     </md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="md-block" flex-gt-xs ng-if="how2config_networks[$index] == 'floating_ip' ">
                                 <label>Floating IP</label>
                                 <md-select ng-model="record.floating_ip" name="floating_ip" ng-disabled="$ctrl.disable.networks[$index]">
-                                    <md-option ng-repeat="fip in floatingips" ng-value="fip.id" ng-disabled="fip.id.indexOf('get_resource') != -1">
-                                        {{fip.id}}
+                                    <md-option ng-repeat="fip in update.floatingips" ng-value="fip.id" ng-disabled="fip.id.indexOf('get_resource') != -1">
+                                        {{ fip.id }}
                                     </md-option>
                                 </md-select>
                             </md-input-container>
@@ -383,8 +383,8 @@
                         <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-xs>
                                 <label>Fixed IP Address</label>
-                                <input ng-model="record.fixed_ip_address" name="fixed_ip_address" ng-pattern="/^.*$/" ng-disabled="how2config_networks[$index] == 'floating_ip' " />
-                                <div ng-messages="$ctrl.formReference.fixed_ip_address.$error" role="alert" multiple>
+                                <input ng-model="record.fixed_ip" name="fixed_ip" ng-pattern="/^.*$/" ng-disabled="how2config_networks[$index] == 'floating_ip' " />
+                                <div ng-messages="$ctrl.formReference.fixed_ip.$error" role="alert" multiple>
                                   <div ng-message="pattern" class="my-message">Please input a valid IP address.</div>
                                 </div>
                             </md-input-container>
@@ -408,16 +408,16 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Disk Config</label>
                 <md-select ng-model="$ctrl.instance.disk_config">
-                    <md-option ng-repeat="dc in disk_configs" ng-value="dc.name">
-                        {{dc.name}} <span ng-if="dc.default">(Default)</span>
+                    <md-option ng-repeat="dc in options.disk_configs" ng-value="dc.name">
+                        {{ dc.name }} <span ng-if="dc.default">(Default)</span>
                     </md-option>
                 </md-select>
             </md-input-container>
             <md-input-container class="md-block" flex-gt-xs>
                 <label>User Data Format</label>
                 <md-select ng-model="$ctrl.instance.user_data_format">
-                    <md-option ng-repeat="udf in user_data_formats" ng-value="udf.name">
-                        {{udf.name}}  <span ng-if="udf.default">(Default)</span>
+                    <md-option ng-repeat="udf in options.user_data_formats" ng-value="udf.name">
+                        {{ udf.name }}  <span ng-if="udf.default">(Default)</span>
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -425,8 +425,8 @@
             <md-input-container class="md-block" flex-gt-xs  ng-if="$ctrl.instance.user_data_format=='SOFTWARE_CONFIG'" >
                 <label>Software Config Transport</label>
                 <md-select ng-model="$ctrl.instance.software_config_transport">
-                    <md-option ng-repeat="sct in software_config_transports" ng-value="sct.name">
-                        {{sct.name}}  <span ng-if="sct.default">(Default)</span>
+                    <md-option ng-repeat="sct in options.software_config_transports" ng-value="sct.name">
+                        {{ sct.name }}  <span ng-if="sct.default">(Default)</span>
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -434,8 +434,8 @@
             <md-input-container class="md-block" flex-gt-xs ng-if="$ctrl.instance.user_data_format=='RAW'">
                 <label>User Data Update Policy</label>
                 <md-select ng-model="$ctrl.instance.user_data_update_policy">
-                    <md-option ng-repeat="udup in user_data_update_policies" ng-value="udup.name">
-                        {{udup.name}}  <span ng-if="udup.default">(Default)</span>
+                    <md-option ng-repeat="udup in options.user_data_update_policies" ng-value="udup.name">
+                        {{ udup.name }}  <span ng-if="udup.default">(Default)</span>
                     </md-option>
                 </md-select>
             </md-input-container>

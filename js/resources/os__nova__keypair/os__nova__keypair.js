@@ -12,6 +12,7 @@
                 code: '\uf084',
                 color: '#483dff'
             },
+            label: 'name',
             modal_component: '<os-nova-keypair keypair="resource" form-reference="resourceForm"></os-nova-keypair>',
             edge_settings: null,
             necessary_properties: {
@@ -33,12 +34,14 @@
     }]);
 
 
-    function osNovaKeypairController($scope, $rootScope){
-        $scope.keypair_types = $rootScope.keypair_types;
-        $scope.admin = $rootScope.auth.admin;
+    function osNovaKeypairController($scope, hotgenGlobals){
+        $scope.options = hotgenGlobals.get_resource_options();
+
+        $scope.admin = $scope.options.auth.admin;
+
     }
 
-    osNovaKeypairController.$inject = ['$scope', '$rootScope', ];
+    osNovaKeypairController.$inject = ['$scope', 'hotgenGlobals', ];
     osNovaKeypairPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNovaKeypairPath(basePath){

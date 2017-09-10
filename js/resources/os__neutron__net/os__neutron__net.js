@@ -13,6 +13,7 @@
                 code: '\uf0c2',
                 color: '#40a5f2'
             },
+            label: 'name',
             modal_component: '<os-neutron-net network="resource" form-reference="resourceForm"></os-neutron-net>',
             edge_settings: null,
             necessary_properties: null
@@ -35,9 +36,9 @@
 
     }]);
 
-    function osNeutronNetController($scope, $rootScope){
+    function osNeutronNetController($scope, hotgenGlobals){
         this.$onInit = function(){
-            this.admin = $rootScope.auth.admin;
+            this.admin = $scope.options.auth.admin;
             if (typeof this.network.tags == 'undefined'){
                 this.network.tags = []
             }
@@ -59,10 +60,11 @@
             this.network.value_specs.splice(index, 1)
         }
 
-        $scope.qos_policies = $rootScope.qos_policies;
+        $scope.options = hotgenGlobals.get_resource_options();
+        $scope.qos_policies = $scope.options.qos_policies;
     }
 
-    osNeutronNetController.$inject = ['$scope', '$rootScope', ];
+    osNeutronNetController.$inject = ['$scope', 'hotgenGlobals', ];
     osNeutronNetPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronNetPath(basePath){

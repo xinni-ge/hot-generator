@@ -15,7 +15,7 @@
                 code: '\uf108',
                 color: '#483dff'
             },
-            label: name,
+            label: 'name',
             modal_component: '<os-nova-server instance="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-nova-server>',
             edge_settings: {
                 'OS__Cinder__Volume': {
@@ -90,7 +90,7 @@
 
     }]);
 
-    function osNovaServerController($scope, $rootScope, hotgenValidate, hotgenNotify, hotgenUtils,) {
+    function osNovaServerController($scope, hotgenGlobals, hotgenValidate, hotgenNotify, hotgenUtils,) {
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -134,6 +134,16 @@
                 'security_groups': [],
                 'block_device_mapping_v2.volume_id': [],
                 'networks': {},
+            }
+
+            if (this.instance.image){
+                $scope.boot_source = 'image';
+            } else if (this.instance.image_snapshot){
+                $scope.boot_source = 'image_snapshot';
+            } else if (this.instance.volume){
+                $scope.boot_source = 'volume';
+            } else if (this.instance.volume_snapshot){
+                $scope.boot_source = 'volume_snapshot';
             }
 
             if ( $scope.connected_options.key_name && $scope.connected_options.key_name.length > 0){
@@ -281,14 +291,35 @@
                 $scope.how2config_networks[idx.toString()] = source;
             }
 
-            $scope.keypairs = $scope.get_keypairs_options();
-            $scope.networks = $scope.get_networks_options();
-            $scope.subnets = $scope.get_subnets_options();
-            $scope.floatingips = $scope.get_floatingips_options();
-            $scope.ports = $scope.get_ports_options();
-            $scope.security_groups = $scope.get_security_groups_options();
-            $scope.volumes = $scope.get_volumes_options();
+            $scope.update = {
+                keypairs: $scope.get_keypairs_options(),
+                networks: $scope.get_networks_options(),
+                subnets: $scope.get_subnets_options(),
+                floatingips: $scope.get_floatingips_options(),
+                ports: $scope.get_ports_options(),
+                security_groups: $scope.get_security_groups_options(),
+                volumes: $scope.get_volumes_options(),
+            }
 
+        }
+        $scope.update_boot_source = function(index){
+            if ($scope.boot_source == 'image'){
+                this.$ctrl.instance.image_snapshot = null;
+                this.$ctrl.instance.volume = null;
+                this.$ctrl.instance.volume_snapshot = null;
+            } else if ($scope.boot_source == 'image_snapshot'){
+                this.$ctrl.instance.image = null;
+                this.$ctrl.instance.volume = null;
+                this.$ctrl.instance.volume_snapshot = null;
+            } else if ($scope.boot_source == 'volume'){
+                this.$ctrl.instance.image = null;
+                this.$ctrl.instance.image_snapshot = null;
+                this.$ctrl.instance.volume_snapshot = null;
+            } else if ($scope.boot_source == 'volume_snapshot'){
+                this.$ctrl.instance.image = null;
+                this.$ctrl.instance.image_snapshot = null;
+                this.$ctrl.instance.volume = null;
+            }
         }
         $scope.update_source = function (index) {
                 if ($scope.bdpv2_source[index] == 'volume'){
@@ -325,6 +356,9 @@
             $scope.show_passwd_type = $scope.show_passwd ? "text" : "password";
         });
 
+
+        $scope.options = hotgenGlobals.get_resource_options();
+
         $scope.get_security_groups_options = function(){
             if ('security_groups' in $scope.connected_options){
                 var resource_secgroups = [];
@@ -335,9 +369,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.security_groups.concat(resource_secgroups);
+                return $scope.options.security_groups.concat(resource_secgroups);
             }
-            return $rootScope.security_groups;
+            return $scope.options.security_groups;
         }
 
         $scope.get_volumes_options = function(){
@@ -350,9 +384,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.volumes.concat(resource_volumes);
+                return $scope.options.volumes.concat(resource_volumes);
             }
-            return $rootScope.volumes;
+            return $scope.options.volumes;
         }
 
         $scope.get_keypairs_options = function(){
@@ -364,9 +398,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.keypairs.concat(resource_keypair);
+                return $scope.options.keypairs.concat(resource_keypair);
             }
-            return $rootScope.keypairs;
+            return $scope.options.keypairs;
         }
 
         $scope.get_networks_options = function(){
@@ -379,9 +413,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.networks.concat(resource_nw);
+                return $scope.options.networks.concat(resource_nw);
             }
-            return $rootScope.networks;
+            return $scope.options.networks;
         }
         $scope.get_subnets_options = function(){
             if ('networks.subnet' in $scope.connected_options){
@@ -393,9 +427,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.subnets.concat(resource_subnet);
+                return $scope.options.subnets.concat(resource_subnet);
             }
-            return $rootScope.networks;
+            return $scope.options.networks;
         }
         $scope.get_floatingips_options = function(){
             if ('networks.floating_ip' in $scope.connected_options){
@@ -406,9 +440,9 @@
                         id: item.value,
                     })
                 }
-                return $rootScope.floatingips.concat(resource_fip);
+                return $scope.options.floatingips.concat(resource_fip);
             }
-            return $rootScope.floatingips;
+            return $scope.options.floatingips;
         }
         $scope.get_ports_options = function(){
             if ('networks.port' in $scope.connected_options){
@@ -420,83 +454,78 @@
                         name: item.value
                     })
                 }
-                return $rootScope.ports.concat(resource_port);
+                return $scope.options.ports.concat(resource_port);
             }
-            return $rootScope.ports;
+            return $scope.options.ports;
         }
-        $scope.boot_sources = [
+
+        $scope.block_device_mapping_v2 = true;
+        $scope.deployment_swift_data = {};
+
+        $scope.options.boot_sources = [
             {'id': 'image', 'name': 'image'},
             {'id': 'image_snapshot', 'name': 'image snapshot'},
             {'id': 'volume', 'name': 'volume'},
             {'id': 'volume_snapshot', 'name': 'volume snapshot'}
         ];
-        $scope.volume_sources = [
+        $scope.options.volume_sources = [
             {'id': 'volume', 'name': 'volume'},
             {'id': 'volume_snapshot', 'name': 'volume snapshot'}
         ];
-        $scope.volume_sources_v2 = [
+        $scope.options.volume_sources_v2 = [
             {'id': 'image', 'name': 'image'},
             {'id': 'volume', 'name': 'volume'},
             {'id': 'volume_snapshot', 'name': 'volume snapshot'}
         ];
-        $scope.block_device_mapping_v2 = true;
-        $scope.availability_zones = $rootScope.availability_zones;
-        $scope.flavors = $rootScope.flavors;
-        $scope.security_groups = $rootScope.security_groups;
-        $scope.keypairs = $rootScope.keypairs;
-        $scope.images = $rootScope.images;
-        $scope.image_snapshots = $rootScope.image_snapshots;
-        $scope.volumes = $rootScope.volumes;
-        $scope.volume_snapshots = $rootScope.volume_snapshots;
-        $scope.deployment_swift_data = {};
 
-        $scope.flavor_update_policies = [
+        $scope.options.flavor_update_policies = [
                 {'name': 'RESIZE', 'default': true},
                 {'name': 'REPLACE'},
         ];
-        $scope.image_update_policies = [
+        $scope.options.image_update_policies = [
                 {'name': 'REBUILD', 'default': true},
                 {'name': 'REPLACE'},
                 {'name': 'REBUILD_PRESERVE_EPHEMERAL'},
         ];
-        $scope.disk_configs = [
+        $scope.options.disk_configs = [
                 {'name': 'AUTO', 'default': true},
                 {'name': 'MANUAL'},
         ];
-        $scope.software_config_transports = [
+        $scope.options.software_config_transports = [
                 {'name': 'POLL_SERVER_CFN', 'default': true},
                 {'name': 'POLL_SERVER_HEAT'},
                 {'name': 'POLL_TEMP_URL'},
                 {'name': 'ZAQAR_MESSAGE'},
         ];
-        $scope.user_data_update_policies = [
+        $scope.options.user_data_update_policies = [
                 {'name': 'REPLACE', 'default': true},
                 {'name': 'IGNORE'},
         ];
-        $scope.user_data_formats = [
+        $scope.options.user_data_formats = [
                 {'name': 'HEAT_CFNTOOLS', 'default': true},
                 {'name': 'RAW'},
                 {'name': 'SOFTWARE_CONFIG'}
         ];
-        $scope.disk_types = [
+        $scope.options.disk_types = [
                 {'name': 'disk'},
                 {'name': 'cdrom'},
         ]
-        $scope.disk_buses = [
+        $scope.options.disk_buses = [
                 {'name': 'ide'},
                 {'name': 'lame_bus'},
                 {'name': 'scsi'},
                 {'name': 'usb'},
                 {'name': 'virtio'},
         ];
-        $scope.ephemeral_formats = [
+        $scope.options.ephemeral_formats = [
                 {'name': 'ext2'},
                 {'name': 'ext3'},
                 {'name': 'ext4'},
                 {'name': 'xfs'},
                 {'name': 'ntfs'},
         ];
-        $scope.allocate_networks = [{'name': 'none'}, {'name': 'auto'}];
+        $scope.options.allocate_networks = [{'name': 'none'}, {'name': 'auto'}];
+
         this.delete_metadata = function(index){
             this.instance.metadata.splice(index, 1)
         }
@@ -535,7 +564,7 @@
         }
     }
 
-    osNovaServerController.$inject = ['$scope', '$rootScope', 'hotgenValidate', 'hotgenNotify', 'hotgenUtils'];
+    osNovaServerController.$inject = ['$scope', 'hotgenGlobals', 'hotgenValidate', 'hotgenNotify', 'hotgenUtils'];
     osNovaServerPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
 

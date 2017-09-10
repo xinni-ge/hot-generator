@@ -14,6 +14,7 @@
                 code: '\uf0ee',
                 color: '#40a5f2'
             },
+            label: 'name',
             modal_component: '<os-neutron-subnet subnet="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-subnet>',
             edge_settings: {
                 'OS__Neutron__Net': {
@@ -45,10 +46,11 @@
     }]);
 
 
-    function osNeutronSubnetController($scope, $rootScope, hotgenNotify) {
-        this.admin=$rootScope.auth.admin;
+    function osNeutronSubnetController($scope, hotgenGlobals, hotgenNotify) {
 
         this.$onInit = function(){
+            this.admin = $scope.options.auth.admin;
+
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
             } else{
@@ -95,6 +97,8 @@
                 return null;
             }
         }
+        $scope.options = hotgenGlobals.get_resource_options();
+
         $scope.get_networks_options = function(){
             if ('network' in $scope.connected_options){
                 var resource_nws = [];
@@ -105,13 +109,13 @@
                         name: item.value
                     })
                 }
-                return $rootScope.networks.concat(resource_nws);
+                return $scope.options.networks.concat(resource_nws);
             }
-            return $rootScope.networks;
+            return $scope.options.networks;
         }
     }
 
-    osNeutronSubnetController.$inject = ['$scope', '$rootScope', 'hotgenNotify'];
+    osNeutronSubnetController.$inject = ['$scope', 'hotgenGlobals', 'hotgenNotify'];
     osNeutronSubnetPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronSubnetPath(basePath){

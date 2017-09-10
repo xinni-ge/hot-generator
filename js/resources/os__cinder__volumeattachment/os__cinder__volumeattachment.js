@@ -66,7 +66,7 @@
 
 
     // Define  <os-cinder-volume> controller
-    function osCinderVolumeAttachmentController($scope, $rootScope, ){
+    function osCinderVolumeAttachmentController($scope, hotgenGlobals, ){
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -74,8 +74,10 @@
                 $scope.connected_options = this.connectedoptions;
             }
             this.disable = {'instance_uuid': false, 'volume_id': false}
-            $scope.volumes = $scope.get_volume_id_options();
-            $scope.instances = $scope.get_instance_uuid_options();
+            $scope.update = {
+                volumes: $scope.get_volume_id_options(),
+                instances: $scope.get_instance_uuid_options()
+            }
 
             if ( $scope.connected_options.instance_uuid && $scope.connected_options.instance_uuid.length > 0){
                 this.volumeattachment['instance_uuid'] = $scope.connected_options.instance_uuid[0].value
@@ -87,6 +89,9 @@
             }
 
         }
+
+        $scope.options = hotgenGlobals.get_resource_options()
+
         $scope.get_volume_id_options = function(){
             if ('volume_id' in $scope.connected_options){
                 var resource_volumes = [];
@@ -97,9 +102,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.volumes.concat(resource_volumes);
+                return $scope.options.volumes.concat(resource_volumes);
             }
-            return $rootScope.volumes;
+            return $scope.options.volumes;
         }
         $scope.get_instance_uuid_options = function(){
             if ('instance_uuid' in $scope.connected_options){
@@ -111,13 +116,13 @@
                         name: item.value
                     })
                 }
-                return $rootScope.instances.concat(resource_instances);
+                return $scope.options.instances.concat(resource_instances);
             }
-            return $rootScope.instances;
+            return $scope.options.instances;
         }
     }
 
-    osCinderVolumeAttachmentController.$inject = ['$scope', '$rootScope', ];
+    osCinderVolumeAttachmentController.$inject = ['$scope', 'hotgenGlobals', ];
     osCinderVolumeAttachmentPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osCinderVolumeAttachmentPath (basePath){

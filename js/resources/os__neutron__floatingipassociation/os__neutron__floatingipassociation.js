@@ -13,6 +13,7 @@
                 code: '\uf0c6',
                 color: '#40a5f2'
             },
+            label: 'fixed_ip_address',
             modal_component: '<os-neutron-floatingip-association floatingipassociation="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-floatingip-association>',
             edge_settings: {
                 'OS__Neutron__FloatingIP': {
@@ -48,16 +49,19 @@
             osNeutronFloatingipAssociationSettings.edge_settings);
 
     }]);
-    function osNeutronFloatingipAssociationController($scope, $rootScope){
+    function osNeutronFloatingipAssociationController($scope, hotgenGlobals){
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
-                $scope.connected_options = []
+                $scope.connected_options = [];
             } else{
                 $scope.connected_options = this.connectedoptions;
             }
             this.disable = {'floatingip_id': false, 'port_id': false}
-            $scope.floatingips = $scope.get_floatingip_options();
-            $scope.ports = $scope.get_port_options();
+            $scope.update = {
+                floatingips: $scope.get_floatingip_options(),
+                ports: $scope.get_port_options(),
+            }
+
             if ( $scope.connected_options.floatingip_id && $scope.connected_options.floatingip_id.length > 0){
                 this.floatingipassociation['floatingip_id'] = $scope.connected_options.floatingip_id[0].value;
                 this.disable.floatingip_id = true;
@@ -67,6 +71,8 @@
                 this.disable.port_id = true;
             }
         }
+        $scope.options = hotgenGlobals.get_resource_options();
+
         $scope.get_floatingip_options = function(){
             if ('floatingip_id' in $scope.connected_options){
                 var resource_fip = [];
@@ -76,9 +82,9 @@
                         id: item.value,
                     })
                 }
-                return $rootScope.floatingips.concat(resource_fip);
+                return $scope.options.floatingips.concat(resource_fip);
             }
-            return $rootScope.floatingips;
+            return $scope.options.floatingips;
         }
 
         $scope.get_port_options = function(){
@@ -91,12 +97,12 @@
                         name: item.value
                     })
                 }
-                return $rootScope.ports.concat(resource_port);
+                return $scope.options.ports.concat(resource_port);
             }
-            return $rootScope.ports;
+            return $scope.options.ports;
         }
     }
-    osNeutronFloatingipAssociationController.$inject = ['$scope', '$rootScope', ];
+    osNeutronFloatingipAssociationController.$inject = ['$scope', 'hotgenGlobals', ];
     osNeutronFloatingipAssociationPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronFloatingipAssociationPath(basePath){

@@ -13,6 +13,7 @@
                 code: '\uf22d',
                 color: '#40a5f2',
             },
+            label: 'name',
             modal_component: '<os-neutron-port port="resource" connectedoptions="connectedoptions" form-reference="resourceForm"></os-neutron-port>',
             edge_settings: {
                 'OS__Neutron__Net': {
@@ -53,7 +54,7 @@
 
     }]);
 
-    function osNeutronPortController($scope, $rootScope){
+    function osNeutronPortController($scope, hotgenGlobals){
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -105,10 +106,14 @@
                 }
             }
 
-            $scope.networks = $scope.get_networks_options();
-            $scope.security_groups = $scope.get_security_groups_options();
-            $scope.subnets = $scope.get_subnets_options();
+            $scope.update = {
+                networks: $scope.get_networks_options(),
+                security_groups: $scope.get_security_groups_options(),
+                subnets: $scope.get_subnets_options(),
+            }
         };
+
+        $scope.options = hotgenGlobals.get_resource_options();
         this.device_owners = load_device_owners();
         this.querySearch = querySearch;
         this.show_not_found = true;
@@ -125,9 +130,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.networks.concat(resource_nw);
+                return $scope.options.networks.concat(resource_nw);
             }
-            return $rootScope.networks;
+            return $scope.options.networks;
         }
 
         $scope.get_security_groups_options = function(){
@@ -140,9 +145,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.security_groups.concat(resource_secgroups);
+                return $scope.options.security_groups.concat(resource_secgroups);
             }
-            return $rootScope.security_groups;
+            return $scope.options.security_groups;
         }
         $scope.get_subnets_options = function(){
             if ('fixed_ips.subnet' in $scope.connected_options){
@@ -154,12 +159,12 @@
                         name: item.value
                     })
                 }
-                return $rootScope.subnets.concat(resource_subnets);
+                return $scope.options.subnets.concat(resource_subnets);
             }
-            return $rootScope.subnets;
+            return $scope.options.subnets;
         }
 
-        $scope.qos_policies = $rootScope.qos_policies;
+        $scope.qos_policies = $scope.options.qos_policies;
 
 
         this.add_value_specs = function(){
@@ -214,7 +219,7 @@
         }
     }
 
-    osNeutronPortController.$inject = ['$scope', '$rootScope', ];
+    osNeutronPortController.$inject = ['$scope', 'hotgenGlobals', ];
     osNeutronPortPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronPortPath(basePath){

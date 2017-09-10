@@ -37,7 +37,7 @@
 
 
     // Define  <os-cinder-volume> controller
-    function osCinderVolumeController($scope, $rootScope, hotgenValidate, hotgenNotify) {
+    function osCinderVolumeController($scope, hotgenGlobals, hotgenValidate, hotgenNotify) {
         this.$onInit = function(){
             if (typeof this.volume.metadata === 'undefined'){
                 this.volume.metadata = [{}];
@@ -52,12 +52,7 @@
             {'id': 'volume_snapshot', 'name': 'volume snapshot'},
             {'id': 'backup', 'name': 'backup'},
         ];
-        $scope.availability_zones = $rootScope.availability_zones;
-        $scope.images = $rootScope.images;
-        $scope.volumes = $rootScope.volumes;
-        $scope.backups = $rootScope.volume_backups;
-        $scope.volume_snapshots = $rootScope.volume_snapshots;
-        $scope.vtypes = $rootScope.volume_types;
+        $scope.options = hotgenGlobals.get_resource_options()
 
         this.delete_metadata = function(index){
             this.volume.metadata.splice(index, 1)
@@ -79,7 +74,7 @@
         return  basePath + 'js/resources/os__cinder__volume/os__cinder__volume.html';
     }
 
-    osCinderVolumeController.$inject = ['$scope', '$rootScope', 'hotgenValidate', 'hotgenNotify'];
+    osCinderVolumeController.$inject = ['$scope', 'hotgenGlobals', 'hotgenValidate', 'hotgenNotify'];
     osCinderVolumePath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     angular.module('horizon.dashboard.project.heat_dashboard.template_generator')

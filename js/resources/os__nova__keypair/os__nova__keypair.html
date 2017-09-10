@@ -3,7 +3,7 @@
         <md-content layout-padding>
             <md-input-container class="md-block">
                 <label>Name</label>
-                <input ng-model="$ctrl.keypair.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z]+$/" md-maxlength="255">
+                <input ng-model="$ctrl.keypair.name" name="name" type="text" required ng-pattern="/^[0-9a-zA-Z_-]+$/" md-maxlength="255">
                 <div ng-messages="$ctrl.formReference.name.$error" role="alert" multiple>
                     <div ng-message="required" class="my-message">You must supply a name.</div>
                     <div ng-message="pattern" class="my-message">That doesn't look like a valid name.
@@ -16,8 +16,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Key Name</label>
                 <md-select ng-model="$ctrl.keypair.type">
-                    <md-option ng-repeat="ktype in keypair_types" ng-value="ktype.name">
-                        {{ktype.name}}
+                    <md-option ng-repeat="ktype in options.keypair_types" ng-value="ktype.name">
+                        {{ ktype.name }}
                     </md-option>
                 </md-select>
             </md-input-container>

@@ -1,4 +1,4 @@
-(function(angular) {
+(function() {
     'use strict';
     angular.module('hotgen-utils', ['cgNotify', 'angular-uuid'])
          .factory('hotgenUUID', ['uuid', function(uuid) {
@@ -161,31 +161,58 @@
             var saved_flags = {};
             var selected = {};
             var saved_resources = {};
+
             var get_selected = function(){
                 return selected;
             }
-            var update_selected = function(to_update){
-                selected.extend(to_update);
+            var set_selected = function(to_set){
+                selected = to_set;
             }
-            var update_saved_resources = function(resource_type, data){
-                saved_resources[resource_type] = data;
+            var update_saved_resources = function(key, data){
+                saved_resources[key] = data;
             };
+            var set_saved_resources = function(to_set){
+                saved_resources = to_set;
+            }
             var is_all_saved = function(){
                 return false in Object.keys(saved_flags);
             };
-            var upate_saved_flags = function(to_update){
-                saved_flags.extend(to_update)
+            var get_saved_flags_length = function(){
+                return Object.keys(saved_flags).length;
+            }
+            var get_saved_flags = function(){
+                return saved_flags;
+            }
+            var set_saved_flags = function(to_set){
+                saved_flags = to_set;
+            }
+            var update_saved_flags = function(key, value){
+                saved_flags[key] = value;
             }
             var get_saved_resources = function(){
                 return angular.copy(saved_resources);
             }
+            var get_saved_resources_length = function(){
+                return Object.keys(saved_resources).length;
+            }
+            var clear_states = function(){
+                saved_resources = {}
+                selected = {}
+                saved_flags = {}
+            }
             return {
-                update_saved_resources: update_saved_resources,
-                get_saved_resources: get_saved_resources,
                 is_all_saved: is_all_saved,
+                get_saved_resources: get_saved_resources,
+                get_saved_resources_length: get_saved_resources_length,
+                get_saved_flags: get_saved_flags,
+                get_saved_flags_length: get_saved_flags_length,
+                set_selected: set_selected,
                 get_selected: get_selected,
-                update_selected: update_selected,
-                upate_saved_flags: upate_saved_flags,
+                set_saved_resources: set_saved_resources,
+                set_saved_flags: set_saved_flags,
+                update_saved_flags: update_saved_flags,
+                update_saved_resources: update_saved_resources,
+                clear_states: clear_states,
             }
         })
         .service('hotgenGlobals', function () {
@@ -196,6 +223,7 @@
                 resource_components: {},
                 node_labels: {},
                 node_admin: {},
+                resource_options: {},
             };
 
             return {
@@ -221,23 +249,29 @@
                     return this.get_element('necessary_properties');
                 },
                 update_node_labels: function(key, value) {
-                    globals.node_labels[key] = value
+                    globals.node_labels[key] = value;
                 },
                 update_node_admin: function(key, value) {
-                    globals.node_admin[key] = value
+                    globals.node_admin[key] = value;
                 },
                 update_resource_icons: function(key, value) {
-                    globals.resource_icons[key] = value
+                    globals.resource_icons[key] = value;
                 },
                 update_resource_components: function(key, value) {
-                    globals.resource_components[key] = value
+                    globals.resource_components[key] = value;
                 },
                 update_edge_directions: function(key, value) {
-                    globals.edge_directions[key] = value
+                    globals.edge_directions[key] = value;
                 },
                 update_necessary_properties: function(key, value) {
-                    globals.necessary_properties[key] = value
+                    globals.necessary_properties[key] = value;
                 },
+                get_resource_options: function(){
+                    return this.get_element('resource_options');
+                },
+                update_resource_options: function(u_object){
+                    angular.extend(globals.resource_options, u_object)
+                }
             };
         })
         .directive('compile', [ '$compile', function($compile){
@@ -249,4 +283,4 @@
             }
         }]);
 
-})(window.angular);
+})();

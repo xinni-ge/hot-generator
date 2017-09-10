@@ -52,7 +52,7 @@
             osNeutronRouterInterfaceSettings.edge_settings);
     }]);
 
-    function osNeutronRouterInterfaceController($scope, $rootScope) {
+    function osNeutronRouterInterfaceController($scope, hotgenGlobals) {
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -60,9 +60,11 @@
                 $scope.connected_options = this.connectedoptions;
             }
             this.disable = {'port': false, 'router': false, 'subnet': false}
-            $scope.subnets = $scope.get_subnets_options();
-            $scope.routers = $scope.get_routers_options();
-            $scope.ports = $scope.get_ports_options();
+            $scope.update = {
+                subnets: $scope.get_subnets_options(),
+                routers: $scope.get_routers_options(),
+                ports: $scope.get_ports_options(),
+            }
 
 
             if ( $scope.connected_options.port && $scope.connected_options.port.length > 0){
@@ -78,6 +80,9 @@
                 this.disable.subnet = true
             }
         }
+
+        $scope.options = hotgenGlobals.get_resource_options();
+
         $scope.get_subnets_options = function(){
             if ('subnet' in $scope.connected_options){
                 var resource_subnets = [];
@@ -88,9 +93,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.subnets.concat(resource_subnets);
+                return $scope.options.subnets.concat(resource_subnets);
             }
-            return $rootScope.subnets;
+            return $scope.options.subnets;
         }
         $scope.get_ports_options = function(){
             if ('port' in $scope.connected_options){
@@ -102,9 +107,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.ports.concat(resource_ports);
+                return $scope.options.ports.concat(resource_ports);
             }
-            return $rootScope.ports;
+            return $scope.options.ports;
         }
         $scope.get_routers_options = function(){
             if ('router' in $scope.connected_options){
@@ -116,13 +121,13 @@
                         name: item.value
                     })
                 }
-                return $rootScope.routers.concat(resource_routers);
+                return $scope.options.routers.concat(resource_routers);
             }
-            return $rootScope.routers;
+            return $scope.options.routers;
         }
     };
 
-    osNeutronRouterInterfaceController.$inject = ['$scope', '$rootScope', ];
+    osNeutronRouterInterfaceController.$inject = ['$scope', 'hotgenGlobals', ];
     osNeutronRouterInterfacePath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronRouterInterfacePath(basePath){

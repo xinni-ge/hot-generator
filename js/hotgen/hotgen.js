@@ -4,7 +4,7 @@
     angular
         .module('horizon.dashboard.project.heat_dashboard.template_generator',
             ['ngMaterial', 'ngMessages', 'ngSanitize',
-             'hotgen-utils', 'ui.bootstrap', 'ngVis',
+             'hotgen-utils', 'hotgen-openstack', 'ui.bootstrap', 'ngVis',
             ])
         .config(['$mdThemingProvider', function($mdThemingProvider) {
           $mdThemingProvider.theme('default')
@@ -12,106 +12,24 @@
             .accentPalette('blue')
             .warnPalette('red');
             }])
+        .config(['$locationProvider', function($locationProvider) {
+            $locationProvider.html5Mode({
+                  enabled: true,
+                  requireBase: false
+                });
+            }])
         .config(['$provide', '$windowProvider', function($provide, $windowProvider){
 //                var path = $windowProvider.$get().STATIC_URL + 'dashboard/project/heat_dashboard/template_generator/';
-                var path = '/'
+                var path = "/"
                 $provide.constant('horizon.dashboard.project.heat_dashboard.template_generator.basePath', path);
 
-        }])
-        .run(['$rootScope', function ($rootScope,
-                ) {
-
-            /* *********************************************************************
-             * The following selections should be replaced by OpenStack API response
-             */
-
-            $rootScope.auth = {
-                'tenant_id': '',
-                'admin': true,
-            }
-
-            $rootScope.keypair_types = [
-                {'name': 'ssh'},
-                {'name': 'x509'},
-            ];
-
-            $rootScope.keypairs = [
-                {'name': 'default'},
-                {'name': 'openstack'},
-            ];
-            $rootScope.security_groups = [
-                {'id': 'default', 'name': 'default'},
-                {'id': 'internal', 'name': 'internal'},
-                {'id': 'outbound', 'name': 'outbound'},
-            ];
-            $rootScope.volume_backups = [
-                {'id': 'a79c1fbc-2872-7c20-a28f-88ccdacc4332',  'name': 'volume-backup-20170102GMT120000'}
-            ]
-            $rootScope.volume_snapshots = [
-                {'id': '3e86fc96-9717-4800-a28f-87cce8f695a6', 'name': 'volume-snapshot-ubuntu1404-20170808'},
-            ];
-            $rootScope.instances = [
-                {'id': 'eea94a46-0a62-41b2-823c-22500175f99d', 'name': 'virtual-machine-for-test'},
-            ];
-            $rootScope.volumes = [
-                {'id': 'c11a6d55-70e9-4d04-a086-4451f07da0d7', 'name': 'volume-image-ubuntu1404'},
-            ];
-            $rootScope.image_snapshots = [
-                {'id': '15d687ce-83e8-11e6-99a3-525400180e00', 'name': 'snapshot-image-ubuntu1404'},
-            ];
-            $rootScope.images = [
-                {'id': 'ad936ae4-2983-4f23-9187-e47e82cb2725', 'name': 'Ubuntu-14.04.1_64'},
-                {'id': 'df1944a7-ca45-4709-9ec6-e31664133650', 'name': 'CentOS-7.1-1503_64'},
-                {'id': 'c99c0ab6-00a1-4119-b807-71229b0d9804', 'name': 'RedHatEnterpriseLinux-7.1'},
-            ];
-            $rootScope.floating_networks = [
-                {'id': '823ca3a8-bd8a-417d-8d32-fd1839e09d7f', 'name': 'public network'},
-            ];
-            $rootScope.networks = [
-                {'id': 'fd7439dd-715d-4685-8478-f1c6b65c1ba1', 'name': 'internal network 01'},
-            ];
-            $rootScope.floating_subnets = [
-                {'id': 'ca454447-a5b8-4891-bb61-5ff5a0e681af', 'name': 'public subnet'},
-            ];
-            $rootScope.subnets = [
-                {'id': '19760c5c-bffe-482e-97cb-544e6c4092ab', 'name': 'internal subnet 01'},
-            ];
-            $rootScope.ports = [
-                {'id': '97175254-b807-9717-0ab6-001750687cec', 'name': 'Port 1'},
-            ];
-            $rootScope.routers = [
-                {'id': 'f8375510-efc8-4839-9593-56e3dad07014', 'name': 'Router 1'},
-            ];
-            $rootScope.floatingips = [
-                {'id': '8d32c99c-b65c-f07d-0ab6-8f694a600171', },
-            ];
-            $rootScope.flavors = [
-                {'id': 'm1.small', 'name': 'm1.small'},
-                {'id': 'm1.medium', 'name': 'm1.medium'},
-                {'id': 'm1.large', 'name': 'm1.large'},
-            ];
-            $rootScope.availability_zones = [
-                { "id": "", "name": "Any Group/Zone"},
-                { "id": "zone_groupa", "name": "Zone1/Group A"},
-                { "id": "zone_groupb", "name": "Zone1/Group B"}
-            ];
-            $rootScope.volume_types = [
-                 {'id': 'virtio', 'name': 'virtio'},
-            ];
-            $rootScope.qos_policies = [
-                 {'id': '7d22dfdb-d293-4379-9814-e03758f870ef', 'name': 'Policy1'},
-            ];
-
-            /*
-             * End replaced by API response
-             **********************************************************************
-             */
-
         }]);
-    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
-    .controller('DraftMenuCtrl', ["$scope","$rootScope",
+
+    angular
+      .module('horizon.dashboard.project.heat_dashboard.template_generator')
+      .controller('DraftMenuCtrl', ["$scope","$rootScope",
         "$mdDialog", "hotgenNotify", "hotgenMessage",
-        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage){
+        function($scope, $rootScope, $mdDialog, hotgenStates, hotgenNotify, hotgenMessage){
             $scope.openMenu = function($mdOpenMenu, ev){
                 $mdOpenMenu(ev);
             };
@@ -128,8 +46,8 @@
                 var data = {
                     nodes: $rootScope.nodes._data,
                     edges: $rootScope.edges._data,
-                    saved_resources: $rootScope.saved_resources,
-                    is_saved: $rootScope.is_saved,
+                    saved_resources: hotgenStates.get_saved_resources(),
+                    is_saved: hotgenStates.get_saved_flags(),
                 }
 
                 var today = new Date();
@@ -151,23 +69,52 @@
     }]);
 
     angular.module('horizon.dashboard.project.heat_dashboard.template_generator').controller('ClearCanvasCtrl', ["$scope", "$rootScope", "hotgenNotify" ,
-        function($scope, $rootScope, hotgenNotify){
+        function($scope, $rootScope, hotgenStates, hotgenNotify){
             $scope.clear_canvas = function(){
                 $rootScope.nodes.clear();
                 $rootScope.edges.clear();
-                $rootScope.selected = {};
-                $rootScope.saved_resources = {};
-                $rootScope.is_saved = {};
+                hotgenStates.clear_states();
                 hotgenNotify.show_success('The Canvas has been initialized.');
             };
 
     }]);
 
-    angular.module('horizon.dashboard.project.heat_dashboard.template_generator').controller('IconCtrl', ['$scope','$rootScope','hotgenGlobals',function($scope, $rootScope, hotgenGlobals){
+    angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
+    .controller('IconCtrl', ['$scope','openstack_agent', 'hotgenGlobals',
+     function($scope, openstack_agent, hotgenGlobals){
         $scope.resource_types = hotgenGlobals.get_resource_icons();
-        $scope.admin = $rootScope.auth.admin;
         $scope.resource_admin = hotgenGlobals.get_node_admin();
 
+        var init = function(){
+            /* *********************************************************************
+             * The following selections should be replaced by OpenStack API response
+             */
+            var optionsPromise = openstack_agent.get_resource_options();
+            optionsPromise.then(function(options){
+                if (!options){
+                    return;
+                }
+                hotgenGlobals.update_resource_options({
+                    auth:{
+                        tenant_id: '',
+                        admin: false
+                    },
+                    keypair_types:[
+                        {'name': 'ssh'},
+                        {'name': 'x509'},
+                    ],
+                    image_snapshots: [],
+                    floating_subnets: [],
+                    qos_policies: [],
+                });
+                hotgenGlobals.update_resource_options(options);
+                $scope.admin = hotgenGlobals.get_resource_options().auth.admin;
+            });
+            $scope.admin = false;//hotgenGlobals.get_resource_options().auth.admin;
+
+        };
+
+        init();
     }]);
 
     angular.module('horizon.dashboard.project.heat_dashboard.template_generator').directive('draggable', [function(){
@@ -186,7 +133,8 @@
         }
     }]);
     angular.module('horizon.dashboard.project.heat_dashboard.template_generator').directive('droppable',
-    ['$rootScope', 'hotgenGlobals', 'hotgenUUID', function($rootScope, hotgenGlobals, hotgenUUID){
+    ['$rootScope', 'hotgenGlobals', 'hotgenUUID', 'hotgenStates',
+       function($rootScope, hotgenGlobals, hotgenUUID, hotgenStates){
         return {
             link: function (scope, element){
                 var el = element[0];
@@ -214,7 +162,7 @@
                             color: dragged_resource.color,
                         }
                     });
-                    $rootScope.is_saved[id] = false;
+                    hotgenStates.update_saved_flags(id, false)
                     e.preventDefault();
                 },false);
             }
@@ -222,9 +170,9 @@
     }]);
     angular.module('horizon.dashboard.project.heat_dashboard.template_generator')
     .controller('horizon.dashboard.project.heat_dashboard.template_generator.TempModalCtrl', ['$scope', '$rootScope',
-        '$mdDialog', 'hotgenNotify', 'hotgenUtils',
+        '$mdDialog', 'hotgenNotify', 'hotgenUtils', 'hotgenStates',
         'horizon.dashboard.project.heat_dashboard.template_generator.basePath',
-        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenUtils, basePath){
+        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenUtils, hotgenStates, basePath){
             $scope.open = function(){
                 $mdDialog.show({
                     parent: angular.element(document.body),
@@ -237,47 +185,23 @@
                     hotgenNotify.show_info('dismiss a modal');
                 });
             };
-            DialogController.$inject = ['$scope', '$rootScope', '$mdDialog'];
-            function DialogController($scope, $rootScope, $mdDialog) {
+            DialogController.$inject = ['$scope', '$rootScope', '$mdDialog', 'hotgenStates'];
+            function DialogController($scope, $rootScope, $mdDialog, hotgenStates) {
                     $scope.all_saved = false;
                     $scope.cancel = function() {
                       $mdDialog.cancel();
                     };
                     $scope.save = function(msg) {
-                      // jump to stack creation page.
+                      // TODO: jump to stack creation page, or send to heat api.
+                      // Temporarily Download
+                      var today = new Date();
+                      var filename = "template-"+today.toISOString();
+                      var blob = new Blob([$scope.template_contents], {type: "text/plain;charset=utf-8"});
+                      saveAs(blob, filename+".yaml.txt");
+
                       $mdDialog.hide(msg);
                     };
-                    $scope.generate = function(){
-                        var resource_root = {};
-                        if( Object.keys($rootScope.is_saved).length == 0 || Object.keys($rootScope.saved_resources).length == 0){
-                            $scope.all_saved = false;
-                            return 'Cannot generate, no resource has been saved.';
-                        }
-                        if (Object.values($rootScope.is_saved).indexOf(false) >= 0){
-                            $scope.all_saved = false;
-                            return 'Cannot generate, some resources are not saved.';
-                        }
-                        $scope.all_saved = true;
-                        for (var idkey in $rootScope.saved_resources){
-                            var resource_type = $rootScope.saved_resources[idkey].type;
-                            var resource_name = resource_type + '_' + idkey;
-                            var copy_data = angular.copy($rootScope.saved_resources[idkey].data)
-                            var properties = $scope.extract_properties(copy_data);
-                            resource_root[resource_name] = {
-                                type: resource_type.replace(/_/g, ':'),
-                                properties: properties,
-                            };
 
-                        }
-                        var today = new Date();
-                        var template_root = {
-                            heat_template_version: "2017-09-01",
-                            description: 'version 2017-09-01 created by HOT Generator at '+ today.toUTCString() + '.',
-                            resources: resource_root
-                        }
-                        var json_string = JSON.stringify(template_root);
-                        return json2yaml(json_string);
-                    }
                     $scope.extract_properties = function(resource_data){
                         for (var property in resource_data){
                             var func = null;
@@ -308,28 +232,64 @@
                                     break;
                             }
                             if ( func != null){
-                                var processed_value = func(resource_data[property]);
-                                if (processed_value != null){
-                                    resource_data[property] = processed_value;
-                                } else{
-                                    delete resource_data[property]
-                                }
+                                resource_data[property] = func(resource_data[property]);
+                            }
+                            if (resource_data[property] == null || resource_data[property] == ''){
+                                delete resource_data[property]
                             }
                         }
                         return resource_data;
                     }
+
+                    $scope.generate = function(){
+                        var resource_root = {};
+                        if( hotgenStates.get_saved_flags_length() == 0 || hotgenStates.get_saved_resources_length() == 0){
+                            $scope.all_saved = false;
+                            return 'Cannot generate, no resource has been saved.';
+                        }
+                        if ( hotgenStates.is_all_saved() == false){
+                            $scope.all_saved = false;
+                            return 'Cannot generate, some resources are not saved.';
+                        }
+                        $scope.all_saved = true;
+                        $scope.saved_resources = hotgenStates.get_saved_resources()
+                        for (var idkey in $scope.saved_resources){
+                            var resource_type = $scope.saved_resources[idkey].type;
+                            var resource_name = resource_type + '_' + idkey;
+                            var copy_data = angular.copy($scope.saved_resources[idkey].data)
+                            var properties = $scope.extract_properties(copy_data);
+                            resource_root[resource_name] = {
+                                type: resource_type.replace(/_/g, ':'),
+                                properties: properties,
+                            };
+
+                        }
+                        var today = new Date();
+                        var template_root = {
+                            heat_template_version: "2017-09-01",
+                            description: 'version 2017-09-01 created by HOT Generator at '+ today.toUTCString() + '.',
+                            resources: resource_root
+                        }
+                        var json_string = JSON.stringify(template_root);
+                        return json2yaml(json_string);
+                    }
+
+                    $scope.template_contents = $scope.generate();
+
                     $scope.template = {
                         title: 'Template',
-                        content: $scope.generate(),
+                        content: $scope.template_contents,
                     };
                 }
         }]);
 
     angular.module('horizon.dashboard.project.heat_dashboard.template_generator').controller('FormModalCtrl', ['$scope', '$rootScope', '$compile',
-        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals', 'hotgenUtils',
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals', 'hotgenUtils', 'hotgenStates',
         'horizon.dashboard.project.heat_dashboard.template_generator.basePath',
         function($scope, $rootScope, $compile, $mdDialog,
-                 hotgenNotify, hotgenMessage, hotgenGlobals, hotgenUtils, basePath){
+                 hotgenNotify, hotgenMessage, hotgenGlobals, hotgenUtils, hotgenStates, basePath){
+
+            $scope.selected = hotgenStates.get_selected();
             $scope.showTabDialog = function(){
                 $mdDialog.show({
                     controller: DialogController,
@@ -342,10 +302,10 @@
                 }, function(){
 //                    hotgenNotify.show_error('dismiss a modal');
                 });
-                DialogController.$inject = ['$scope', '$rootScope', '$mdDialog'];
-                function DialogController($scope, $rootScope, $mdDialog,) {
+                DialogController.$inject = ['$scope', '$rootScope', '$mdDialog', 'hotgenStates'];
+                function DialogController($scope, $rootScope, $mdDialog, hotgenStates) {
                     $scope.delete_resource = function() {
-                        var label = $rootScope.selected.node.label;
+                        var label = hotgenStates.get_selected().node.label;
                         $rootScope.network.deleteSelected();
                         hotgenNotify.show_success(label + ' has been delete successfully.')
                         $mdDialog.cancel();
@@ -353,63 +313,66 @@
                     $scope.cancel = function() {
                         $mdDialog.cancel();
                     };
+                    $scope.selected = hotgenStates.get_selected();
+
                     $scope.save = function() {
                         $mdDialog.hide();
-                        $rootScope.saved_resources[$rootScope.selected.id] = {
-                            type: $rootScope.selected.resource_type,
-                            data: angular.copy($scope.resource)
-                        };
-                        var label = $rootScope.selected.node.label;
-                        var prop_label = $scope.get_label($rootScope.selected.resource_type);
+                        hotgenStates.update_saved_resources($scope.selected.id,{
+                                type: $scope.selected.resource_type,
+                                data: angular.copy($scope.resource)
+                            });
+                        var label = $scope.selected.node.label;
+                        var prop_label = $scope.get_label($scope.selected.resource_type);
 
                         if (prop_label && $scope.resource[prop_label]){
                           label = $scope.resource[prop_label];
                         }
                         $rootScope.nodes.update({
-                              id: $rootScope.selected.id,
+                              id: $scope.selected.id,
                               label: label,
-                              font: { color: $rootScope.selected.node.icon.color},
+                              font: { color: $scope.selected.node.icon.color},
                             })
                         // Mark the node is saved.
-                        $rootScope.is_saved[$rootScope.selected.id] = true;
+                        hotgenStates.update_saved_flags($scope.selected.id, true);
+
 
                         // Mark edges connected from the node are saved and update style.
                         for (var idx in $scope.connectedoptions){
                             var connected_option = $scope.connectedoptions[idx];
                             for (var idx_edge in connected_option){
-                                $rootScope.is_saved[connected_option[idx_edge].edge.id] = true;
+                                hotgenStates.update_saved_flags(connected_option[idx_edge].edge.id, true);
                                 $rootScope.edges.update({
                                   id: connected_option[idx_edge].edge.id,
                                   dashes: false,
-                                  color: $rootScope.selected.node.icon.color,
+                                  color: $scope.selected.node.icon.color,
                                 })
                           }
                         }
 
                     };
 
-                    $scope.resource_type = $rootScope.selected.resource_type.replace(/_/g, ':');
+                    $scope.resource_type = $scope.selected.resource_type.replace(/_/g, ':');
 
-                    if ($rootScope.selected.id in $rootScope.saved_resources){
-                        $scope.resource = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
+                    if ($scope.selected.id in hotgenStates.get_saved_resources()){
+                        $scope.resource = hotgenStates.get_saved_resources()[$scope.selected.id].data;
                     } else{
                         $scope.resource = {}
                     }
                     // Add connected edge resource
                     $scope.get_connected_options = function(){
-                        var related_edges = $rootScope.network.getConnectedEdges($rootScope.selected.id);
+                        var related_edges = $rootScope.network.getConnectedEdges($scope.selected.id);
                         var connected_options = {};
                         for (var idx in related_edges){
                             var edge = $rootScope.edges.get(related_edges[idx])
-                            if (edge.from != $rootScope.selected.id ){
+                            if (edge.from != $scope.selected.id ){
                                 continue;
                             }
                             var node = $rootScope.nodes.get(edge.to);
                             var edge_directions = hotgenGlobals.get_edge_directions();
-                            if (! ($rootScope.selected.resource_type in edge_directions)){
+                            if (! ($scope.selected.resource_type in edge_directions)){
                                 continue;
                             }
-                            var mapping = edge_directions[$rootScope.selected.resource_type];
+                            var mapping = edge_directions[$scope.selected.resource_type];
                             if (!(node.title in mapping)){
                                 continue;
                             }
@@ -428,7 +391,7 @@
                         return connected_options;
                     }
                     $scope.connectedoptions = $scope.get_connected_options()
-                    $scope.component = hotgenGlobals.get_resource_components()[$rootScope.selected.resource_type];
+                    $scope.component = hotgenGlobals.get_resource_components()[$scope.selected.resource_type];
 
                     $scope.get_label = function(node_type){
                         return hotgenGlobals.get_node_labels()[node_type];
@@ -444,9 +407,9 @@
         }]);
 
         angular.module('horizon.dashboard.project.heat_dashboard.template_generator').controller('EdgeFormModalCtrl',  ['$scope', '$rootScope',
-        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals',
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals', 'hotgenStates',
         'horizon.dashboard.project.heat_dashboard.template_generator.basePath',
-        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage, hotgenGlobals,basePath){
+        function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage, hotgenGlobals, hotgenStates, basePath){
             $scope.showTabDialog = function(){
                     $mdDialog.show({
                       controller: EdgeDialogController,
@@ -460,7 +423,7 @@
     //                    hotgenNotify.show_error('dismiss a modal');
                     });
                 EdgeDialogController.$inject = ['$scope', '$rootScope', '$mdDialog'];
-                function EdgeDialogController($scope, $rootScope, $mdDialog,) {
+                function EdgeDialogController($scope, $rootScope, $mdDialog, hotgenStates,) {
                     $scope.delete_resource = function() {
                         $rootScope.network.deleteSelected();
                         hotgenNotify.show_success('The selected edge has been delete successfully.')
@@ -469,26 +432,26 @@
                     $scope.cancel = function() {
                         $mdDialog.cancel();
                     };
-
-                    if ($rootScope.selected.id in $rootScope.saved_resources){
-                        $scope.resource = angular.copy($rootScope.saved_resources[$rootScope.selected.id].data);
+                    $scope.selected = hotgenStates.get_selected();
+                    if ($scope.selected.id in hotgenStates.get_saved_resources()){
+                        $scope.resource = hotgenStates.get_saved_resources()[$scope.selected.id].data;
                     } else{
                         $scope.resource = {}
                     }
 
-                    var from_type = $rootScope.selected.resource_type.from;
-                    var to_type = $rootScope.selected.resource_type.to;
+                    var from_type = $scope.selected.resource_type.from;
+                    var to_type = $scope.selected.resource_type.to;
                     $scope.from_type = from_type.replace(/_/g, ':');
                     $scope.to_type = to_type.replace(/_/g, ':');
                     $scope.from_node = {
                         class: hotgenGlobals.get_resource_icons()[from_type].class,
                         color: hotgenGlobals.get_resource_icons()[from_type].color,
-                        id: $rootScope.selected.from_node.id,
+                        id: $scope.selected.from_node.id,
                     }
                     $scope.to_node = {
                         class: hotgenGlobals.get_resource_icons()[to_type].class,
                         color: hotgenGlobals.get_resource_icons()[to_type].color,
-                        id: $rootScope.selected.to_node.id,
+                        id: $scope.selected.to_node.id,
                     }
                 }
             };
@@ -506,9 +469,9 @@
         }]);
 
     angular.module('horizon.dashboard.project.heat_dashboard.template_generator').controller('DraftModalCtrl', ['$scope', '$rootScope',
-        '$mdDialog', 'hotgenNotify', 'hotgenMessage',
+        '$mdDialog', 'hotgenNotify', 'hotgenMessage', 'hotgenStates',
         'horizon.dashboard.project.heat_dashboard.template_generator.basePath',
-         function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage, basePath){
+         function($scope, $rootScope, $mdDialog, hotgenNotify, hotgenMessage, hotgenStates, basePath){
             $scope.showDialog = function(){
                 $mdDialog.show({
                   controller: DraftDialogController,
@@ -540,8 +503,8 @@
                         for (var id in draft.edges){
                             $rootScope.edges.add(draft.edges[id]);
                         }
-                        $rootScope.saved_resources = draft.saved_resources;
-                        $rootScope.is_saved = draft.is_saved;
+                        hotgenStates.set_saved_resources(draft.saved_resources);
+                        hotgenStates.set_saved_flags(draft.is_saved);
 
                     };
                     $scope.cancel = function() {
@@ -554,14 +517,13 @@
             });
 
          }]);
-        angular.module('horizon.dashboard.project.heat_dashboard.template_generator').controller('VisCtrl', ['$scope', '$rootScope', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals', 'VisDataSet',
-        function($scope, $rootScope, hotgenNotify, hotgenMessage, hotgenGlobals, VisDataSet) {
+        angular.module('horizon.dashboard.project.heat_dashboard.template_generator').controller('VisCtrl',
+        ['$scope', '$rootScope', 'hotgenNotify', 'hotgenMessage', 'hotgenGlobals', 'hotgenStates', 'VisDataSet',
+        function($scope, $rootScope, hotgenNotify, hotgenMessage, hotgenGlobals, hotgenStates, VisDataSet) {
             $rootScope.message_level = 3;
             $rootScope.nodes = new VisDataSet();
             $rootScope.edges = new VisDataSet();
-            $rootScope.saved_resources = {};
-            $rootScope.selected = {};
-            $rootScope.is_saved = {};
+            hotgenStates.clear_states();
             $scope.options = {
                 autoResize: true,
                 edges: {
@@ -601,8 +563,8 @@
                                 id: data.from,
                                 font: {color: '#343434'}
                             })
-                            $rootScope.is_saved[data.id] = false;
-                            $rootScope.is_saved[data.from] = false;
+                            hotgenStates.update_saved_flags(data.id, false);
+                            hotgenStates.update_saved_flags(data.from, false);
                         }
                     },
                     addNode: false,
@@ -610,11 +572,13 @@
                     deleteNode: function(data, callback){
                         var node_ids = data.nodes;
                         var edge_ids = data.edges;
-                        for (var idx in node_ids){
-                            delete $rootScope.is_saved[node_ids[idx]];
+                        for (var idx in node_ids){ debugger;
+                            delete hotgenStates.get_saved_flags()[node_ids[idx]];
+                            delete hotgenStates.get_saved_resources()[node_ids[idx]];
                         }
                         for (var idx in edge_ids){
-                            delete $rootScope.is_saved[edge_ids[idx]];
+                            delete hotgenStates.get_saved_flags()[edge_ids[idx]];
+                            delete hotgenStates.get_saved_resources()[edge_ids[idx]];
                         }
                         callback(data);
                     },
@@ -622,9 +586,9 @@
                         var edge_ids = data.edges;
                         for (var idx in edge_ids){
                             var edge_id = edge_ids[idx];
-                            delete $rootScope.is_saved[edge_id];
+                            delete hotgenStates.get_saved_flags()[edge_id];
                             var from_id = $rootScope.edges.get(edge_id).from;
-                            $rootScope.is_saved[from_id] = false;
+                            hotgenStates.update_saved_flags(from_id, false);
                             $rootScope.nodes.update({
                                 id: from_id,
                                 font: {color: '#343434'}
@@ -637,10 +601,10 @@
                 locales: {
                     en: {
                         edit: 'Edit',
-                        del: 'Delete this resource',
+                        del: 'Delete',
                         back: 'Back',
                         addNode: 'Add Node', // hided
-                        addEdge: 'Connect Resources',
+                        addEdge: 'Connect',
                         editNode: 'Edit Node',
                         editEdge: 'Edit Connection', // hided
                         // All of following is not used.
@@ -679,12 +643,12 @@
                     var selected_id = params.nodes[0];
                     var selected_node = $rootScope.nodes.get(selected_id);
                     var selected_type = selected_node.title
-                    $rootScope.selected = {
+                    hotgenStates.set_selected({
                         element: 'node',
                         resource_type: selected_type,
                         id: selected_id,
                         node: selected_node,
-                    }
+                    }) ;
 
                     hotgenMessage.broadcast_edit_node(selected_type);
                 } else if (params.edges.length > 0){
@@ -693,14 +657,14 @@
                     var from_node = $rootScope.nodes.get(selected_edge.from);
                     var to_node = $rootScope.nodes.get(selected_edge.to);
 
-                    $rootScope.selected = {
+                    hotgenStates.set_selected({
                         element: 'edge',
                         resource_type: {from: from_node.title, to: to_node.title},
                         from_node: from_node,
                         to_node: to_node,
                         id: selected_id,
                         edge: selected_edge,
-                    }
+                    });
                     hotgenMessage.broadcast_edit_edge(from_node.title, to_node.title);
                 } else {
                     ;

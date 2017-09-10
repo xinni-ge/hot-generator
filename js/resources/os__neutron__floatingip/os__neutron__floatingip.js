@@ -58,7 +58,7 @@
     }]);
 
 
-    function osNeutronFloatingipController($scope, $rootScope){
+    function osNeutronFloatingipController($scope, hotgenGlobals){
         this.$onInit = function(){
             if (typeof this.connectedoptions === 'undefined'){
                 $scope.connected_options = []
@@ -70,9 +70,12 @@
                 'floating_subnet': false,
                 'port_id': false
             }
-            $scope.floating_networks = $scope.get_floating_network_options();
-            $scope.floating_subnets = $scope.get_floating_subnet_options();
-            $scope.ports = $scope.get_port_options();
+            $scope.update = {
+                floating_networks: $scope.get_floating_network_options(),
+                floating_subnets: $scope.get_floating_subnet_options(),
+                ports: $scope.get_port_options(),
+            }
+
             if (typeof this.floatingip.value_specs == 'undefined'){
                 this.floatingip.value_specs = [{}]
             }
@@ -89,12 +92,16 @@
                 this.disable.port_id = true
             }
         }
+
+        $scope.options = hotgenGlobals.get_resource_options();
+
         this.add_value_specs = function(){
             this.floatingip.value_specs.push({})
         }
         this.delete_value_specs = function(index){
             this.floatingip.value_specs.splice(index, 1)
         }
+
         $scope.get_floating_network_options = function(){
             if ('floating_network' in $scope.connected_options){
                 var resource_floating_network = [];
@@ -105,9 +112,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.floating_networks.concat(resource_floating_network);
+                return $scope.options.floating_networks.concat(resource_floating_network);
             }
-            return $rootScope.floating_networks;
+            return $scope.options.floating_networks;
 
         }
         $scope.get_floating_subnet_options = function(){
@@ -120,9 +127,9 @@
                         name: item.value
                     })
                 }
-                return $rootScope.floating_subnets.concat(resource_floating_subnet);
+                return $scope.options.floating_subnets.concat(resource_floating_subnet);
             }
-            return $rootScope.floating_subnets;
+            return $scope.options.floating_subnets;
         }
         $scope.get_port_options = function(){
             if ('port_id' in $scope.connected_options){
@@ -134,12 +141,12 @@
                         name: item.value
                     })
                 }
-                return $rootScope.ports.concat(resource_port);
+                return $scope.options.ports.concat(resource_port);
             }
-            return $rootScope.ports;
+            return $scope.options.ports;
         }
     }
-    osNeutronFloatingipController.$inject = ['$scope', '$rootScope', ];
+    osNeutronFloatingipController.$inject = ['$scope', 'hotgenGlobals'];
     osNeutronFloatingipPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronFloatingipPath(basePath){

@@ -32,10 +32,10 @@
                       md-min-length="0"
                     md-floating-label="Device Owner" style="padding:0" flex-gt-xs>
                   <md-item-template>
-                    <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+                    <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{ item.display }}</span>
                   </md-item-template>
                   <md-not-found ng-if="$ctrl.show_not_found">
-                    <span style="color:orangered">Warning: "{{$ctrl.searchText}}" saved with no pre-defined device owner found.</span>
+                    <span style="color:orangered">Warning: "{{ $ctrl.searchText }}" saved with no pre-defined device owner found.</span>
                   </md-not-found>
 
                 </md-autocomplete>
@@ -44,8 +44,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>QoS Policy</label>
                 <md-select ng-model="$ctrl.port.qos_policy" >
-                    <md-option ng-repeat="qos in qos_policies" ng-value="qos.id">
-                        {{qos.name}}
+                    <md-option ng-repeat="qos in options.qos_policies" ng-value="qos.id">
+                        {{ qos.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -53,8 +53,8 @@
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Network</label>
                 <md-select ng-model="$ctrl.port.network" name="network" required ng-disabled='$ctrl.disable.network'>
-                    <md-option ng-repeat="nw in networks" ng-value="nw.id">
-                        {{nw.name}}
+                    <md-option ng-repeat="nw in update.networks" ng-value="nw.id">
+                        {{ nw.name }}
                     </md-option>
                 </md-select>
                 <div ng-messages="$ctrl.formReference.network.$error" role="alert" multiple>
@@ -90,8 +90,8 @@
             <md-input-container class="md-block">
                 <label>Security Groups</label>
                 <md-select ng-model="$ctrl.port.security_groups"  multiple>
-                    <md-option ng-repeat="sg in security_groups" ng-value="sg.id" ng-disabled="$ctrl.disable.security_groups.indexOf(sg.id) > -1">
-                        {{sg.name}}
+                    <md-option ng-repeat="sg in update.security_groups" ng-value="sg.id" ng-disabled="$ctrl.disable.security_groups.indexOf(sg.id) > -1">
+                        {{ sg.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -126,7 +126,6 @@
                 </div>
             </div>
 
-            <br/>
             <label>Allowed Address Pairs</label>
             <md-button ng-click="$ctrl.add_allowed_address_pair()" aria-label="Add" class="md-icon-button"><i class="fa fa-fw fa-plus"></i></md-button>
 
@@ -159,8 +158,8 @@
                     <md-input-container class="md-block" flex-gt-xs="50">
                         <label>Subnet</label>
                         <md-select ng-model="fixed_ip.subnet" ng-disabled="$ctrl.disable.subnets.indexOf(fixed_ip.subnet) > -1">
-                            <md-option ng-repeat="subnet in subnets" ng-value="subnet.id" ng-disabled="$ctrl.disable.subnets.indexOf(subnet.id) > -1">
-                                {{subnet.name}}
+                            <md-option ng-repeat="subnet in update.subnets" ng-value="subnet.id" ng-disabled="$ctrl.disable.subnets.indexOf(subnet.id) > -1">
+                                {{ subnet.name }}
                             </md-option>
                         </md-select>
                     </md-input-container>

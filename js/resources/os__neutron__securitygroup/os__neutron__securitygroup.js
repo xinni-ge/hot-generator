@@ -13,6 +13,7 @@
                 code: '\uf132',
                 color: '#40a5f2'
             },
+            label: 'name',
             modal_component: '<os-neutron-security-group securitygroup="resource" form-reference="resourceForm"></os-neutron-security-group>',
             edge_settings: null,
             necessary_properties: null
@@ -35,7 +36,7 @@
 
     }]);
 
-    function osNeutronSecurityGroupController($scope, $rootScope) {
+    function osNeutronSecurityGroupController($scope,) {
         this.$onInit = function(){
             if (typeof this.securitygroup.rules === 'undefined'){
                 this.securitygroup.rules = [{}];
@@ -49,7 +50,7 @@
             this.securitygroup.rules.splice(index, 1)
         }
     }
-    osNeutronSecurityGroupController.$inject = ['$scope', '$rootScope', ];
+    osNeutronSecurityGroupController.$inject = ['$scope', ];
     osNeutronSecurityGroupPath.$inject = ['horizon.dashboard.project.heat_dashboard.template_generator.basePath'];
 
     function osNeutronSecurityGroupPath(basePath){

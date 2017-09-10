@@ -63,7 +63,7 @@
                         <label>Subnet</label>
                         <md-select ng-model="fixed_ip.subnet" ng-disabled="$ctrl.disable.subnets.indexOf(fixed_ip.subnet) > -1">
                             <md-option ng-repeat="subnet in subnets" ng-value="subnet.id" ng-disabled="$ctrl.disable.subnets.indexOf(subnet.id) > -1">
-                                {{subnet.name}}
+                                {{ subnet.name }}
                             </md-option>
                         </md-select>
                     </md-input-container>
